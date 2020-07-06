@@ -1,0 +1,8 @@
+$("#customFile").change(function(e){
+    $(".custom-file-label").text(e.target.files[0].name);
+});
+
+$(".custom-file-input").on("change", function() {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
