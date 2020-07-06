@@ -53,20 +53,20 @@
                                            class="display table dataTable table-striped table-bordered text-center">
                                         <thead>
                                         <tr>
-                                            <th>Serial</th>
-                                            <th>Name</th>
+                                            <th>Delay Reason</th>
                                             <th>Hour</th>
                                             <th>Status</th>
+                                            <th>Added By</th>
+                                            <th>Updated By</th>
                                             <th>Created At</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody class="text-center">
                                         <?php $status_text = ''; $badge_color = ''; ?>
-                                        <?php foreach ($delay_notice as $key => $value): ?>
+                                        <?php foreach ($delay_notice as $value): ?>
                                             <tr>
-                                                <td><?php echo $key + 1 ?></td>
-                                                <td><?php echo $value->description ?></td>
+                                                <td><?php echo substr($value->description, 0, 50); echo strlen($value->description) > 50 ? '...' : ''; ?></td>
                                                 <td><?php echo $value->hour ?></td>
                                                 <?php
                                                 if ($value->status == 1) {
@@ -83,6 +83,8 @@
                                                 <td>
                                                     <span class="badge badge-pill badge-<?php echo $badge_color; ?> p-2 mb-1"><?php echo $status_text; ?></span>
                                                 </td>
+                                                <td><?php echo $value->added_by ?></td>
+                                                <td><?php echo $value->updated_by ?></td>
                                                 <td><?php echo date('jS \of F Y', strtotime($value->created_at)) ?></td>
                                                 <td>
                                                     <?php
@@ -91,12 +93,19 @@
                                                             <a href="javascript:void(0);" class="btn btn-info rounded-btn" onclick="getDelayNoticeInfoById(<?php echo $value->id; ?>)">
                                                                 View
                                                             </a>
-                                                            <a href="<?php echo base_url(); ?>DelayNotice/updateDelayNotice?id=<?php echo $value->id; ?>&status=2" class="btn btn-primary rounded-btn">
-                                                                Approve
-                                                            </a>
-                                                            <a href="<?php echo base_url(); ?>DelayNotice/updateDelayNotice?id=<?php echo $value->id; ?>&status=3" class="btn btn-danger rounded-btn">
-                                                                Reject
-                                                            </a>
+                                                            <?php
+                                                                if ($user_type == 'ADMIN' || $user_type == 'SUPER ADMIN') {
+                                                                    ?>
+                                                                    <a href="<?php echo base_url(); ?>DelayNotice/updateDelayNotice?id=<?php echo $value->id; ?>&status=2" class="btn btn-primary rounded-btn">
+                                                                        Approve
+                                                                    </a>
+                                                                    <a href="<?php echo base_url(); ?>DelayNotice/updateDelayNotice?id=<?php echo $value->id; ?>&status=3" class="btn btn-danger rounded-btn">
+                                                                        Reject
+                                                                    </a>
+                                                                    <?php
+                                                                }
+                                                            ?>
+
                                                             <?php
                                                         } else {
                                                             ?>
@@ -135,8 +144,8 @@
                 <form role="form" method="post" action="addDelayNotice" id="btnSubmit">
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="description" class="control-label col-md-3">Description</label>
-                            <textarea class="form-control col-md-8" name="description" required></textarea>
+                            <label for="description" class="control-label col-md-3">Delay Reason</label>
+                            <textarea class="form-control col-md-8" name="description" rows="4" required></textarea>
                         </div>
                         <div class="form-group row">
                             <label for="message-text" class="control-label col-md-3">Hour</label>
@@ -157,6 +166,8 @@
     function getDelayNoticeInfoById(id) {
         $('#btnSubmit').trigger("reset");
         $('#delay-notice-modal').modal('show');
+        $('button[type="submit"]').hide();
+
         $.ajax({
             url: 'delayNoticeById?id=' + id,
             method: 'GET',
@@ -166,5 +177,10 @@
             $('#btnSubmit').find('[name="description"]').val(response.delay_notice.description).end();
             $('#btnSubmit').find('[name="hour"]').val(response.delay_notice.hour).end();
         });
+    }
+
+    function emptyInputValue() {
+        $('#btnSubmit').trigger("reset");
+        $('button[type="submit"]').show();
     }
 </script>
