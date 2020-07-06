@@ -678,7 +678,7 @@
 function createCookie(name, value) {
     var now = new Date();
     now.setTime(now.getTime() + 360 * 3600 * 1000);
-    document.cookie = name + "=" + value + ";expires=" + now.toUTCString() + "; path=/hr-payroll";
+    document.cookie = name + "=" + value + ";expires=" + now.toUTCString() + "; path=/hr-payroll-demo";
 }
 function getCookie(cname) {
     var name = cname + "=";
