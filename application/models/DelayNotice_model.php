@@ -43,4 +43,4 @@ class DelayNotice_model extends CI_Model{
     }
 }
 
-?><?php
+

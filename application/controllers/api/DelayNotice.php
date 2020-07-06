@@ -1,187 +1,167 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class DelayNotice extends CI_Controller{
+class DelayNotice extends CI_Controller
+{
 
-    function __construct(){
+    function __construct()
+    {
         parent::__construct();
         $this->load->model('api/ValidateRequest');
-        $this->load->model('api/To_do_model');
+        $this->load->model('api/DelayNotice_model');
     }
 
-    public function all(){
+    public function all()
+    {
         $method = $_SERVER['REQUEST_METHOD'];
-        if($method != 'GET'){
+        if ($method != 'GET') {
             json_output(400,
-                array( 'status'  => 400,
+                array('status' => 400,
                     'message' => 'Bad request, Check Request Type',
-                    'data'    => array() ));
-        } else{
+                    'data' => array()));
+        } else {
             $valid = $this->ValidateRequest->validate();
-            if($valid){
-                $result  = array();
-                $params  = $_REQUEST;
-                $user_id = $params['em_id'] ?? null;
-                $value   = $params['value'] ?? null;
-                $date    = $params['date'] ?? null;
-                if($user_id == null || $user_id == ''){
-                    json_output(400, array( 'status'  => 400,
-                        'message' => 'Invalid request Parameter',
-                        'data'    => array() ));
+            if ($valid) {
+                $result = array();
+                $params = $_REQUEST;
+                $user_type = $params['user_type'] ?? null;
+                $name = $params['name'] ?? null;
 
+                if ($user_type == null || $user_type == '' || $name == null || $name == '') {
+                    json_output(400, array('status' => 400,
+                        'message' => 'Invalid request Parameter',
+                        'data' => array()));
                     return;
                 }
 
-                $todos = $this->To_do_model->GettodoInfoWithValue($user_id, $value, $date);
-                foreach($todos as $todo){
+                if ($user_type == 'EMPLOYEE') {
+                    $delay_notice = $this->DelayNotice_model->GetDelayNoticeByUser($name);
+                } else {
+                    $delay_notice = $this->DelayNotice_model->GetDelayNotice();
+                }
+
+                foreach ($delay_notice as $record) {
                     $prep_data = array(
-                        'id'        => $todo->id,
-                        'to_dodata' => $todo->to_dodata,
-                        'date'      => $todo->date,
-                        'value'     => $todo->value,
-                        'value_def' => ($todo->value == 1) ? 'To-Do' : 'Done',
+                        'id' => $record->id,
+                        'description' => $record->description,
+                        'hour' => $record->hour,
+                        'status' => $record->status,
+                        'added_by' => $record->added_by,
+                        'created_at' => $record->created_at,
+                        'updated_at' => $record->updated_at,
                     );
                     array_push($result, $prep_data);
                 }
-                json_output(200, array( 'status'  => 200,
-                    'message' => 'Get To-Do Data',
-                    'data'    => $result ));
-            } else{
-                json_output(403, array( 'status'  => 403,
+                json_output(200, array('status' => 200,
+                    'message' => 'Get Delay Notice Data',
+                    'data' => $result));
+            } else {
+                json_output(403, array('status' => 403,
                     'message' => 'Request Unauthorized',
-                    'data'    => array() ));
+                    'data' => array()));
             }
         }
     }
 
-    public function addToDo(){
+    public function add()
+    {
         $method = $_SERVER['REQUEST_METHOD'];
-        if($method != 'POST'){
+        if ($method != 'POST') {
             json_output(400,
-                array( 'status'  => 400,
+                array('status' => 400,
                     'message' => 'Bad request, Check Request Type',
-                    'data'    => array() ));
-        } else{
+                    'data' => array()));
+        } else {
             $valid = $this->ValidateRequest->validate();
-            if($valid){
+            if ($valid) {
                 $result = array();
-                $date   = date("Y-m-d h:i:sa");
+                $description = $this->input->post('description');
+                $hour = $this->input->post('hour');
+                $added_by = $this->input->post('added_by');
+                $now = new DateTime();
 
-                $to_dodata = $this->input->post('to_dodata');
-                $user_id   = $this->input->post('user_id');
+                /*
+                 * Status 1 = Pending
+                 * Status 2 = Approve
+                 * Status 3 = Reject
+                 * */
 
-                if($to_dodata != null && $user_id != null){
-                    $data      = array(
-                        'user_id'   => $user_id,
-                        'to_dodata' => $to_dodata,
-                        'value'     => 1,
-                        'date'      => $date
+                if ($description && $hour && $added_by) {
+                    $data = array(
+                        'description' => $description,
+                        'hour' => $hour,
+                        'status' => 1,
+                        'added_by' => $added_by,
+                        'created_at' => $now->format('Y-m-d H:i:s'),
                     );
-                    $insert_id = $this->To_do_model->insert_todo($data);
+
+                    $insert_id = $this->DelayNotice_model->addDelayNotice($data);
 
                     $data['id'] = $insert_id;
-                    $result     = $data;
-                    json_output(201, array( 'status'  => 201,
-                        'message' => 'To Do Saved Successfully',
-                        'data'    => $result ));
-                } else{
-                    json_output(400, array( 'status'  => 400,
+                    $result = $data;
+                    json_output(201, array('status' => 201,
+                        'message' => 'Delay Notice Saved Successfully',
+                        'data' => $result));
+                } else {
+                    json_output(400, array('status' => 400,
                         'message' => 'Wrong Parameter. Check Please',
-                        'data'    => $result ));
+                        'data' => $result));
                 }
-            } else{
-                json_output(403, array( 'status'  => 403,
+            } else {
+                json_output(403, array('status' => 403,
                     'message' => 'Request Unauthorized',
-                    'data'    => array() ));
+                    'data' => array()));
             }
         }
     }
 
-    public function updateToDo(){
+    public function update()
+    {
+        json_output(400,
+            array('status' => 400,
+                'message' => 'Bad request, Check Request Type',
+                'data' => array()));
+
         $method = $_SERVER['REQUEST_METHOD'];
-        if($method != 'PUT'){
+        if ($method != 'POST') {
             json_output(400,
-                array( 'status'  => 400,
+                array('status' => 400,
                     'message' => 'Bad request, Check Request Type',
-                    'data'    => array() ));
-        } else{
+                    'data' => array()));
+        } else {
             $valid = $this->ValidateRequest->validate();
-            if($valid){
-                $result    = array();
-                $params    = $_REQUEST;
-                $todo_id   = $params['todo_id'];
-                $value     = isset($params['value']) ? $params['value'] : null;
-                $to_dodata = isset($params['to_dodata']) ? str_replace("\"", "", $params['to_dodata']) : null;;
+            if ($valid) {
+                $result = array();
+                $params = $_REQUEST;
 
-                if($to_dodata != null && $value != null){
-                    $data = array(
-                        'value'     => $value,
-                        'to_dodata' => $to_dodata
-                    );
-                } else{
-                    if($to_dodata != null){
-                        $data = array(
-                            'to_dodata' => $to_dodata,
-                        );
-                    } else if($value != null){
-                        $data = array(
-                            'value' => $value,
-                        );
-                    } else{
-                        $data = array(
-                            'value' => 1,
-                        );
-                    }
-                }
+                $id = $params['id'];
+                $status = $params['status'];
+                $updated_by = $params['updated_by'];
+                $now = new DateTime();
 
-                $todos = $this->To_do_model->UpdateTododata($todo_id, $data);
+                /*
+                 * Status 1 = Pending
+                 * Status 2 = Approve
+                 * Status 3 = Reject
+                 * */
 
-                $result['affacted_row'] = $todos;
+                $data = array(
+                    'status' => $status,
+                    'updated_by' => $updated_by,
+                    'updated_at' => $now->format('Y-m-d H:i:s'),
+                );
 
-                json_output(200, array( 'status'  => 200,
+                $data = $this->DelayNotice_model->updateDelayNotice($id, $data);
+                $result['affacted_row'] = $data;
+
+                json_output(200, array('status' => 200,
                     'message' => 'Update Successful',
-                    'data'    => $result ));
-
-            } else{
-                json_output(403, array( 'status'  => 403,
+                    'data' => $result));
+            } else {
+                json_output(403, array('status' => 403,
                     'message' => 'Request Unauthorized',
-                    'data'    => array() ));
+                    'data' => array()));
             }
         }
     }
-
-    public function delete(){
-        $method = $_SERVER['REQUEST_METHOD'];
-        if($method != 'DELETE'){
-            json_output(400,
-                array( 'status'  => 400,
-                    'message' => 'Bad request, Check Request Type',
-                    'data'    => array() ));
-        } else{
-            $valid = $this->ValidateRequest->validate();
-            if($valid){
-                $result  = array();
-                $params  = $_REQUEST;
-                $todo_id = $params['todo_id'];
-
-                if($todo_id == null){
-                    json_output(403, array( 'status'  => 402,
-                        'message' => 'To do id will not be null',
-                        'data'    => array() ));
-                }
-                $data  = array( 'id' => $todo_id );
-                $deleted = $this->To_do_model->delete($data);
-
-                json_output(200, array( 'status'  => 200,
-                    'message' => 'Deleted Successfully',
-                    'data'    => $result ));
-
-            } else{
-                json_output(403, array( 'status'  => 403,
-                    'message' => 'Request Unauthorized',
-                    'data'    => array() ));
-            }
-        }
-    }
-
 }
