@@ -20,8 +20,8 @@ class DelayNotice_model extends CI_Model{
         return $result;
     }
 
-    public function GetDelayNoticeByUser($user_name){
-        $sql    = "SELECT * FROM `delay_notice` where added_by = '$user_name' ORDER BY `delay_notice`.`created_at` DESC;";
+    public function GetDelayNoticeByUser($em_id){
+        $sql    = "SELECT * FROM `delay_notice` where em_id = '$em_id' ORDER BY `delay_notice`.`created_at` DESC;";
         $query  = $this->db->query($sql);
         $result = $query->result();
 

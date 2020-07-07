@@ -25,9 +25,9 @@ class DelayNotice extends CI_Controller
                 $result = array();
                 $params = $_REQUEST;
                 $user_type = $params['user_type'] ?? null;
-                $name = $params['name'] ?? null;
+                $em_id = $params['em_id'] ?? null;
 
-                if ($user_type == null || $user_type == '' || $name == null || $name == '') {
+                if ($user_type == null || $user_type == '' || $em_id == null || $em_id == '') {
                     json_output(400, array('status' => 400,
                         'message' => 'Invalid request Parameter',
                         'data' => array()));
@@ -35,7 +35,7 @@ class DelayNotice extends CI_Controller
                 }
 
                 if ($user_type == 'EMPLOYEE') {
-                    $delay_notice = $this->DelayNotice_model->GetDelayNoticeByUser($name);
+                    $delay_notice = $this->DelayNotice_model->GetDelayNoticeByUser($em_id);
                 } else {
                     $delay_notice = $this->DelayNotice_model->GetDelayNotice();
                 }
@@ -46,6 +46,7 @@ class DelayNotice extends CI_Controller
                         'description' => $record->description,
                         'hour' => $record->hour,
                         'status' => $record->status,
+                        'em_id' => $record->em_id,
                         'added_by' => $record->added_by,
                         'created_at' => $record->created_at,
                         'updated_at' => $record->updated_at,
@@ -77,6 +78,7 @@ class DelayNotice extends CI_Controller
                 $result = array();
                 $description = $this->input->post('description');
                 $hour = $this->input->post('hour');
+                $em_id = $this->input->post('em_id');
                 $added_by = $this->input->post('added_by');
                 $now = new DateTime();
 
@@ -86,11 +88,12 @@ class DelayNotice extends CI_Controller
                  * Status 3 = Reject
                  * */
 
-                if ($description && $hour && $added_by) {
+                if ($description && $hour && $added_by && $em_id) {
                     $data = array(
                         'description' => $description,
                         'hour' => $hour,
                         'status' => 1,
+                        'em_id' => $em_id,
                         'added_by' => $added_by,
                         'created_at' => $now->format('Y-m-d H:i:s'),
                     );
@@ -145,18 +148,24 @@ class DelayNotice extends CI_Controller
                  * Status 3 = Reject
                  * */
 
-                $data = array(
-                    'status' => $status,
-                    'updated_by' => $updated_by,
-                    'updated_at' => $now->format('Y-m-d H:i:s'),
-                );
+                if ($id && $status && $updated_by) {
+                    $data = array(
+                        'status' => $status,
+                        'updated_by' => $updated_by,
+                        'updated_at' => $now->format('Y-m-d H:i:s'),
+                    );
 
-                $data = $this->DelayNotice_model->updateDelayNotice($id, $data);
-                $result['affacted_row'] = $data;
+                    $data = $this->DelayNotice_model->updateDelayNotice($id, $data);
+                    $result['affacted_row'] = $data;
 
-                json_output(200, array('status' => 200,
-                    'message' => 'Update Successful',
-                    'data' => $result));
+                    json_output(200, array('status' => 200,
+                        'message' => 'Update Successful',
+                        'data' => $result));
+                } else {
+                    json_output(400, array('status' => 400,
+                        'message' => 'Wrong Parameter. Check Please',
+                        'data' => $result));
+                }
             } else {
                 json_output(403, array('status' => 403,
                     'message' => 'Request Unauthorized',
