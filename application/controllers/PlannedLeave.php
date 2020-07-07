@@ -36,6 +36,7 @@ class PlannedLeave extends CI_Controller
         if ($this->session->userdata('user_login_access') != false) {
             $data['user_type'] = $user_type = $this->session->userdata('user_type');
             $data['leave_types'] = $this->leave_model->GetleavetypeInfo();
+            $data['employee'] = $this->employee_model->emselect();
 
             if ($user_type == 'EMPLOYEE') {
                 $data['planned_leave_data'] = $this->PlannedLeave_model->GetPlannedLeaveByUser($this->session->userdata('user_login_id'));
@@ -92,6 +93,22 @@ class PlannedLeave extends CI_Controller
             $id = $this->input->get('id');
             $data['planned_leave'] = $this->PlannedLeave_model->plannedLeaveById($id);
             echo json_encode($data);
+        } else {
+            redirect(base_url(), 'refresh');
+        }
+    }
+
+    public function getPlannedLeaveByEmployee()
+    {
+        if ($this->session->userdata('user_login_access') != false) {
+            $em_id = $this->input->post('em_id');
+            if ($em_id == 'all') {
+                $data['planned_leave_data'] = $this->PlannedLeave_model->GetPlannedLeave();
+            } else {
+                $data['planned_leave_data'] = $this->PlannedLeave_model->GetPlannedLeaveByUser($em_id);
+            }
+            $response = $this->load->view('backend/planned-leave-partial', $data, TRUE);
+            echo $response;
         } else {
             redirect(base_url(), 'refresh');
         }

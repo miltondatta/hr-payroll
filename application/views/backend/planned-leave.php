@@ -48,7 +48,32 @@
                                 </button>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <?php
+                                if ($user_type != 'EMPLOYEE') {
+                                    ?>
+                                    <div class="row">
+                                        <div class="form-group col-md-3">
+                                            <select class="form-control" name="em_id" id="em_id" required>
+                                                <option value="">Select Employee</option>
+                                                <option value="all">Select All</option>
+                                                <?php foreach ($employee as $value): ?>
+                                                    <option value="<?php echo $value->em_id; ?>">
+                                                        <?php echo $value->first_name;
+                                                        echo $value->last_name; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-primary rounded-btn"
+                                                    onclick="getPlannedLeaveData()">Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+                                <div class="table-responsive" id="planned-leave-table-area">
                                     <table id="data-table" data-page-length='10'
                                            class="display table dataTable table-striped table-bordered text-center">
                                         <thead>
@@ -163,5 +188,31 @@
 
     function emptyInputValue() {
         $('#btnSubmit').trigger("reset");
+    }
+
+    function getPlannedLeaveData() {
+        let em_id = $("#em_id").val();
+        if (!em_id) {
+            alert('Please select employee!');
+            return;
+        }
+
+        $.ajax({
+            url: 'getPlannedLeaveByEmployee',
+            method: 'POST',
+            data: {
+                em_id: em_id,
+            }
+        }).done(function (data) {
+            $("#planned-leave-table-area").empty();
+            $("#planned-leave-table-area").append(data);
+            $('#data-table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                responsive: true
+            });
+        });
     }
 </script>

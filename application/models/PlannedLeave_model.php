@@ -27,7 +27,7 @@ class PlannedLeave_model extends CI_Model{
         $sql    = "SELECT planned_leave.*, leave_types.name as leave_type_name
                     FROM `planned_leave`
                              left join leave_types on planned_leave.leave_type_id = leave_types.type_id
-                    where em_id = 32
+                    where em_id = '$em_id'
                     ORDER BY `planned_leave`.`created_at` DESC";
         $query  = $this->db->query($sql);
         $result = $query->result();
