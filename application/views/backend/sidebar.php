@@ -31,6 +31,7 @@
                                 <li class="<?php echo $url == (base_url() . 'leave/EmApplication') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>leave/EmApplication"><i class="icon-speech"></i> Leave Application</a></li>
                                 <li class="<?php echo $url == (base_url() . 'leave/EmLeavesheet') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>leave/EmLeavesheet"><i class="icon-support"></i> Leave Sheet</a></li>
                                 <li class="<?php echo $url == (base_url() . 'DelayNotice/index') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>DelayNotice/index"><i class="icon-support"></i> Delay Notice</a></li>
+                                <li class="<?php echo $url == (base_url() . 'PlannedLeave/index') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>PlannedLeave/index"><i class="fab fa-delicious"></i> Planned Leave</a></li>
                             </ul>
                         </div>
                     </li>
@@ -78,6 +79,7 @@
                                 <li class="<?php echo $url == (base_url() . 'leave/Earnedleave') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>leave/Earnedleave"><i class="fas fa-calculator"></i> Earned Leave</a></li>
                                 <li class="<?php echo $url == (base_url() . 'leave/Leave_report') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>leave/Leave_report"><i class="fas fa-clipboard"></i> Report</a></li>
                                 <li class="<?php echo $url == (base_url() . 'DelayNotice/index') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>DelayNotice/index"><i class="icon-support"></i> Delay Notice</a></li>
+                                <li class="<?php echo $url == (base_url() . 'PlannedLeave/index') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>PlannedLeave/index"><i class="fab fa-delicious"></i> Planned Leave</a></li>
                             </ul>
                         </div>
                     </li>
