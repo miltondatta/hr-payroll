@@ -58,8 +58,7 @@
                                                 <option value="all">Select All</option>
                                                 <?php foreach ($employee as $value): ?>
                                                     <option value="<?php echo $value->em_id; ?>">
-                                                        <?php echo $value->first_name;
-                                                        echo $value->last_name; ?>
+                                                        <?php echo $value->first_name; echo ' '; echo $value->last_name; ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>

@@ -101,85 +101,56 @@
         dateFormat: 'yy-mm'
     });
 
+    function getRndInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) ) + min;
+    }
 
-    var calendarEl = document.getElementById('calendar');
-    if (calendarEl) {
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-            height: 'parent',
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-            },
-            defaultView: 'dayGridMonth',
-            defaultDate: '2019-08-12',
-            navLinks: true, // can click day/week names to navigate views
-            editable: true,
-            eventLimit: true, // allow "more" link when too many events
-            events: [
+    let base = $("#base").val();
+    let events_array = [];
+    $.ajax({
+        url: base + 'PlannedLeave/getPlannedLeaveByEmployeeId',
+        method: 'GET',
+        data: {}
+    }).done(function (response) {
+        let result = JSON.parse(response);
+        $.each(result.planned_leave, function (index, item) {
+            let random_number = getRndInteger(100000,999999);
+            events_array.push(
                 {
-                    title: 'All Day Event',
-                    start: '2019-08-01',
-                    color: '#6c757d'
-                },
-                {
-                    title: 'Long Event',
-                    start: '2019-08-07',
-                    end: '2019-08-10',
-                    color: '#28a745'
-                },
-                {
-                    groupId: 999,
-                    title: 'Repeating Event',
-                    start: '2019-08-09T16:00:00',
-                    color: '#dc3545'
-                },
-                {
-                    groupId: 999,
-                    title: 'Repeating Event',
-                    start: '2019-08-16T16:00:00',
-                    color: '#ffc107'
-                },
-                {
-                    title: 'Conference',
-                    start: '2019-08-11',
-                    end: '2019-08-13',
-                    color: '#17a2b8'
-                },
-                {
-                    title: 'Meeting',
-                    start: '2019-08-12T10:30:00',
-                    end: '2019-08-12T12:30:00'
-                },
-                {
-                    title: 'Lunch',
-                    start: '2019-08-12T12:00:00'
-                },
-                {
-                    title: 'Meeting',
-                    start: '2019-08-12T14:30:00'
-                },
-                {
-                    title: 'Happy Hour',
-                    start: '2019-08-12T17:30:00'
-                },
-                {
-                    title: 'Dinner',
-                    start: '2019-08-12T20:00:00'
-                },
-                {
-                    title: 'Birthday Party',
-                    start: '2019-08-13T07:00:00'
-                },
-                {
-                    title: 'Click for Google',
-                    url: 'http://google.com/',
-                    start: '2019-08-28'
+                    title: item.leave_type_name,
+                    start: item.leave_from,
+                    end: moment(item.leave_to).add(1, 'days').format('YYYY-MM-DD'),
+                    color: '#'+random_number,
+                    description: item.remarks
                 }
-            ]
+            );
         });
 
-        calendar.render();
-    }
+        console.log(events_array);
+
+        let calendarEl = document.getElementById('calendar');
+        if (calendarEl) {
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+                height: 'parent',
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                defaultView: 'dayGridMonth',
+                defaultDate: new Date(),
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                eventRender: function (info) {
+                    $(info.el).tooltip({
+                        title: info.event.title
+                    });
+                },
+                events: events_array
+            });
+            calendar.render();
+        }
+    });
 })(jQuery);

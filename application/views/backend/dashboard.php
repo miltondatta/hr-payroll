@@ -42,8 +42,41 @@
             </div>
         </div>
 
-        <!-- START: Card Data-->
+        <!-- View Planned Leave -->
         <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="javascript:void(0);" style="color: blue !important;" data-toggle="modal" data-target="#planned-leave-modal">View Your Planned Leave Calendar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="planned-leave-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel10"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myLargeModalLabel10">Planned Leave Calendar</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form role="form" method="post" action="addPlannedLeave" id="btnSubmit">
+                        <div class="modal-body">
+                            <div id='calendar' class="h-100"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger rounded-btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- START: Card Data-->
+        <div class="row mt-3">
             <div class="col-12 col-sm-6 col-xl-3">
                 <div class="card">
                     <div class="card-body">

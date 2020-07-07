@@ -114,4 +114,14 @@ class PlannedLeave extends CI_Controller
         }
     }
 
+    public function getPlannedLeaveByEmployeeId()
+    {
+        if ($this->session->userdata('user_login_access') != false) {
+            $data['planned_leave'] = $this->PlannedLeave_model->GetPlannedLeaveByUser($this->session->userdata('user_login_id'));
+            echo json_encode($data);
+        } else {
+            redirect(base_url(), 'refresh');
+        }
+    }
+
 }
