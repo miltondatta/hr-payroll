@@ -37,7 +37,7 @@ class DelayNotice extends CI_Controller
             $data['user_type'] = $user_type = $this->session->userdata('user_type');
 
             if ($user_type == 'EMPLOYEE') {
-                $data['delay_notice'] = $this->DelayNotice_model->GetDelayNoticeByUser($this->session->userdata('name'));
+                $data['delay_notice'] = $this->DelayNotice_model->GetDelayNoticeByUser($this->session->userdata('user_login_id'));
             } else {
                 $data['delay_notice'] = $this->DelayNotice_model->GetDelayNotice();
             }
@@ -66,6 +66,7 @@ class DelayNotice extends CI_Controller
                 'description' => $description,
                 'hour' => $hour,
                 'status' => 1,
+                'em_id' => $this->session->userdata('user_login_id'),
                 'added_by' => $this->session->userdata('name'),
                 'created_at' => $now->format('Y-m-d H:i:s'),
             );
