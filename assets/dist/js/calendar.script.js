@@ -126,8 +126,6 @@
             );
         });
 
-        console.log(events_array);
-
         let calendarEl = document.getElementById('calendar');
         if (calendarEl) {
             var calendar = new FullCalendar.Calendar(calendarEl, {
