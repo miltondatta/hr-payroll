@@ -118,6 +118,14 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="dropdown"><a href="#"><i class="fas fa-sign-language"></i>Appraisal</a>
+                        <div>
+                            <ul>
+                                <li class="<?php echo $url == (base_url() . 'Appraisal/appraisalCategory') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Appraisal/appraisalCategory"><i class="fas fa-sliders-h"></i>Appraisal Category</a></li>
+                                <li class="<?php echo $url == (base_url() . 'Appraisal/appraisalEmployee') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Appraisal/appraisalEmployee"><i class="fas fa-first-aid"></i>Appraisal Employee</a></li>
+                            </ul>
+                        </div>
+                    </li>
                     <li class="<?php echo $url == (base_url() . 'notice/All_notice') ? 'active' : '' ?>"><a href="<?php echo base_url()?>notice/All_notice"><i class="fas fa-pager"></i>Notice</a>
                     </li>
                     <li class="<?php echo $url == (base_url() . 'settings/Settings') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>settings/Settings"><i class="fas fa-cogs"></i>Settings</a>

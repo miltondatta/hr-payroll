@@ -28,6 +28,20 @@ SET time_zone = "+00:00";
 -- Table structure for table `addition`
 --
 
+CREATE TABLE `planned_leave`
+(
+    `id`            int(14) primary key auto_increment not null,
+    `leave_type_id` varchar(11)   DEFAULT NULL,
+    `leave_from`    varchar(128)  DEFAULT NULL,
+    `leave_to`      varchar(128)  DEFAULT NULL,
+    `remarks`       varchar(1000) DEFAULT NULL,
+    `em_id`         varchar(27)   DEFAULT NULL,
+    `added_by`      varchar(128)  DEFAULT NULL,
+    `created_at`    varchar(64)   DEFAULT NULL,
+    `updated_at`    varchar(64)   DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
 CREATE TABLE `delay_notice`
 (
     `id`          int(14) primary key auto_increment not null,
