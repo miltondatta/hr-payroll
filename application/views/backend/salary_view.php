@@ -198,56 +198,78 @@
                                                     <div class="row well">
                                                         <div class="col-md-6">
                                                             <div class="form-group row">
-                                                                <label class="control-label text-left col-md-5">Basic
-                                                                                                                Salary
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Total Salary
                                                                 </label>
                                                                 <div class="col-md-7">
-                                                                    <input type="text" name="basic" class="form-control"
-                                                                           id="" value="">
+                                                                    <input type="text" name="total_salary"
+                                                                           class="form-control total_salary"
+                                                                           id="total_salary" value="">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="control-label text-left col-md-5">Working
-                                                                                                                hours
+                                                                <label class="control-label text-left col-md-5">
+                                                                    House Rent
                                                                 </label>
                                                                 <div class="col-md-7">
-                                                                    <input type="text" name="month_work_hours"
-                                                                           class="form-control thour" value=""
+                                                                    <input type="text" name="house_rent"
+                                                                           class="form-control house_rent" value=""
                                                                            readonly>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="control-label text-left col-md-5">Hours
-                                                                                                                worked
-                                                                </label>
-                                                                <div class="col-md-7">
-                                                                    <input type="text" name="hours_worked"
-                                                                           class="form-control hours_worked" id=""
-                                                                           value="">
-                                                                    <span>Work Without Pay:</span><span
-                                                                            class="wpay"></span> <span>hrs</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row" style="display:none">
                                                                 <label class="control-label text-left col-md-5">
+                                                                    Medical
                                                                 </label>
                                                                 <div class="col-md-7">
-                                                                    <input type="hidden" name="hrate"
-                                                                           class="form-control hrate" id="hrate"
-                                                                           value=''>
+                                                                    <input type="text" name="medical"
+                                                                           class="form-control medical" value=""
+                                                                           readonly>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group row" id="addition">
-                                                                <label class="control-label text-left col-md-5">Addition
+
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Hourly Rate
                                                                 </label>
                                                                 <div class="col-md-7">
-                                                                    <input type="text" name="addition"
-                                                                           class="form-control" id="" value="">
+                                                                    <input type="number" name="hourly_rate"
+                                                                           class="form-control hourly_rate" value=0>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="control-label text-left col-md-5">Pay
-                                                                                                                Date</label>
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Bima
+                                                                </label>
+                                                                <div class="col-md-7">
+                                                                    <input type="number" name="bima"
+                                                                           class="form-control bima" value=0>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Tax
+                                                                </label>
+                                                                <div class="col-md-7">
+                                                                    <input type="number" name="tax"
+                                                                           class="form-control tax" value=0>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">Final
+                                                                                                                Salary
+                                                                </label>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" name="total_paid"
+                                                                           class="form-control total_paid" id=""
+                                                                           value="" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Pay Date</label>
                                                                 <div class="input-group col-md-7 ">
                                                                     <input name="paydate"
                                                                            class="form-control mydatetimepickerFull"
@@ -261,15 +283,59 @@
                                                                 </div>
                                                             </div>
 
+                                                            <div class="form-group row" style="margin-top: 25px;">
+                                                                <label class="control-label text-left col-md-3">
+                                                                    Paid Type</label><br>
+                                                                <div class="col-md-9">
+                                                                    <input name="paid_type" type="radio" id="radio_3"
+                                                                           data-value="Hand Cash" class=""
+                                                                           value="Hand Cash" checked="checked">
+                                                                    <label for="radio_3"
+                                                                           style="margin-left: 5px;margin-right: 5px">Hand
+                                                                                                                      Cash</label>
+                                                                    <input name="paid_type" type="radio" id="radio_4"
+                                                                           data-value="Bank" class="type"
+                                                                           value="Bank">
+                                                                    <label for="radio_4"
+                                                                           style="margin-left: 5px">Bank</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-3">Status</label><br>
+                                                                <div class="col-md-7">
+                                                                    <input name="status" type="radio" id="radio_1"
+                                                                           data-value="Paid"
+                                                                           class="duration" value="Paid"
+                                                                           checked="checked">
+                                                                    <label for="radio_1"
+                                                                           style="margin-left: 5px;margin-right: 5px">Paid</label>
+                                                                    <input name="status" type="radio" id="radio_2"
+                                                                           data-value="Process" class="type"
+                                                                           value="Process">
+                                                                    <label for="radio_2" style="margin-left: 5px">Process</label>
+                                                                </div>
+                                                            </div>
                                                         </div>
+
                                                         <div class="col-md-6">
-                                                            <div class="form-group row" id="diduction">
-                                                                <label class="control-label text-left col-md-5">Diduction
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Basic Salary
                                                                 </label>
                                                                 <div class="col-md-7">
-                                                                    <input type="text" name="diduction"
-                                                                           class="form-control diduction" id=""
-                                                                           value="">
+                                                                    <input type="text" name="basic" class="form-control"
+                                                                           id="" value="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Conveyance
+                                                                </label>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" name="conveyance"
+                                                                           class="form-control"
+                                                                           id="" value="">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row" id="loan">
@@ -281,74 +347,55 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group row">
-                                                                <label class="control-label text-left col-md-5">Final
-                                                                                                                Salary
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Hours Workd
                                                                 </label>
                                                                 <div class="col-md-7">
-                                                                    <input type="text" name="total_paid"
-                                                                           class="form-control total_paid" id=""
-                                                                           value="" required>
+                                                                    <input type="number" name="hours_worked"
+                                                                           class="form-control hours_worked" value=0>
                                                                 </div>
                                                             </div>
-                                                            <!--<div class="form-group row">
-                                                              <label class="control-label text-left col-md-5">Status
-                                                              </label>
-                                                              <div class="col-md-7">
-                                                              <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" name="status" required>
-                                                                <option value="#">Select Here
-                                                                </option>
-                                                                <option value="Paid">Paid
-                                                                </option>
-                                                                <option value="Process">Process
-                                                                </option>
-                                                              </select>
-                                                            </div>
-                                                            </div>-->
                                                             <div class="form-group row">
-                                                                <label class="control-label text-left col-md-5">Status</label><br>
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Provident Fund
+                                                                </label>
                                                                 <div class="col-md-7">
-                                                                    <input name="status" type="radio" id="radio_1"
-                                                                           data-value="Paid"
-                                                                           class="duration" value="Paid"
-                                                                           checked="checked">
-                                                                    <label for="radio_1">Paid</label>
-                                                                    <input name="status" type="radio" id="radio_2"
-                                                                           data-value="Process" class="type"
-                                                                           value="Process">
-                                                                    <label for="radio_2">Process</label>
+                                                                    <input type="number" name="provident_fund"
+                                                                           class="form-control provident_fund" value=0>
                                                                 </div>
                                                             </div>
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Others
+                                                                </label>
+                                                                <div class="col-md-7">
+                                                                    <input type="number" name="others"
+                                                                           class="form-control others" value=0>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Diduction
+                                                                </label>
+                                                                <div class="col-md-7">
+                                                                    <input type="number" name="diduction"
+                                                                           class="form-control diduction" value=0>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <label class="control-label text-left col-md-5">
+                                                                    Comments
+                                                                </label>
+                                                                <div class="col-md-7">
+                                                                    <textarea name="comments" id="comments" cols="25"
+                                                                              rows="5"></textarea>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
-                                                    <!--<div class="form-group row" style="margin-top: 25px;">
-                                                      <label class="control-label text-left col-md-3">Paid Type
-                                                      </label>
-                                                      <div class="col-md-9">
-                                                      <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" name="paid_type" required>
-                                                        <option value="#">Select Here
-                                                        </option>
-                                                        <option value="Hand Cash">Hand Cash
-                                                        </option>
-                                                        <option value="Bank">Bank
-                                                        </option>
-                                                      </select>
-                                                      </div>
-                                                    </div>-->
-                                                    <div class="form-group row" style="margin-top: 25px;">
-                                                        <label class="control-label text-left col-md-3">Paid
-                                                                                                        Type</label><br>
-                                                        <div class="col-md-9">
-                                                            <input name="paid_type" type="radio" id="radio_3"
-                                                                   data-value="Hand Cash" class=""
-                                                                   value="Hand Cash" checked="checked">
-                                                            <label for="radio_3" style="margin-left: 30px">Hand
-                                                                                                           Cash</label>
-                                                            <input name="paid_type" type="radio" id="radio_4"
-                                                                   data-value="Bank" class="type"
-                                                                   value="Bank">
-                                                            <label for="radio_4" style="margin-left: 130px">Bank</label>
-                                                        </div>
-                                                    </div>
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <input type="hidden" name="action" value="add" class="form-control"
@@ -375,36 +422,33 @@
     </main>
     <script type="text/javascript">
         $(document).ready(function (){
-            $(document).on('keyup', '.hours_worked', function (){
-                var finalsalary = 0;
-                //var total;
-                var deduction   = 0;
-                var rows        = this.closest('#generatePayrollForm div');
-                
-                var hrate = parseFloat($('.hrate').val());
-                var final = parseFloat($('.total_paid').val());
-                var loan  = parseFloat($('.loan').val());
-                var hwork = parseFloat($('.hours_worked').val());
-                var thour = parseFloat($('.thour').val());
-                
-                finalsalary = (hwork * hrate) - loan;
-                $(".total_paid").val(finalsalary.toFixed(2));
-                var total     = thour - hwork;
-                //var deduction = (total * hrate) + loan; // Shuvo has change here. remove +loan amount from calculation.
-                var deduction = (total * hrate);
-                $(".diduction").val(deduction.toFixed(2));
-                $(".wpay").html(total.toFixed(2));
-                
-                // var returnval;
-                //returnval = payval - payableval;
-                /*            if(returnval<=0){
-                 $(".due").val(Math.abs(returnval).toFixed(2));
-                 }else if(returnval > 0){
-                 $(".due").val('');
-                 }
-                 $(".return").val(returnval.toFixed(2));*/
-                
+            $(document).on('change', '.hours_worked', function (){
+                calculateTotalSalary();
             });
+            $(document).on('change', '.hourly_rate', function (){
+                calculateTotalSalary();
+            });
+            
+            $(document).on('change', '.diduction', function (){
+                calculateTotalSalary();
+            });
+            
+            function calculateTotalSalary(){
+                var total_salary   = parseFloat($('.total_salary').val());
+                var loan           = parseFloat($('.loan').val());
+                var hrate          = parseFloat($('.hourly_rate').val());
+                var hwork          = parseFloat($('.hours_worked').val());
+                var diduction      = parseFloat($('.diduction').val());
+                var bima           = parseFloat($('.bima').val());
+                var provident_fund = parseFloat($('.provident_fund').val());
+                var tax            = parseFloat($('.tax').val());
+                var others         = parseFloat($('.others').val());
+                
+                var over_time_tk = (hrate * hwork);
+                var final_salary = total_salary + over_time_tk - (diduction + loan + bima + provident_fund + tax + others);
+                
+                $(".total_paid").val(final_salary.toFixed(2));
+            }
         });
     </script>
     <script type="text/javascript">
@@ -421,8 +465,6 @@
                 var year     = $(this).data('year');
                 var has_loan = $(this).data('has_loan');
                 
-                console.log(has_loan);
-                
                 $('#generatePayrollForm').find('[name="emid"]').val(emid).attr('readonly', true).end();
                 $('#generatePayrollForm').find('[name="month"]').val(Math.abs(month)).attr('readonly', true).end();
                 
@@ -432,29 +474,30 @@
                     data    : '',
                     dataType: 'json',
                 }).done(function (response){
-                    console.log(response);
                     
-                    if (response.addition == 0){
-                        $('#generatePayrollForm').find('[id="addition"]').val('').hide().end();
-                    }
-                    if (response.diduction == 0){
-                        $('#generatePayrollForm').find('[id="diduction"]').val('').hide().end();
-                    }
-                    if (response.loan == 0){
-                        $('#generatePayrollForm').find('[id="loan"]').val('').hide().end();
-                    }
+                    let loan_in           = parseFloat(isNaN(response.loan_amount) || response.loan_amount == '' ? 0 : response.loan_amount);
+                    let bima_in           = parseFloat(isNaN(response.bima) || response.bima == '' ? 0 : response.bima);
+                    let tax_in            = parseFloat(isNaN(response.tax) || response.tax == '' ? 0 : response.tax);
+                    let provident_fund_in = parseFloat(isNaN(response.provident_fund) || response.provident_fund == '' ?
+                                                       0 : response.provident_fund);
+                    let others_in         = parseFloat(isNaN(response.others) || response.others == '' ? 0 : response.others);
+                    let total_in          = parseFloat(isNaN(response.total) ? 0 : response.total);
                     
-                    $('#generatePayrollForm').find('[name="basic"]').val(response.basic_salary).attr('readonly', true).end();
-                    $('#generatePayrollForm').find('[name="month_work_hours"]').val(response.total_work_hours).attr('readonly', true).end();
-                    $('#generatePayrollForm').find('[name="hours_worked"]').val(response.employee_actually_worked)/*.attr('readonly', true)*/.end();
-                    $('#generatePayrollForm').find('[name="addition"]').val(response.addition).end();
-                    $('#generatePayrollForm').find('[name="diduction"]').val(response.diduction).end();
-                    $('#generatePayrollForm').find('[class="wpay"]').html(response.wpay).end();
-                    $('#generatePayrollForm').find('[name="loan"]').val(response.loan_amount).prop('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="basic"]').val(response.basic).attr('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="total_salary"]').val(response.total).attr('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="medical"]').val(response.medical).attr('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="house_rent"]').val(response.house_rent).attr('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="paydate"]').val(response.pay_date).attr('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="conveyance"]').val(response.conveyance).attr('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="loan"]').val(loan_in).prop('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="bima"]').val(bima_in).prop('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="tax"]').val(tax_in).prop('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="provident_fund"]').val(provident_fund_in).prop('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="others"]').val(others_in).prop('readonly', true).end();
+                    $('#generatePayrollForm').find('[name="total_paid"]').val(total_in - (loan_in + bima_in + tax_in
+                        + provident_fund_in + others_in)).prop('readonly', true).end();
                     $('#generatePayrollForm').find('[name="loan_id"]').val(response.loan_id).end();
-                    $('#generatePayrollForm').find('[name="total_paid"]').val(response.final_salary).end();
                     $('#generatePayrollForm').find('[name="year"]').val(year).end();
-                    $('#generatePayrollForm').find('[name="hrate"]').val(response.rate).end();
                 });
             });
         });

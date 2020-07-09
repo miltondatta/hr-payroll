@@ -17,7 +17,7 @@
 
         <div class="row">
             <div class="col-12 mt-3">
-                <?php if ($this->session->flashdata('feedback')) { ?>
+                <?php if($this->session->flashdata('feedback')){ ?>
                     <div class="alert alert-success alert-dismissible show" role="alert">
                         <strong><?php echo $this->session->flashdata('feedback'); ?></strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -25,7 +25,7 @@
                         </button>
                     </div>
                 <?php } ?>
-                <?php if ($this->session->flashdata('error')) { ?>
+                <?php if($this->session->flashdata('error')){ ?>
                     <div class="alert alert-danger alert-dismissible show" role="alert">
                         <strong><?php echo $this->session->flashdata('error'); ?></strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -47,17 +47,41 @@
                                     <span class="d-inline-block pl-1">Add Loan</span>
                                 </button>
                             </div>
+
+                            <div class="card-body form-material row ">
+                                <div class="form-group col-md-3">
+                                    <select class="form-control" tabindex="1" name="emid" id="employee_id"
+                                            required>
+                                        <option value="">Select Employee</option>
+                                        <?php foreach($employee as $value): ?>
+                                            <option value="<?php echo $value->em_id; ?>">
+                                                <?php echo $value->first_name ?>
+                                                <?php echo $value->last_name ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <input type="text" name="loan_no" id="loan_no"
+                                           class="form-control loan_no" placeholder="Loan No">
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <button type="button" class="btn btn-primary find_load" id="find_loan"
+                                            onclick="getFilterData()">Find Loan
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table id="data-table" data-page-length='10'
+                                <div class="table-responsive" id="loan-table-area">
+                                    <table id="data_table_example" data-page-length='10'
                                            class="display table dataTable table-striped table-bordered text-center">
                                         <thead>
                                         <tr>
                                             <th>Name</th>
                                             <th>Employee Code</th>
+                                            <th>Loan Number</th>
                                             <th>Amount</th>
-                                            <!--<th>Interest Percentage</th>
-                                            <th>Installment Period</th>-->
                                             <th>Installment</th>
                                             <th>Total Pay</th>
                                             <th>Total Due</th>
@@ -67,22 +91,22 @@
                                         </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                        <?php foreach ($loanview as $value): ?>
+                                        <?php foreach($loanview as $value): ?>
                                             <tr>
                                                 <td><?php echo $value->first_name . ' ' . $value->last_name ?></td>
                                                 <td><?php echo $value->em_code ?></td>
+                                                <td><?php echo $value->loan_number ?></td>
                                                 <td><?php echo $value->amount ?></td>
-                                                <!-- <td><?php #echo $value->interest_percentage.''.'%' ?></td>
-                                                    <td><?php #echo $value->install_period ?></td> -->
                                                 <td><?php echo $value->installment ?></td>
                                                 <td><?php echo $value->total_pay ?></td>
                                                 <td><?php echo $value->total_due ?></td>
-                                                <td><?php echo date('jS \of F Y', strtotime($value->approve_date)) ?></td>
+                                                <td><?php echo $value->approve_date ?></td>
                                                 <td><?php echo $value->status ?></td>
                                                 <td>
-                                                    <a href="#" class="btn btn-primary rounded-btn loanmodalclass"
-                                                       data-id="<?php echo $value->id; ?>"><i
-                                                                class="fa fa-edit"></i></a>
+                                                    <button class="btn btn-primary rounded-btn"
+                                                            onclick="editLoanDetails(<?php echo $value->id ?>)">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -115,8 +139,9 @@
                             <select class="form-control col-md-8"
                                     data-placeholder="Choose a Category" tabindex="1" name="emid" required>
                                 <option value="">Select Here</option>
-                                <?php foreach ($employee as $value): ?>
-                                    <option value="<?php echo $value->em_id; ?>"><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                <?php foreach($employee as $value): ?>
+                                    <option value="<?php echo $value->em_id; ?>"><?php echo $value->first_name . ' ' .
+                                                                                            $value->last_name; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -183,44 +208,69 @@
 </main>
 <?php $this->load->view('backend/footer'); ?>
 <script type="text/javascript">
-    $('.amount, .period').on('input', function () {
+    $('.amount, .period').on('input', function (){
         var amount = parseInt($('.amount').val());
         var period = parseFloat($('.period').val());
         $('.installment').val((amount / period ? amount / period : 0).toFixed(2));
     });
 </script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $(".loanmodalclass").click(function (e) {
-            e.preventDefault(e);
-            // Get the record's ID via attribute
-            var id = $(this).attr('data-id');
-            $('#btnSubmit').trigger("reset");
-            $('#loanmodal').modal('show');
-            $.ajax({
-                url: 'LoanByID?id=' + id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-            }).done(function (response) {
-                console.log(response);
-                // Populate the form fields with the data returned from server
-                $('#btnSubmit').find('[name="emid"]').val(response.loanvalue.emp_id).end();
-                $('#btnSubmit').find('[name="id"]').val(response.loanvalue.id).end();
-                $('#btnSubmit').find('[name="details"]').val(response.loanvalue.loan_details).end();
-                $('#btnSubmit').find('[name="appdate"]').val(response.loanvalue.approve_date).end();
-                $('#btnSubmit').find('[name="redate"]').val(response.loanvalue.repayment_from).end();
-                $('#btnSubmit').find('[name="amount"]').val(response.loanvalue.amount).end();
-                /* $('#btnSubmit').find('[name="interest"]').val(response.loanvalue.interest_percentage).end();*/
-                $('#btnSubmit').find('[name="install"]').val(response.loanvalue.install_period).end();
-                $('#btnSubmit').find('[name="installment"]').val(response.loanvalue.installment).end();
-                $('#btnSubmit').find('[name="loanno"]').val(response.loanvalue.loan_number).end();
-                $('#btnSubmit').find('[name="status"]').val(response.loanvalue.status).end();
-            });
+    /*$(document).ready(function (){
+     $(".loanmodalclass").click(function (e){
+     e.preventDefault(e);
+     // Get the record's ID via attribute
+     var id = $(this).attr('data-id');
+     $('#btnSubmit').trigger("reset");
+     $('#loanmodal').modal('show');
+     $.ajax({
+     url     : 'LoanByID?id=' + id,
+     method  : 'GET',
+     data    : '',
+     dataType: 'json',
+     }).done(function (response){
+     console.log(response);
+     // Populate the form fields with the data returned from server
+     $('#btnSubmit').find('[name="emid"]').val(response.loanvalue.emp_id).end();
+     $('#btnSubmit').find('[name="id"]').val(response.loanvalue.id).end();
+     $('#btnSubmit').find('[name="details"]').val(response.loanvalue.loan_details).end();
+     $('#btnSubmit').find('[name="appdate"]').val(response.loanvalue.approve_date).end();
+     $('#btnSubmit').find('[name="redate"]').val(response.loanvalue.repayment_from).end();
+     $('#btnSubmit').find('[name="amount"]').val(response.loanvalue.amount).end();
+     /!* $('#btnSubmit').find('[name="interest"]').val(response.loanvalue.interest_percentage).end();*!/
+     $('#btnSubmit').find('[name="install"]').val(response.loanvalue.install_period).end();
+     $('#btnSubmit').find('[name="installment"]').val(response.loanvalue.installment).end();
+     $('#btnSubmit').find('[name="loanno"]').val(response.loanvalue.loan_number).end();
+     $('#btnSubmit').find('[name="status"]').val(response.loanvalue.status).end();
+     });
+     });
+     });*/
+    
+    function editLoanDetails(id){
+        $('#btnSubmit').trigger("reset");
+        $('#loanmodal').modal('show');
+        $.ajax({
+            url     : 'LoanByID?id=' + id,
+            method  : 'GET',
+            data    : '',
+            dataType: 'json',
+        }).done(function (response){
+            console.log(response);
+            // Populate the form fields with the data returned from server
+            $('#btnSubmit').find('[name="emid"]').val(response.loanvalue.emp_id).end();
+            $('#btnSubmit').find('[name="id"]').val(response.loanvalue.id).end();
+            $('#btnSubmit').find('[name="details"]').val(response.loanvalue.loan_details).end();
+            $('#btnSubmit').find('[name="appdate"]').val(response.loanvalue.approve_date).end();
+            $('#btnSubmit').find('[name="redate"]').val(response.loanvalue.repayment_from).end();
+            $('#btnSubmit').find('[name="amount"]').val(response.loanvalue.amount).end();
+            /!* $('#btnSubmit').find('[name="interest"]').val(response.loanvalue.interest_percentage).end();*!/
+            $('#btnSubmit').find('[name="install"]').val(response.loanvalue.install_period).end();
+            $('#btnSubmit').find('[name="installment"]').val(response.loanvalue.installment).end();
+            $('#btnSubmit').find('[name="loanno"]').val(response.loanvalue.loan_number).end();
+            $('#btnSubmit').find('[name="status"]').val(response.loanvalue.status).end();
         });
-    });
-
-    function emptyInputValue() {
+    }
+    
+    function emptyInputValue(){
         $('#btnSubmit').find('[name="emid"]').val('').end();
         $('#btnSubmit').find('[name="id"]').val('').end();
         $('#btnSubmit').find('[name="details"]').val('').end();
@@ -232,4 +282,68 @@
         $('#btnSubmit').find('[name="status"]').val('').end();
         /* $('#btnSubmit').find('[name="interest"]').val('').end();*/
     }
+    
+    function getFilterData(){
+        var employee_id = $('#employee_id').val();
+        var loan_no     = $('#loan_no').val();
+        
+        $("#loan-table-area").empty();
+        $.ajax({
+            url   : 'filterView',
+            method: 'POST',
+            data  : {
+                loan_no    : loan_no,
+                employee_id: employee_id
+            }
+        }).done(function (response){
+            $("#data_table_example tbody").empty();
+            let tableData = JSON.parse(response);
+            
+            let table = '<table id="data_table_example" class="display table dataTable table-striped table-bordered text-center">';
+            let thead = "<thead><tr><th>Name</th>" +
+                "<th>Employee Code</th>" +
+                "<th>Loan Number</th>" +
+                "<th>Amount</th>" +
+                "<th>Installment</th>" +
+                "<th>Total Pay</th>" +
+                "<th>Total Due</th>" +
+                "<th>Approve Date</th>" +
+                "<th>Status</th>" +
+                "<th>Action</th></tr></thead>";
+            
+            var tbody = "<tbody>";
+            $.each(tableData.loan_data, function (index, item){
+                let tr = "<tr>";
+                tr += "<td>" + item.first_name + ' ' + item.last_name + "</td>";
+                tr += "<td>" + item.em_code + "</td>";
+                tr += "<td>" + item.loan_number + "</td>";
+                tr += "<td>" + item.amount + "</td>";
+                tr += "<td>" + item.installment + "</td>";
+                tr += "<td>" + item.total_pay + "</td>";
+                tr += "<td>" + item.total_due + "</td>";
+                tr += "<td>" + item.approve_date + "</td>";
+                tr += "<td>" + item.status + "</td>";
+                
+                tr += "<td>" + '<button class="btn btn-primary rounded-btn" onclick="editLoanDetails(' + item.id + ')">\n' +
+                    '                                                        <i class="fa fa-edit"></i>\n' +
+                    '                                                    </button>' + "</td>";
+                tr += "</tr>";
+                tbody += tr;
+            });
+            
+            tbody += "</tbody>";
+            table += thead + tbody + "</table>";
+            
+            $("#loan-table-area").append(table);
+            
+            $("#data_table_example").DataTable({
+                dom       : 'Bfrtip',
+                buttons   : [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                responsive: true
+            });
+        });
+    }
+
 </script>

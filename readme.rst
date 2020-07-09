@@ -1,11 +1,6 @@
 ###################
 hr-payroll Human resource management system (HRM) 
 ###################
-**I am available for PHP,Laravel,Codeigniter work, check out my Fiverr profile:**
-
-Visit Urls : https://www.fiverr.com/nawjesh?up_rollout=true
-
-Refferl http://www.fiverr.com/s2/0e44853c56
 
 ###################
 Summery
@@ -57,29 +52,3 @@ Features
 * Report printing and export,
 * Easily accessible UI,
 * Responsive design,
-
-###################
-Authentication
-###################
-
-**super admin**
-
-username:nawjeshbd@gmail.com
-password:01723177901
-
-**admin**
-
-username:admin@gmail.com
-password:admin123456
-
-**employee**
-
-username:employee@gmail.com
-password:admin123456
-
-
-**I am available for PHP,Laravel,Codeigniter work, check out my Fiverr profile:**
-
-Visit Urls : https://www.fiverr.com/nawjesh?up_rollout=true
-
-Refferl http://www.fiverr.com/s2/0e44853c56

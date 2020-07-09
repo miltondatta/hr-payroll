@@ -153,7 +153,7 @@
                                                             <select name="blood" <?php if($this->session->userdata('user_type') ==
                                                                                           'EMPLOYEE'){ ?> readonly <?php } ?>
                                                                     value="<?php echo $basic->em_blood_group; ?>"
-                                                                    class="form-control">
+                                                                    class="form-control custom-select">
                                                                 <option value="<?php echo $basic->em_blood_group; ?>"><?php echo $basic->em_blood_group; ?></option>
                                                                 <option value="O+">O+</option>
                                                                 <option value="O-">O-</option>
@@ -168,7 +168,7 @@
                                                             <label>Gender </label>
                                                             <select name="gender" <?php if($this->session->userdata('user_type') ==
                                                                                            'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                    class="form-control">
+                                                                    class="form-control custom-select">
 
                                                                 <option value="<?php echo $basic->em_gender; ?>"><?php echo $basic->em_gender; ?></option>
                                                                 <option value="Male">Male</option>
@@ -180,7 +180,7 @@
                                                             <div class="form-group col-md-4 m-t-10">
                                                                 <label>User Type </label>
                                                                 <select name="role"
-                                                                        class="form-control"
+                                                                        class="form-control custom-select"
                                                                         required>
                                                                     <option value="<?php echo $basic->em_role; ?>"><?php echo $basic->em_role; ?></option>
                                                                     <option value="HR">HR</option>
@@ -195,7 +195,7 @@
                                                                 <label>Status </label>
                                                                 <select name="status" <?php if($this->session->userdata('user_type') ==
                                                                                                'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                        class="form-control"
+                                                                        class="form-control custom-select"
                                                                         required>
                                                                     <option value="<?php echo $basic->status; ?>"><?php echo $basic->status; ?></option>
                                                                     <option value="ACTIVE">ACTIVE</option>
@@ -236,7 +236,7 @@
                                                                 <label>Department</label>
                                                                 <select name="dept" <?php if($this->session->userdata('user_type') ==
                                                                                              'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                        class="form-control">
+                                                                        class="form-control custom-select">
                                                                     <option value="<?php echo $basic->id; ?>"><?php echo $basic->dep_name; ?></option>
                                                                     <?Php foreach($depvalue as $value): ?>
                                                                         <option value="<?php echo $value->id ?>"><?php echo $value->dep_name ?></option>
@@ -250,7 +250,7 @@
                                                                 <label>Designation </label>
                                                                 <select name="deg" <?php if($this->session->userdata('user_type') ==
                                                                                             'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                        class="form-control">
+                                                                        class="form-control custom-select">
                                                                     <option value="<?php echo $basic->id; ?>"><?php echo $basic->des_name; ?></option>
                                                                     <?Php foreach($degvalue as $value): ?>
                                                                         <option value="<?php echo $value->id ?>"><?php echo $value->des_name ?></option>
@@ -286,15 +286,15 @@
                                                                    required>
                                                         </div>
                                                         <div class="form-group col-md-12 m-t-10">
-                                                            <?php /*if( !empty($basic->em_image)){ */?><!--
-                                                                <img src="<?php /*echo base_url(); */?>assets/images/users/<?php /*echo $basic->em_image; */?>"
+                                                            <?php /*if( !empty($basic->em_image)){ */ ?><!--
+                                                                <img src="<?php /*echo base_url(); */ ?>assets/images/users/<?php /*echo $basic->em_image; */ ?>"
                                                                      class="img-circle" width="150" />
-                                                            <?php /*} else{ */?>
-                                                                <img src="<?php /*echo base_url(); */?>assets/images/users/user.png"
+                                                            <?php /*} else{ */ ?>
+                                                                <img src="<?php /*echo base_url(); */ ?>assets/images/users/user.png"
                                                                      class="img-circle" width="150"
-                                                                     alt="<?php /*echo $basic->first_name */?>"
-                                                                     title="<?php /*echo $basic->first_name */?>" />
-                                                            --><?php /*} */?>
+                                                                     alt="<?php /*echo $basic->first_name */ ?>"
+                                                                     title="<?php /*echo $basic->first_name */ ?>" />
+                                                            --><?php /*} */ ?>
                                                             <input type="file" <?php if($this->session->userdata('user_type') ==
                                                                                         'EMPLOYEE'){ ?> readonly <?php } ?>
                                                                    name="image_url" class="form-control"
@@ -736,7 +736,7 @@
                                                             <label class="">Leave Type</label>
                                                             <select name="typeid" <?php if($this->session->userdata('user_type') ==
                                                                                            'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                    class="select2 form-control"
+                                                                    class="select2 form-control custom-select"
                                                                     style="width: 100%"
                                                                     id="" required>
                                                                 <option value="">Select Here...</option>
@@ -756,7 +756,7 @@
 
                                                         <div class="form-group">
                                                             <label class="">Year</label> <select name="year"
-                                                                                                 class="select2 form-control"
+                                                                                                 class="select2 form-control custom-select"
                                                                                                  style="width: 100%"
                                                                                                  id="" required>
                                                                 <option value="">Select Here...</option>
@@ -932,7 +932,7 @@
                                                     <div class="form-group col-md-6 m-t-5">
                                                         <label class="control-label">Salary Type</label>
                                                         <select class="form-control <?php if($this->session->userdata('user_type') ==
-                                                                                             'EMPLOYEE'){ ?> readonly <?php } ?>"
+                                                                                             'EMPLOYEE'){ ?> readonly <?php } ?> custom-select"
                                                                 data-placeholder="Choose a Category"
                                                                 tabindex="1" name="typeid"
                                                                 required>
@@ -1075,11 +1075,16 @@
     </main>
     <script type="text/javascript">
         $('.total').on('input', function (){
-            var amount = parseInt($('.total').val());
-            $('.basic').val((amount * .50 ? amount * .50 : 0).toFixed(2));
-            $('.houserent').val((amount * .40 ? amount * .40 : 0).toFixed(2));
-            $('.medical').val((amount * .05 ? amount * .05 : 0).toFixed(2));
-            $('.conveyance').val((amount * .05 ? amount * .05 : 0).toFixed(2));
+            var amount     = parseInt($('.total').val() ? $('.total').val() : 0);
+            let basic_sal  = parseFloat((amount * .60 ? amount * .60 : 0).toFixed(2));
+            let house_rent = parseFloat((basic_sal * .50 ? basic_sal * .50 : 0).toFixed(2));
+            let medical    = parseFloat((basic_sal * .1 ? basic_sal * .1 : 0).toFixed(2));
+            let conveyance = amount - (basic_sal + house_rent + medical);
+            
+            $('.basic').val(basic_sal);
+            $('.houserent').val(house_rent);
+            $('.medical').val(medical);
+            $('.conveyance').val(conveyance);
         });
     </script>
 <?php $this->load->view('backend/em_modal'); ?>
