@@ -387,94 +387,14 @@ class Payroll extends CI_Controller{
             $eid   = $this->input->get('em');
             $data2 = array();
             
-            $data['salary_info'] = $this->payroll_model->getAllSalaryDataById($id);
-            
-            // $data['salary_info']        = $this->payroll_model->getAllSalaryID($id);
+            $data['salary_info']     = $this->payroll_model->getAllSalaryDataById($id);
             $data['employee_info']   = $this->payroll_model->getEmployeeID($eid);
             $data['salaryvaluebyid'] = $this->payroll_model->Get_Salary_Value($eid); // 24
             $data['salarypaybyid']   = $this->payroll_model->Get_SalaryID($eid);
             $data['salaryvalue']     = $this->payroll_model->GetsalaryValueByID($eid); // 25000
             $data['loanvaluebyid']   = $this->payroll_model->GetLoanValueByID($eid);
             $data['settingsvalue']   = $this->settings_model->GetSettingsValue();
-            
-            $data['addition']  = $this->payroll_model->getAdditionDataBySalaryID($data['salaryvalue']->id);
-            $data['diduction'] = $this->payroll_model->getDiductionDataBySalaryID($data['salaryvalue']->id);
-            //$data['diduction'] = $this->payroll_model->getDiductionDataBySalaryID($data['salaryvalue']->id);
-            
-            //$month = date('m');
-            //$data['loanInfo']      = $this->payroll_model->getLoanInfoInvoice($id, $month);
-            $data['otherInfo'] = $this->payroll_model->getOtherInfo($eid);
-            $data['bankinfo']  = $this->payroll_model->GetBankInfo($eid);
-            
-            //Count Add/Did
-            $month_init = $data['salary_info']->month;
-            
-            $month = date("n", strtotime($month_init));
-            $year  = $data['salary_info']->year;
-            $id_em = $data['employee_info']->em_id;
-            
-            $data['id_em'] = $id_em;
-            $data['month'] = $month;
-            
-            if($month < 10){
-                $month = '0' . $month;
-            }
-            
-            //$data['hourlyAdditionDiduction']      = $month;
-            
-            $employeePIN = $this->getPinFromID($id_em);
-            
-            // Count Friday
-            $fridays = $this->count_friday($month, $year);
-            
-            $month_holiday_count = $this->payroll_model->getNumberOfHolidays($month, $year);
-            
-            // Total holidays and friday count
-            $total_days_off = $fridays + $month_holiday_count->total_days;
-            
-            // Total days in the month
-            $total_days_in_the_month = $this->total_days_in_a_month($month, $year);
-            
-            $total_work_days = $total_days_in_the_month - $total_days_off;
-            
-            $total_work_hours = $total_work_days * 8;
-            
-            //Format date for hours count in the hours_worked_by_employee() function
-            $start_date = $year . '-' . $month . '-' . 1;
-            $end_date   = $year . '-' . $month . '-' . $total_days_in_the_month;
-            
-            // Employee actually worked
-            $employee_actually_worked =
-                $this->hours_worked_by_employee($employeePIN->em_code, $start_date, $end_date);  // in hours
-            
-            //Get his monthly salary
-            $employee_salary = $this->payroll_model->GetsalaryValueByID($id_em);
-            if($employee_salary){
-                $employee_salary = $employee_salary->total;
-            }
-            
-            // Hourly rate for the month
-            $hourly_rate = $employee_salary / $total_work_hours; //15.62
-            
-            $work_hour_diff = abs($total_work_hours) - abs($employee_actually_worked[0]->Hours);
-            
-            $data['work_h_diff'] = $work_hour_diff;
-            $addition            = 0;
-            $diduction           = 0;
-            if($work_hour_diff < 0){
-                $addition = abs($work_hour_diff) * $hourly_rate;
-            } else if($work_hour_diff > 0){
-                $diduction = abs($work_hour_diff) * $hourly_rate;
-            }
-            // Loan
-            $loan_amount = $this->payroll_model->GetLoanValueByID($id_em);
-            if($loan_amount){
-                $loan_amount = $loan_amount->installment;
-            }
-            // Sending
-            
-            $data['a'] = $addition;
-            $data['d'] = $data['salary_info']->diduction;
+            $data['otherInfo']       = $this->payroll_model->getOtherInfo($eid);
             
             $this->load->view('backend/invoice', $data);
         } else{
@@ -529,58 +449,56 @@ class Payroll extends CI_Controller{
                 $month = '0' . $month;
             }
             
-            //$data['hourlyAdditionDiduction']      = $month;
-            
             $employeePIN = $this->getPinFromID($id_em);
             
-            // Count Friday
-            $fridays = $this->count_friday($month, $year);
-            
-            $month_holiday_count = $this->payroll_model->getNumberOfHolidays($month, $year);
-            
-            // Total holidays and friday count
-            $total_days_off = $fridays + $month_holiday_count->total_days;
-            
-            // Total days in the month
-            $total_days_in_the_month = $this->total_days_in_a_month($month, $year);
-            
-            $total_work_days = $total_days_in_the_month - $total_days_off;
-            
-            $total_work_hours = $total_work_days * 8;
+            //            // Count Friday
+            //            $fridays = $this->count_friday($month, $year);
+            //
+            //            $month_holiday_count = $this->payroll_model->getNumberOfHolidays($month, $year);
+            //
+            //            // Total holidays and friday count
+            //            $total_days_off = $fridays + $month_holiday_count->total_days;
+            //
+            //            // Total days in the month
+            //            $total_days_in_the_month = $this->total_days_in_a_month($month, $year);
+            //
+            //            $total_work_days = $total_days_in_the_month - $total_days_off;
+            //
+            //            $total_work_hours = $total_work_days * 8;
             
             //Format date for hours count in the hours_worked_by_employee() function
-            $start_date = $year . '-' . $month . '-' . 1;
-            $end_date   = $year . '-' . $month . '-' . $total_days_in_the_month;
-            
-            // Employee actually worked
-            $employee_actually_worked =
-                $this->hours_worked_by_employee($employeePIN->em_code, $start_date, $end_date);  // in hours
-            
-            //Get his monthly salary
-            $employee_salary = $this->payroll_model->GetsalaryValueByID($id_em);
-            if($employee_salary){
-                $employee_salary = $employee_salary->total;
-            }
-            
-            // Hourly rate for the month
-            $hourly_rate = $employee_salary / $total_work_hours; //15.62
-            
-            $work_hour_diff = abs($total_work_hours) - abs($employee_actually_worked[0]->Hours);
-            
-            $work_h_diff = $work_hour_diff;
-            
-            $addition_work  = 0;
-            $diduction_work = 0;
-            if($work_hour_diff < 0){
-                $addition_work = abs($work_hour_diff) * $hourly_rate;
-            } else if($work_hour_diff > 0){
-                $diduction_work = abs($work_hour_diff) * $hourly_rate;
-            }
-            // Loan
-            $loan_amount = $this->payroll_model->GetLoanValueByID($id_em);
-            if($loan_amount){
-                $loan_amount = $loan_amount->installment;
-            }
+            //            $start_date = $year . '-' . $month . '-' . 1;
+            //            $end_date   = $year . '-' . $month . '-' . $total_days_in_the_month;
+            //
+            //            // Employee actually worked
+            //            $employee_actually_worked =
+            //                $this->hours_worked_by_employee($employeePIN->em_code, $start_date, $end_date);  // in hours
+            //
+            //            //Get his monthly salary
+            //            $employee_salary = $this->payroll_model->GetsalaryValueByID($id_em);
+            //            if($employee_salary){
+            //                $employee_salary = $employee_salary->total;
+            //            }
+            //
+            //            // Hourly rate for the month
+            //            $hourly_rate = $employee_salary / $total_work_hours; //15.62
+            //
+            //            $work_hour_diff = abs($total_work_hours) - abs($employee_actually_worked[0]->Hours);
+            //
+            //            $work_h_diff = $work_hour_diff;
+            //
+            //            $addition_work  = 0;
+            //            $diduction_work = 0;
+            //            if($work_hour_diff < 0){
+            //                $addition_work = abs($work_hour_diff) * $hourly_rate;
+            //            } else if($work_hour_diff > 0){
+            //                $diduction_work = abs($work_hour_diff) * $hourly_rate;
+            //            }
+            //            // Loan
+            //            $loan_amount = $this->payroll_model->GetLoanValueByID($id_em);
+            //            if($loan_amount){
+            //                $loan_amount = $loan_amount->installment;
+            //            }
             // Sending
             
             $obj_merged = (object)array_merge((array)$employee_info, (array)$salaryvaluebyid, (array)$salarypaybyid,
@@ -588,8 +506,8 @@ class Payroll extends CI_Controller{
             
             $dd = date('j F Y', strtotime($salary_info->paid_date));
             
-            $a = $addition_work;
-            $d = $diduction_work;
+            //            $a = $addition_work;
+            //            $d = $diduction_work;
             //print_r($addition);
             $base = base_url();
             //echo $otherInfo[0]->dep_name;
@@ -623,44 +541,43 @@ class Payroll extends CI_Controller{
                                     <table class='table table-condensed borderless payslip_info'>
                                         <tr>
                                             <td>Employee PIN</td>
-                                            <td>: $obj_merged->em_code</td>
+                                            <td> $obj_merged->em_code</td>
                                             <td>Employee Name</td>
-                                            <td>: $salary_info->first_name $salary_info->last_name</td>
+                                            <td> $salary_info->first_name $salary_info->last_name</td>
                                         </tr>
                                         <tr>
                                             <td>Department</td>
-                                            <td>:" . $otherInfo[0]->dep_name;
+                                            <td>" . $otherInfo[0]->dep_name;
             echo "</td>
                                             <td>Designation</td>
-                                            <td>:" . $otherInfo[0]->name;
+                                            <td>" . $otherInfo[0]->name;
             echo "</td>
                                         </tr>
                                         <tr>
                                             <td>Pay Date</td>
-                                            <td>:" . $dd;
+                                            <td>" . $dd;
             echo "</td>
                                             <td>Date of Joining</td>
-                                            <td>:$obj_merged->em_joining_date</td>
+                                            <td>$obj_merged->em_joining_date</td>
                                         </tr>
                                         <tr>
-                                            <td>Days Worked</td>
-                                            <td>:" .
-                 ceil($salary_info->total_days / 8);
+                                            <td>Status</td>
+                                            <td>" . $salary_info->status;
             echo "</td>";
             if( !empty($bankinfo->bank_name)){
                 echo "<td>Bank Name</td>
                                             <td>:$bankinfo->bank_name</td>";
             } else{
                 echo "<td>Pay Type</td>
-                                            <td>: Hand Cash</td>";
+                                            <td> Hand Cash</td>";
             }
             echo "</tr>";
             if( !empty($bankinfo->bank_name)){
                 echo "<tr>
                                             <td>Account Name</td>
-                                            <td>: $bankinfo->holder_name </td>
+                                            <td> $bankinfo->holder_name </td>
                                             <td>Account Number</td>
-                                            <td>: $bankinfo->account_number </td>
+                                            <td> $bankinfo->account_number </td>
                                         </tr>";
             }
             echo "</table>
@@ -682,25 +599,33 @@ class Payroll extends CI_Controller{
                                         <tbody style='border: 1px solid #ececec;'>
                                             <tr>
                                                 <td>Basic Salary</td>
-                                                <td class='text-right'>" . $addition[0]->basic;
+                                                <td class='text-right'>" . $salary_info->basic;
             echo "BDT</td>
                                                 <td class='text-right'>  </td>
                                             </tr>
                                             <tr>
                                                 <td>Madical Allowance</td>
-                                                <td class='text-right'>" . $addition[0]->medical;
+                                                <td class='text-right'>" . $salary_info->medical;
             echo "BDT</td>
                                                 <td class='text-right'>  </td>
                                             </tr>
                                             <tr>
                                                 <td>House Rent</td>
-                                                <td class='text-right'>" . $addition[0]->house_rent;
+                                                <td class='text-right'>" . $salary_info->house_rent;
             echo "BDT</td>
                                                 <td class='text-right'>  </td>
                                             </tr>
                                             <tr>
                                                 <td>Conveyance Allowance</td>
-                                                <td class='text-right'>" . $addition[0]->conveyance;
+                                                <td class='text-right'>" . $salary_info->conveyance;
+            echo "BDT</td>
+                                                <td class='text-right'>  </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Over Time (" . $salary_info->hours_worked;
+            echo " Hours.)</td>
+                                                <td class='text-right'>" .
+                 $salary_info->hours_worked * $salary_info->hourly_rate;
             echo "BDT</td>
                                                 <td class='text-right'>  </td>
                                             </tr>
@@ -713,37 +638,46 @@ class Payroll extends CI_Controller{
                                             <tr>
                                                 <td>Loan</td>
                                                 <td class='text-right'> </td>
-                                                <td class='text-right'>";
-            if( !empty($salary_info->loan)){
-                echo $salary_info->loan;
-            };
+                                                <td class='text-right'>" . $salary_info->loan;
             echo "</td>
                                             </tr>
                                             <tr>
-                                                <td>Working Hour ($salary_info->total_days hrs)</td>
-                                                <td class='text-right'>
-                                                </td>
-                                                <td class='text-right'>
-                                                         $salary_info->diduction BDT 
-                                                </td>
-                                                <td class='text-right'> </td>
-                                            </tr>
-                                            
-                                            <tr>
                                                 <td>Tax</td>
                                                 <td class='text-right'> </td>
-                                                <td class='text-right'> </td>
+                                                <td class='text-right'>" . $salary_info->tax;
+            echo "</td>
                                             </tr>
+                                            <tr>
+                                                <td>Provident Fund</td>
+                                                <td class='text-right'> </td>
+                                                <td class='text-right'>" . $salary_info->provident_fund;
+            echo "</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Diduction</td>
+                                                <td class='text-right'> </td>
+                                                <td class='text-right'>" . $salary_info->diduction;
+            echo "</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Comments</td>
+                                                <td class='text-right' colspan='2'>" . $salary_info->comments;
+            echo "</td>
+                                            </tr>
+                                          
                                         </tbody>
                                         <tfoot class='tfoot-light'>
                                             <tr>
                                                 <th>Total</th>
                                                 <th class='text-right'>" . $total_add =
-                    $salary_info->basic + $salary_info->medical + $salary_info->house_rent + $salary_info->bonus;
+                    $salary_info->basic + $salary_info->medical + $salary_info->house_rent + $salary_info->bonus +
+                    $salary_info->conveyance
+                    + $salary_info->hours_worked * $salary_info->hourly_rate;
             round($total_add, 2);
             echo "BDT</th>
                                                 <th class='text-right'>" .
-                 $total_did = $salary_info->loan + $salary_info->diduction;
+                 $total_did = $salary_info->loan + $salary_info->tax
+                              + $salary_info->provident_fund + $salary_info->diduction;
             round($total_did, 2);
             echo "BDT</th>
                                             </tr>
@@ -881,41 +815,65 @@ class Payroll extends CI_Controller{
     // Add or update the salary record
     public function pay_salary_add_record(){
         if($this->session->userdata('user_login_access') != false){
-            $emid         = $this->input->post('emid');
-            $month        = $this->month_number_to_name($this->input->post('month'));
-            $basic        = $this->input->post('basic');
-            $year         = $this->input->post('year');
-            $hours_worked = $this->input->post('hours_worked');
-            $addition     = $this->input->post('addition');
-            $diduction    = $this->input->post('diduction');
-            $loan_id      = $this->input->post('loan_id');
-            $loan         = $this->input->post('loan');
-            $total_paid   = $this->input->post('total_paid');
-            $paydate      = $this->input->post('paydate');
-            $status       = $this->input->post('status');
-            $paid_type    = $this->input->post('paid_type');
+            
+            $emid           = $this->input->post('emid');
+            $month          = $this->month_number_to_name($this->input->post('month'));
+            $year           = $this->input->post('year');
+            $total_salary   = $this->input->post('total_salary');
+            $house_rent     = $this->input->post('house_rent');
+            $medical        = $this->input->post('medical');
+            $hourly_rate    = $this->input->post('hourly_rate');
+            $hours_worked   = $this->input->post('hours_worked');
+            $total_paid     = $this->input->post('total_paid');
+            $paydate        = $this->input->post('paydate');
+            $paid_type      = $this->input->post('paid_type');
+            $status         = $this->input->post('status');
+            $basic          = $this->input->post('basic');
+            $conveyance     = $this->input->post('conveyance');
+            $loan           = $this->input->post('loan');
+            $diduction      = $this->input->post('diduction');
+            $comments       = $this->input->post('comments');
+            $loan_id        = $this->input->post('loan_id');
+            $action         = $this->input->post('action');
+            $bima           = $this->input->post('bima');
+            $tax            = $this->input->post('tax');
+            $provident_fund = $this->input->post('provident_fund');
+            $others         = $this->input->post('others');
             
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
-            $this->form_validation->set_rules('basic', 'basic', 'trim|required|min_length[3]|max_length[10]|xss_clean');
+            $this->form_validation->set_rules('basic', 'basic', 'trim|required|min_length[1]|max_length[10]|xss_clean');
             
             if($this->form_validation->run() == false){
                 echo validation_errors();
                 // redirect("Payroll/Generate_salary");
             } else{
                 $data = array(
-                    'emp_id'     => $emid,
-                    'month'      => $month,
-                    'year'       => $year,
-                    'paid_date'  => $paydate,
-                    'total_days' => $hours_worked,
-                    'basic'      => $basic,
-                    'loan'       => $loan,
-                    'total_pay'  => $total_paid,
-                    'addition'   => $addition,
-                    'diduction'  => $diduction,
-                    'status'     => $status,
-                    'paid_type'  => $paid_type,
+                    'emp_id'         => $emid,
+                    'month'          => $month,
+                    'year'           => $year,
+                    'paid_date'      => $paydate,
+                    'total_days'     => 0,
+                    'basic'          => $basic,
+                    'loan'           => $loan,
+                    'total_pay'      => $total_paid,
+                    'addition'       => 0,
+                    'diduction'      => $diduction,
+                    'status'         => $status,
+                    'paid_type'      => $paid_type,
+                    'medical'        => $medical,
+                    'house_rent'     => $house_rent,
+                    'bonus'          => 0,
+                    'bima'           => $bima,
+                    'tax'            => $tax,
+                    'provident_fund' => $provident_fund,
+                    'total_salary'   => $total_salary,
+                    'hourly_rate'    => $hourly_rate,
+                    'hours_worked'   => $hours_worked,
+                    'conveyance'     => $conveyance,
+                    'comments'       => $comments,
+                    'loan_id'        => $loan_id,
+                
                 );
                 
                 // See if record exists
@@ -1100,54 +1058,8 @@ class Payroll extends CI_Controller{
             $employeeID = $this->input->get('employeeID');
             
             // Get employee PIN
-            $employeePIN = $this->getPinFromID($employeeID);
-            
-            // Count Friday
-            $fridays = $this->count_friday($month, $year);
-            
-            $month_holiday_count = $this->payroll_model->getNumberOfHolidays($month, $year);
-            
-            // Total holidays and friday count
-            $total_days_off = $fridays + $month_holiday_count->total_days;
-            
-            // Total days in the month
-            $total_days_in_the_month = $this->total_days_in_a_month($month, $year);
-            
-            $total_work_days = $total_days_in_the_month - $total_days_off;
-            
-            $total_work_hours = $total_work_days * 8;
-            $sdate            = 01;
-            //Format date for hours count in the hours_worked_by_employee() function
-            //$start_date = $year . '-' . $month . '-' . date('d');
-            $result     = strtotime("{$year}-{$month}-01");
-            $start_date = date('Y-m-d', $result);
-            $end_date   = $year . '-' . $month . '-' . $total_days_in_the_month;
-            
-            // Employee actually worked
-            $employee_actually_worked =
-                $this->hours_worked_by_employee($employeePIN->em_code, $start_date, $end_date);  // in hours
-            //echo json_encode($start_date);
-            //Get his monthly salary
-            $employee_salary = $this->payroll_model->GetsalaryValueByID($employeeID);
-            
-            if($employee_salary){
-                $employee_salary = $employee_salary->total;
-            }
-            
-            // Hourly rate for the month
-            $hourly_rate = $employee_salary / $total_work_hours;
-            
-            $work_hour_diff = abs($total_work_hours) - abs($employee_actually_worked[0]->Hours); // 96 - 16 = 80
-            
-            $addition  = 0;
-            $diduction = 0;
-            if($work_hour_diff < 0){
-                $addition = abs($work_hour_diff) * $hourly_rate;
-            } else if($work_hour_diff > 0){
-                // 80 is > 0 which means he worked less, so diduction = 80 hrs
-                // so 80 * hourly rate 208 taka = 17500
-                $diduction = abs($work_hour_diff) * $hourly_rate;
-            }
+            $employeePIN          = $this->getPinFromID($employeeID);
+            $employee_salary_full = $this->employee_model->GetsalaryValue($employeeID);
             
             // Loan
             $loan_amount = 0;
@@ -1158,21 +1070,26 @@ class Payroll extends CI_Controller{
                 $loan_id     = $loan_info->id;
             }
             
-            // Final Salary
-            $final_salary = $employee_salary + $addition - $diduction - $loan_amount;
+            $data['id']             = $employee_salary_full->id;
+            $data['emp_id']         = $employee_salary_full->emp_id;
+            $data['type_id']        = $employee_salary_full->type_id;
+            $data['total']          = $employee_salary_full->total;
+            $data['addi_id']        = $employee_salary_full->addi_id;
+            $data['salary_id']      = $employee_salary_full->salary_id;
+            $data['basic']          = $employee_salary_full->basic;
+            $data['medical']        = $employee_salary_full->medical;
+            $data['house_rent']     = $employee_salary_full->house_rent;
+            $data['conveyance']     = $employee_salary_full->conveyance;
+            $data['de_id']          = $employee_salary_full->de_id;
+            $data['provident_fund'] = $employee_salary_full->provident_fund;
+            $data['bima']           = $employee_salary_full->bima;
+            $data['tax']            = $employee_salary_full->tax;
+            $data['others']         = $employee_salary_full->others;
+            $data['salary_type']    = $employee_salary_full->salary_type;
+            $data['pay_date']       = date("Y-m-d");
+            $data['loan_amount']    = $loan_amount;
+            $data['loan_id']        = $loan_id;
             
-            // Sending
-            $data                             = array();
-            $data['basic_salary']             = $employee_salary;
-            $data['total_work_hours']         = $total_work_hours;
-            $data['employee_actually_worked'] = $employee_actually_worked[0]->Hours;
-            $data['wpay']                     = $total_work_hours - $employee_actually_worked[0]->Hours;
-            $data['addition']                 = round($addition, 2);
-            $data['diduction']                = round($diduction, 2);
-            $data['loan_amount']              = $loan_amount;
-            $data['loan_id']                  = $loan_id;
-            $data['final_salary']             = round($final_salary, 2);
-            $data['rate']                     = round($hourly_rate, 2);
             echo json_encode($data);
         } else{
             redirect(base_url(), 'refresh');

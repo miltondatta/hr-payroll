@@ -17,7 +17,7 @@
 
         <div class="row">
             <div class="col-12 mt-3">
-                <?php if ($this->session->flashdata('feedback')) { ?>
+                <?php if($this->session->flashdata('feedback')){ ?>
                     <div class="alert alert-success alert-dismissible show" role="alert">
                         <strong><?php echo $this->session->flashdata('feedback'); ?></strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -25,7 +25,7 @@
                         </button>
                     </div>
                 <?php } ?>
-                <?php if ($this->session->flashdata('error')) { ?>
+                <?php if($this->session->flashdata('error')){ ?>
                     <div class="alert alert-danger alert-dismissible show" role="alert">
                         <strong><?php echo $this->session->flashdata('error'); ?></strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -47,8 +47,32 @@
                                     <span class="d-inline-block pl-1">Add Loan Installment</span>
                                 </button>
                             </div>
+                            <div class="card-body form-material row ">
+                                <div class="form-group col-md-3">
+                                    <select class="form-control" tabindex="1" name="emid" id="employee_id"
+                                            required>
+                                        <option value="">Select Employee</option>
+                                        <?php foreach($employee as $value): ?>
+                                            <option value="<?php echo $value->em_id; ?>">
+                                                <?php echo $value->first_name ?>
+                                                <?php echo $value->last_name ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <input type="text" name="loan_no" id="loan_no"
+                                           class="form-control loan_no" placeholder="Loan No">
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <button type="button" class="btn btn-primary find_load" id="find_loan"
+                                            onclick="getFilterData()">Find Loan
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div class="table-responsive" id="table_data">
                                     <table id="data-table" data-page-length='10'
                                            class="display table dataTable table-striped table-bordered text-center">
                                         <thead>
@@ -57,7 +81,6 @@
                                             <th>Loan Id</th>
                                             <th>Loan Number</th>
                                             <th>Install Amount</th>
-                                            <!--<th>Pay Amount</th>-->
                                             <th>Approve Date</th>
                                             <th>Receiver</th>
                                             <th>Install No</th>
@@ -65,21 +88,20 @@
                                         </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                        <?php foreach ($installment as $value): ?>
+                                        <?php foreach($installment as $value): ?>
                                             <tr>
                                                 <td><?php echo $value->em_code ?></td>
                                                 <td><?php echo $value->loan_id ?></td>
                                                 <td><?php echo $value->loan_number ?></td>
                                                 <td><?php echo $value->install_amount ?></td>
-                                                <!--<td><?php #echo $value->pay_amount ?></td>-->
                                                 <td><?php echo date('jS \of F Y', strtotime($value->app_date)); ?></td>
                                                 <td><?php echo $value->receiver ?></td>
                                                 <td><?php echo $value->install_no ?></td>
                                                 <td>
-                                                    <a class="btn btn-primary rounded-btn installment text-light"
-                                                       data-id="<?php echo $value->id ?>">
+                                                    <button class="btn btn-primary rounded-btn"
+                                                            onclick="installmentEdit(<?php echo $value->id ?>)">
                                                         <i class="fa fa-edit"></i>
-                                                    </a>
+                                                    </button>
                                                     <a onclick="return confirm('Are you sure to delete this data?')"
                                                        href="<?php echo base_url(); ?>loan/delete_installment/<?php echo $value->id; ?>"
                                                        class="btn btn-danger rounded-btn">
@@ -118,8 +140,9 @@
                             <select class="form-control" data-placeholder="Choose a Category" tabindex="1"
                                     name="emid" id="employee" required>
                                 <option value="">Select Here</option>
-                                <?php foreach ($employee as $value): ?>
-                                    <option value="<?php echo $value->em_id; ?>"><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                <?php foreach($employee as $value): ?>
+                                    <option value="<?php echo $value->em_id; ?>"><?php echo $value->first_name . ' ' .
+                                                                                            $value->last_name; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -164,35 +187,31 @@
     </div>
 </main>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $(".installment").click(function (e) {
-            e.preventDefault(e);
-            // Get the record's ID via attribute
-            var id = $(this).attr('data-id');
-            $('#loanvalueform').trigger("reset");
-            $('#loanmodal').modal('show');
-            $.ajax({
-                url: 'LoanByID?id=' + id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-            }).done(function (response) {
-                console.log(response);
-                // Populate the form fields with the data returned from server
-                $('#loanvalueform').find('[name="id"]').val(response.loanvalueinstallment.id).end();
-                $('#loanvalueform').find('[name="loanid"]').val(response.loanvalueinstallment.loan_id).end();
-                $('#loanvalueform').find('[name="emid"]').val(response.loanvalueinstallment.emp_id).end();
-                $('#loanvalueform').find('[name="loanno"]').val(response.loanvalueinstallment.loan_number).end();
-                $('#loanvalueform').find('[name="amount"]').val(response.loanvalueinstallment.install_amount).end();
-                $('#loanvalueform').find('[name="appdate"]').val(response.loanvalueinstallment.app_date).end();
-                $('#loanvalueform').find('[name="receiver"]').val(response.loanvalueinstallment.receiver).end();
-                $('#loanvalueform').find('[name="installno"]').val(response.loanvalueinstallment.install_no).end();
-                $('#loanvalueform').find('[name="notes"]').val(response.loanvalueinstallment.notes).end();
-            });
+    
+    function installmentEdit(id){
+        $('#loanvalueform').trigger("reset");
+        $('#loanmodal').modal('show');
+        $.ajax({
+            url     : 'LoanByID?id=' + id,
+            method  : 'GET',
+            data    : '',
+            dataType: 'json',
+        }).done(function (response){
+            console.log(response);
+            // Populate the form fields with the data returned from server
+            $('#loanvalueform').find('[name="id"]').val(response.loanvalueinstallment.id).end();
+            $('#loanvalueform').find('[name="loanid"]').val(response.loanvalueinstallment.loan_id).end();
+            $('#loanvalueform').find('[name="emid"]').val(response.loanvalueinstallment.emp_id).end();
+            $('#loanvalueform').find('[name="loanno"]').val(response.loanvalueinstallment.loan_number).end();
+            $('#loanvalueform').find('[name="amount"]').val(response.loanvalueinstallment.install_amount).end();
+            $('#loanvalueform').find('[name="appdate"]').val(response.loanvalueinstallment.app_date).end();
+            $('#loanvalueform').find('[name="receiver"]').val(response.loanvalueinstallment.receiver).end();
+            $('#loanvalueform').find('[name="installno"]').val(response.loanvalueinstallment.install_no).end();
+            $('#loanvalueform').find('[name="notes"]').val(response.loanvalueinstallment.notes).end();
         });
-    });
-
-    function emptyInputValue() {
+    }
+    
+    function emptyInputValue(){
         $('#loanvalueform').find('[name="id"]').val('').end();
         $('#loanvalueform').find('[name="loanid"]').val('').end();
         $('#loanvalueform').find('[name="emid"]').val('').end();
@@ -204,8 +223,8 @@
     }
 </script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#employee").change(function (e) {
+    $(document).ready(function (){
+        $("#employee").change(function (e){
             e.preventDefault(e);
             // Get the record's ID via attribute
             var iid = +this.value;
@@ -213,14 +232,14 @@
             $("#loanvalueform").change();
             //$('#salaryform').trigger("reset");
             $.ajax({
-                url: 'LoanByID?id=' + this.value,
-                method: 'GET',
-                data: '',
+                url     : 'LoanByID?id=' + this.value,
+                method  : 'GET',
+                data    : '',
                 dataType: 'json',
-            }).done(function (response) {
+            }).done(function (response){
                 console.log(response);
                 // Populate the form fields with the data returned from server
-                if (response.loanvalueem == null) {
+                if (response.loanvalueem == null){
                     $('#loanvalueform').find('[class="form-control"]').val("", "true").end();
                 }
                 $('#loanvalueform').find('[name="loanid"]').val(response.loanvalueem.id).end();
@@ -230,5 +249,34 @@
             });
         });
     });
+    
+    function getFilterData(){
+        var employee_id = $('#employee_id').val();
+        var loan_no     = $('#loan_no').val();
+        
+        $("#table_data").empty();
+        $.ajax({
+            url     : 'installmentFilter',
+            method  : 'POST',
+            dataType: 'html',
+            data    : {
+                loan_no    : loan_no,
+                employee_id: employee_id
+            }
+        }).done(function (response){
+            $("#data-table tbody").empty();
+            
+            $("#table_data").append(response);
+            
+            $("#data-table").DataTable({
+                dom       : 'Bfrtip',
+                buttons   : [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                responsive: true
+            });
+        });
+    }
+
 </script>
 <?php $this->load->view('backend/footer'); ?>

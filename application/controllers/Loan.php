@@ -1,10 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Loan extends CI_Controller
-{
-    public function __construct()
-    {
+class Loan extends CI_Controller{
+    
+    public function __construct(){
         parent::__construct();
         $this->load->database();
         $this->load->model('login_model');
@@ -14,185 +13,207 @@ class Loan extends CI_Controller
         $this->load->model('settings_model');
         $this->load->model('leave_model');
     }
-
-    public function View()
-    {
-        if ($this->session->userdata('user_login_access') != false) {
+    
+    public function View(){
+        if($this->session->userdata('user_login_access') != false){
             $data['employee'] = $this->employee_model->emselect();
             $data['loanview'] = $this->loan_model->loan_modeldata();
             $this->load->view('backend/loan', $data);
-        } else {
+        } else{
             redirect(base_url(), 'refresh');
         }
     }
-
-    public function Add_Loan()
-    {
-        if ($this->session->userdata('user_login_access') != false) {
-            $id = $this->input->post('id');
-            $em_id = $this->input->post('emid');
+    
+    public function filterView(){
+        if($this->session->userdata('user_login_access') != false){
+            $employee_id = $this->input->post('employee_id');
+            $loan_no     = $this->input->post('loan_no');
+            
+            $data['loan_data'] = $this->loan_model->loanFilterData($employee_id, $loan_no);
+            echo json_encode($data);
+        } else{
+            redirect(base_url(), 'refresh');
+        }
+    }
+    
+    public function Add_Loan(){
+        if($this->session->userdata('user_login_access') != false){
+            $id      = $this->input->post('id');
+            $em_id   = $this->input->post('emid');
             $details = $this->input->post('details');
             $appdate = $this->input->post('appdate');
-            $amount = $this->input->post('amount');
+            $amount  = $this->input->post('amount');
             /*$interest = $this->input->post('interest');
             $interestper = $this->input->post('interest')/100;*/
             $install = $this->input->post('install');
-            $status = $this->input->post('status');
-            $loanno = $this->input->post('loanno');
+            $status  = $this->input->post('status');
+            $loanno  = $this->input->post('loanno');
             /* $total = $this->input->post('amount') * $interestper;*/
             /*$totalamount = $amount + $total;*/
             $installment = round($this->input->post('installment'));
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
-            $this->form_validation->set_rules('details', 'Loan details', 'trim|required|min_length[10]|max_length[220]|xss_clean');
-
-            if ($this->form_validation->run() == false) {
+            $this->form_validation->set_rules('details', 'Loan details',
+                                              'trim|required|min_length[10]|max_length[220]|xss_clean');
+            
+            if($this->form_validation->run() == false){
                 $this->session->set_flashdata('error', validation_errors());
                 redirect(base_url('Loan/View'));
-            } else {
+            } else{
                 #$emvalue = $this->loan_model->GetEmployeeForloancheck($em_id);
                 #echo $emvalue->status;
                 $data = array(
-                    'emp_id' => $em_id,
-                    'loan_details' => $details,
-                    'approve_date' => $appdate,
-                    'amount' => $amount,
+                    'emp_id'         => $em_id,
+                    'loan_details'   => $details,
+                    'approve_date'   => $appdate,
+                    'amount'         => $amount,
                     /*'interest_percentage' => $interest,*/
                     'install_period' => $install,
-                    'installment' => $installment,
+                    'installment'    => $installment,
                     /*'total_amount' => $totalamount,*/
-                    'total_pay' => '0',
-                    'total_due' => '0',
-                    'status' => $status,
-                    'loan_number' => $loanno
+                    'total_pay'      => '0',
+                    'total_due'      => '0',
+                    'status'         => $status,
+                    'loan_number'    => $loanno
                 );
-                if (empty($id)) {
+                if(empty($id)){
                     $emvalue = $this->loan_model->GetEmployeeForloancheck($em_id);
                     #echo $emvalue->status;
-                    if (!empty($emvalue->status)) {
-                        $this->session->set_flashdata('error', 'Already you have a loan. Please pay installation first');
+                    if( !empty($emvalue->status)){
+                        $this->session->set_flashdata('error',
+                                                      'Already you have a loan. Please pay installation first');
                         redirect(base_url('Loan/View'));
-                    } else {
+                    } else{
                         $success = $this->loan_model->Add_LoanData($data);
                         $this->session->set_flashdata('feedback', 'Successfully Added');
                         redirect(base_url('Loan/View'));
                     }
-                } else {
+                } else{
                     $success = $this->loan_model->update_LoanDataVal($id, $data);
                     $this->session->set_flashdata('feedback', 'Successfully Updated');
                     redirect(base_url('Loan/View'));
                 }
             }
-        } else {
+        } else{
             redirect(base_url(), 'refresh');
         }
     }
-
-    public function installment()
-    {
-        if ($this->session->userdata('user_login_access') != false) {
-            $data['employee'] = $this->employee_model->emselect();
+    
+    public function installment(){
+        if($this->session->userdata('user_login_access') != false){
+            $data['employee']    = $this->employee_model->emselect();
             $data['installment'] = $this->loan_model->installmentSelect();
             $this->load->view('backend/loan_installment', $data);
-        } else {
+        } else{
             redirect(base_url(), 'refresh');
         }
     }
-
-    public function Add_Loan_Installment()
-    {
-        if ($this->session->userdata('user_login_access') != false) {
-            $id = $this->input->post('id');
-            $em_id = $this->input->post('emid');
-            $loanid = $this->input->post('loanid');
-            $loanno = $this->input->post('loanno');
-            $amount = $this->input->post('amount');
-            $appdate = $this->input->post('appdate');
-            $receiver = $this->input->post('receiver');
+    
+    public function installmentFilter(){
+        if($this->session->userdata('user_login_access') != false){
+            
+            $employee_id = $this->input->post('employee_id');
+            $loan_no     = $this->input->post('loan_no');
+            
+            $data['installment'] = $this->loan_model->installmentFilter($employee_id, $loan_no);
+            $this->load->view('backend/loan_installment_partial', $data);
+        } else{
+            redirect(base_url(), 'refresh');
+        }
+    }
+    
+    public function Add_Loan_Installment(){
+        if($this->session->userdata('user_login_access') != false){
+            $id        = $this->input->post('id');
+            $em_id     = $this->input->post('emid');
+            $loanid    = $this->input->post('loanid');
+            $loanno    = $this->input->post('loanno');
+            $amount    = $this->input->post('amount');
+            $appdate   = $this->input->post('appdate');
+            $receiver  = $this->input->post('receiver');
             $installno = $this->input->post('installno');
-            $notes = $this->input->post('notes');
+            $notes     = $this->input->post('notes');
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
-            $this->form_validation->set_rules('notes', 'Loan details', 'trim|required|min_length[10]|max_length[220]|xss_clean');
-
-            if ($this->form_validation->run() == false) {
+            $this->form_validation->set_rules('notes', 'Loan details',
+                                              'trim|required|min_length[10]|max_length[220]|xss_clean');
+            
+            if($this->form_validation->run() == false){
                 $this->session->set_flashdata('error', validation_errors());
                 redirect(base_url('Loan/installment'));
-            } else {
-                if (empty($id)) {
+            } else{
+                if(empty($id)){
                     $loanvalue = $this->loan_model->GetLoanValuebyLId($loanid);
-                    $period = $loanvalue->install_period - 1;
-                    $data = array(
-                        'emp_id' => $em_id,
-                        'loan_id' => $loanid,
-                        'loan_number' => $loanno,
+                    $period    = $loanvalue->install_period - 1;
+                    $data      = array(
+                        'emp_id'         => $em_id,
+                        'loan_id'        => $loanid,
+                        'loan_number'    => $loanno,
                         'install_amount' => $amount,
                         /*'pay_amount' => $payment,*/
-                        'app_date' => $appdate,
-                        'receiver' => $receiver,
-                        'install_no' => $period,
-                        'notes' => $notes
+                        'app_date'       => $appdate,
+                        'receiver'       => $receiver,
+                        'install_no'     => $period,
+                        'notes'          => $notes
                     );
-                    $success = $this->loan_model->Add_installData($data);
-                    $totalpay = $loanvalue->total_pay + $amount;
-                    $totaldue = $loanvalue->amount - $totalpay;
+                    $success   = $this->loan_model->Add_installData($data);
+                    $totalpay  = $loanvalue->total_pay + $amount;
+                    $totaldue  = $loanvalue->amount - $totalpay;
                     /*$period = $loanvalue->install_period - 1;*/
-                    if ($installno == '1') {
+                    if($installno == '1'){
                         $status = 'Done';
-                    } else {
+                    } else{
                         $status = 'Granted';
                     }
-                    $data = array(
-                        'total_pay' => $totalpay,
-                        'total_due' => $totaldue,
+                    $data    = array(
+                        'total_pay'      => $totalpay,
+                        'total_due'      => $totaldue,
                         'install_period' => $period,
-                        'status' => $status
+                        'status'         => $status
                     );
                     $success = $this->loan_model->update_LoanData($loanid, $data);
                     $this->session->set_flashdata('feedback', 'Successfully Added');
                     redirect(base_url('Loan/installment'));
-                } else {
-                    $data = array(
-                        'emp_id' => $em_id,
-                        'loan_id' => $loanid,
-                        'loan_number' => $loanno,
+                } else{
+                    $data    = array(
+                        'emp_id'         => $em_id,
+                        'loan_id'        => $loanid,
+                        'loan_number'    => $loanno,
                         'install_amount' => $amount,
                         /*'pay_amount' => $payment,*/
-                        'app_date' => $appdate,
-                        'receiver' => $receiver,
+                        'app_date'       => $appdate,
+                        'receiver'       => $receiver,
                         /*'install_no' => $period,*/
-                        'notes' => $notes
+                        'notes'          => $notes
                     );
                     $success = $this->loan_model->update_LoanInstallData($id, $data);
                     $this->session->set_flashdata('feedback', 'Successfully Updated');
                     redirect(base_url('Loan/installment'));
                 }
             }
-        } else {
+        } else{
             redirect(base_url(), 'refresh');
         }
     }
-
-    public function LoanByID()
-    {
-        if ($this->session->userdata('user_login_access') != false) {
-            $id = $this->input->get('id');
-            $data['loanvalue'] = $this->loan_model->LoanValselect($id);
-            $data['loanvalueem'] = $this->loan_model->LoanValEmselect($id);
+    
+    public function LoanByID(){
+        if($this->session->userdata('user_login_access') != false){
+            $id                           = $this->input->get('id');
+            $data['loanvalue']            = $this->loan_model->LoanValselect($id);
+            $data['loanvalueem']          = $this->loan_model->LoanValEmselect($id);
             $data['loanvalueinstallment'] = $this->loan_model->LoanInstallValEmselect($id);
             echo json_encode($data);
-        } else {
+        } else{
             redirect(base_url(), 'refresh');
         }
     }
-
-    public function delete_installment($id)
-    {
-        if ($this->session->userdata('user_login_access') != False) {
+    
+    public function delete_installment($id){
+        if($this->session->userdata('user_login_access') != false){
             $this->loan_model->installment_delete($id);
             $this->session->set_flashdata('feedback', 'Successfully Deleted');
             redirect('Loan/installment');
-        } else {
+        } else{
             redirect(base_url(), 'refresh');
         }
     }
