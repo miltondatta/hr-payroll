@@ -42,11 +42,33 @@ class Appraisal_model extends CI_Model{
     /* Start Appraisal Employee Table function */
 
     public function GetAppraisalEmployeeData(){
-        $sql    = "SELECT * FROM `appraisal_employee` ORDER BY `appraisal_employee`.`created_at` DESC;";
+        $sql    = "select appraisal_employee.*,
+                           employee.first_name,
+                           employee.last_name,
+                           designation.des_name,
+                           appraisal_category.category_name
+                    from appraisal_employee
+                             left join employee on appraisal_employee.em_id = employee.em_id
+                             left join designation on employee.des_id = designation.id
+                             left join appraisal_category on appraisal_employee.category_id = appraisal_category.id";
         $query  = $this->db->query($sql);
         $result = $query->result();
 
         return $result;
+    }
+
+    public function getAppraisalByEmployeeAndFinancialYear($em_id, $financial_year)
+    {
+        $sql    = "select *from appraisal_employee where financial_year = '$financial_year' and em_id = '$em_id'";
+        $query  = $this->db->query($sql);
+        $result = $query->result_array();
+
+        return $result;
+    }
+
+    public function addAppraisalEmployee($data)
+    {
+        $this->db->insert('appraisal_employee', $data);
     }
 }
 

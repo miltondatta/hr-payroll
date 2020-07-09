@@ -29,6 +29,7 @@ class Appraisal extends CI_Controller
         $this->load->model('settings_model');
         $this->load->model('leave_model');
         $this->load->model('Appraisal_model');
+        $this->load->model('FinancialYear_model');
         if ($this->session->userdata('user_type') == 'EMPLOYEE') {
             redirect(base_url(), 'refresh');
         }
@@ -110,8 +111,66 @@ class Appraisal extends CI_Controller
     {
         if ($this->session->userdata('user_login_access') != false) {
             $data['appraisal_employee_data'] = $this->Appraisal_model->GetAppraisalEmployeeData();
+            $data['employee'] = $this->employee_model->emselect();
+            $data['financial_years'] = $this->FinancialYear_model->getFinancialYearData();
 
             $this->load->view('backend/appraisal-employee', $data);
+        } else {
+            redirect(base_url(), 'refresh');
+        }
+    }
+
+    public function getAppraisalCategory()
+    {
+        if ($this->session->userdata('user_login_access') != false) {
+            $em_id = $this->input->get('em_id');
+            $financial_year = $this->input->get('financial_year');
+
+            $data['appraisal_exists'] = $appraisal_exists = $this->Appraisal_model->getAppraisalByEmployeeAndFinancialYear($em_id, $financial_year);
+            if (count($appraisal_exists) == 0) {
+                $data['appraisal_category'] = $this->Appraisal_model->GetAppraisalCategoryData();
+                $response = $this->load->view('backend/appraisal-category-partial', $data, TRUE);
+                echo $response;
+            } else {
+
+            }
+        } else {
+            redirect(base_url(), 'refresh');
+        }
+    }
+
+    public function addAppraisalEmployee()
+    {
+        if ($this->session->userdata('user_login_access') != false) {
+            $id = $this->input->post('id');
+            $financial_year = $this->input->post('financial_year');
+            $em_id = $this->input->post('em_id');
+            $category_id = $this->input->post('category_id');
+            $now = new DateTime();
+            $data = array();
+
+
+            foreach ($category_id as $key => $value) {
+                if ($this->input->post('category_rating_' . $key)) {
+                    $data['financial_year'] = $financial_year;
+                    $data['em_id'] = $em_id;
+                    $data['category_id'] = $value;
+                    $data['category_rating'] = $this->input->post('category_rating_' . $key);
+
+                    $index = array_search($this->input->post('category_rating_' . $key), $this->input->post('category_rating_array_' . $key));
+                    $data['category_value'] = $this->input->post('category_value_' . $key)[$index];
+
+                    $data['created_at'] = $now->format('Y-m-d H:i:s');
+                    $data['updated_at'] = '';
+
+                    $this->Appraisal_model->addAppraisalEmployee($data);
+                } else {
+                    continue;
+                }
+            }
+
+            $this->session->set_flashdata('feedback', 'Successfully Added');
+            redirect("Appraisal/appraisalEmployee");
         } else {
             redirect(base_url(), 'refresh');
         }

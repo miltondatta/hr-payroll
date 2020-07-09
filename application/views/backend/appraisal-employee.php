@@ -65,13 +65,13 @@
                                         <tbody class="text-center">
                                         <?php foreach ($appraisal_employee_data as $value): ?>
                                             <tr>
-                                                <td><?php echo $value->employee_name ?></td>
-                                                <td><?php echo $value->designation ?></td>
-                                                <td><?php echo $value->financial_year ?></td>
-                                                <td><?php echo $value->category_name ?></td>
-                                                <td><?php echo $value->category_rating ?></td>
-                                                <td><?php echo $value->category_value ?></td>
-                                                <td><?php echo date('jS \of F Y', strtotime($value->created_at)) ?></td>
+                                                <td><?php echo $value->first_name . ' ' . $value->last_name; ?></td>
+                                                <td><?php echo $value->des_name; ?></td>
+                                                <td><?php echo $value->financial_year; ?></td>
+                                                <td><?php echo $value->category_name; ?></td>
+                                                <td><?php echo $value->category_rating; ?></td>
+                                                <td><?php echo $value->category_value; ?></td>
+                                                <td><?php echo date('jS \of F Y', strtotime($value->created_at)); ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -99,16 +99,29 @@
                 <form role="form" method="post" action="addAppraisalEmployee" id="btnSubmit">
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="category_name" class="control-label col-md-3">Appraisal Employee</label>
-                            <input type="text" name="category_name" id="category_name" class="form-control col-md-8" required>
+                            <label for="financial_year" class="control-label col-md-3">Financial Year</label>
+                            <select class="form-control col-md-8" name="financial_year" id="financial_year" required>
+                                <option value="">Select Financial Year</option>
+                                <?php foreach ($financial_years as $value): ?>
+                                    <option value="<?php echo $value->year; ?>">
+                                        <?php echo $value->name; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="form-group row">
-                            <label for="rating_text" class="control-label col-md-3">Rating Text(Comma Separated)</label>
-                            <input type="text" name="rating_text" id="rating_text" class="form-control col-md-8" required>
+                            <label for="em_id" class="control-label col-md-3">Employee</label>
+                            <select class="form-control col-md-8" name="em_id" id="em_id" onchange="getAppraisalCategory()" required>
+                                <option value="">Select Employee</option>
+                                <?php foreach ($employee as $value): ?>
+                                    <option value="<?php echo $value->em_id; ?>">
+                                        <?php echo $value->first_name; echo ' '; echo $value->last_name; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-                        <div class="form-group row">
-                            <label for="rating_value" class="control-label col-md-3">Rating Value(%)(Comma Separated)</label>
-                            <input type="text" name="rating_value" id="rating_value" class="form-control col-md-8" required>
+                        <div id="appraisal-category-input-area">
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -123,20 +136,23 @@
 </main>
 <?php $this->load->view('backend/footer'); ?>
 <script>
-    function getAppraisalEmployeeInfoById(id) {
-        $('#btnSubmit').trigger("reset");
-        $('#appraisal-employee-modal').modal('show');
+    function getAppraisalCategory() {
+        let em_id = $("#em_id").val();
+        let financial_year = $("#financial_year").val();
+
+        if (!financial_year) {
+            alert('Please select Financial Year!');
+            return;
+        }
 
         $.ajax({
-            url: 'appraisalEmployeeById?id=' + id,
+            url: 'getAppraisalCategory?em_id=' + em_id + '&financial_year=' + financial_year,
             method: 'GET',
             data: '',
-            dataType: 'json',
+            dataType: 'html',
         }).done(function (response) {
-            $('#btnSubmit').find('[name="id"]').val(response.appraisal_category.id).end();
-            $('#btnSubmit').find('[name="category_name"]').val(response.appraisal_category.category_name).end();
-            $('#btnSubmit').find('[name="rating_text"]').val(response.appraisal_category.rating_text).end();
-            $('#btnSubmit').find('[name="rating_value"]').val(response.appraisal_category.rating_value).end();
+            $("#appraisal-category-input-area").empty();
+            $("#appraisal-category-input-area").append(response);
         });
     }
 
