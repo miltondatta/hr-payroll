@@ -1,8 +1,8 @@
-        <?php 
+        <?php
             $id = $this->session->userdata('user_login_id');
-            $basicinfo = $this->employee_model->GetBasic($id); 
+            $basicinfo = $this->employee_model->GetBasic($id);
             $settingsvalue = $this->settings_model->GetSettingsValue();
-            $basicinfo = $this->employee_model->GetBasic($id); 
+            $basicinfo = $this->employee_model->GetBasic($id);
         ?>
         <!-- START: Main Menu-->
         <div class="sidebar">
@@ -12,7 +12,7 @@
             <!-- START: Logo-->
             <a href="<?php echo base_url(); ?>dashboard/Dashboard" class="sidebar-logo d-flex">
                 <img src="<?php echo base_url(); ?>assets/images/<?php echo $settingsvalue->sitelogo; ?>" alt="logo" width="25" class="img-fluid mr-2"/>
-                <span class="h5 align-self-center mb-0">HRM</span>        
+                <span class="h5 align-self-center mb-0">HRM</span>
             </a>
             <!-- END: Logo-->
             <?php
@@ -21,8 +21,6 @@
 
             <!-- START: Menu-->
             <ul id="side-menu" class="sidebar-menu">
-                <li class="<?php echo $url == (base_url() . 'dashboard/Dashboard') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>dashboard/Dashboard"><i class="icon-speedometer"></i>Dashboard</a>
-                </li>
                 <?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
                     <li class="dropdown"><a href="#" class="text-danger"><i class="icon-cursor-move"></i>Leave</a>
                         <div>
@@ -35,6 +33,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="icon-support"></i>Projects</a>
                         <div>
                             <ul>
@@ -52,6 +51,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-users"></i>Employees</a>
                         <div>
                             <ul>
@@ -61,6 +61,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-user-clock"></i>Attendance</a>
                         <div>
                             <ul>
@@ -70,6 +71,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-user-tag"></i>Leave</a>
                         <div>
                             <ul>
@@ -83,6 +85,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-ethernet"></i>Project</a>
                         <div>
                             <ul>
@@ -92,6 +95,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-money-bill"></i>Loan</a>
                         <div>
                             <ul>
@@ -100,6 +104,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-gifts"></i>Assets</a>
                         <div>
                             <ul>
@@ -109,6 +114,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-money-check"></i>Payroll</a>
                         <div>
                             <ul>
@@ -118,6 +124,16 @@
                             </ul>
                         </div>
                     </li>
+                    
+                    <li class="dropdown"><a href="#"><i class="fas fa-certificate"></i>Training</a>
+                        <div>
+                            <ul>
+                                <li class="<?php echo $url == (base_url() . 'budget/index') ? 'active' : '' ?>"><a href="<?php echo base_url();?>budget/index"><i class="fas fa-money-bill-alt"></i> Budget </a></li>
+                                <li class="<?php echo $url == (base_url() . 'course/index') ? 'active' : '' ?>"><a href="<?php echo base_url();?>course/index"><i class="fas fa-dice-d20"></i> Budget </a></li>
+                            </ul>
+                        </div>
+                    </li>
+
                     <li class="dropdown"><a href="#"><i class="fas fa-sign-language"></i>Appraisal</a>
                         <div>
                             <ul>
@@ -126,9 +142,16 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="<?php echo $url == (base_url() . 'notice/All_notice') ? 'active' : '' ?>"><a href="<?php echo base_url()?>notice/All_notice"><i class="fas fa-pager"></i>Notice</a>
-                    </li>
-                    <li class="<?php echo $url == (base_url() . 'settings/Settings') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>settings/Settings"><i class="fas fa-cogs"></i>Settings</a>
+                    
+                    <li class="<?php echo $url == (base_url() . 'notice/All_notice') ? 'active' : '' ?>"><a href="<?php echo base_url()?>notice/All_notice"><i class="fas fa-pager"></i>Notice</a></li>
+
+                    <li class="dropdown"><a href="#"><i class="fas fa-cogs"></i>Setting</a>
+                        <div>
+                            <ul>
+                                <li class="<?php echo $url == (base_url() . 'settings/Settings') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>settings/Settings"><i class="fas fa-dice-d20"></i>Website Content</a></li>
+                                <li class="<?php echo $url == (base_url() . 'UserManagement/AssignMenu') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>UserManagement/AssignMenu"><i class="fas fa-first-aid"></i>Role Management</a></li>
+                            </ul>
+                        </div>
                     </li>
                 <?php } ?>
             </ul>
