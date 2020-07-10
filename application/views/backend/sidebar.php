@@ -143,6 +143,15 @@
                             </ul>
                         </div>
                     </li>
+
+                    <li class="dropdown"><a href="#"><i class="fa fa-user-plus"></i>Recruitment</a>
+                        <div>
+                            <ul>
+                                <li class="<?php echo $url == (base_url() . 'Candidate/index') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Candidate/index"><i class="fa fa-address-card"></i>Candidate</a></li>
+                                <li class="<?php echo $url == (base_url() . 'Vacancy/index') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Vacancy/index"><i class="fas fa-cube"></i>Vacancy</a></li>
+                            </ul>
+                        </div>
+                    </li>
                     
                     <li class="<?php echo $url == (base_url() . 'notice/All_notice') ? 'active' : '' ?>"><a href="<?php echo base_url()?>notice/All_notice"><i class="fas fa-pager"></i>Notice</a></li>
 

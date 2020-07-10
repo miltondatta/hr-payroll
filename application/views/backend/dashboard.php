@@ -81,8 +81,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <button type="button" class="btn btn-primary rounded-btn"
-                                                onclick="alert('Need to work')">Search
+                                        <button type="button" class="btn btn-primary rounded-btn">Search
                                         </button>
                                     </div>
                                 </div>

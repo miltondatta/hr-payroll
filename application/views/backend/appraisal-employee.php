@@ -158,6 +158,7 @@
 
     function emptyInputValue() {
         $('#btnSubmit').trigger("reset");
+        $('#btnSubmit').find('[name="id"]').val('').end();
     }
 
     $("#financial_year").change(function () {
