@@ -18,4 +18,13 @@
 		$this->db->where('id', $id);
 		$this->db->update('settings',$data);		
 	}        
+
+	public function roleselect(){
+		$sql 	= "SELECT * FROM `user_roles`";
+		$query	=  $this->db->query($sql);
+		$result =  $query->result();
+		return $result;	 
+	}
+
+
     }
