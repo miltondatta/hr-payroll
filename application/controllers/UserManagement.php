@@ -20,5 +20,14 @@ class UserManagement extends CI_Controller{
         }
     }
 
+    public function AssignMenuEdit(){
+        if($this->session->userdata('user_login_access') != false){
+            $role_id        = base64_decode($this->input->get('id'));
+            $this->load->view('backend/role_management_edit');
+        } else {
+            redirect(base_url(), 'refresh');
+        }    
+    }
+
 
 }

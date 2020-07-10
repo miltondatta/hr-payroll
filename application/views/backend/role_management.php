@@ -60,7 +60,7 @@
                                             <td><?php echo $value->role_desc; ?></td>
                                             <td><?php echo date('jS \of F Y', strtotime($value->created_at)) ?></td>
                                             <td class="align-content-center ">
-                                                <a href="<?php echo base_url(); ?>employee/view?I="
+                                                <a href="<?php echo base_url(); ?>UserManagement/AssignMenuEdit?id=<?php echo base64_encode($value->id); ?>"
                                                    title="Edit" class="btn btn-sm btn-info"><i
                                                             class="fa fa-pen"></i></a>
                                             </td>
