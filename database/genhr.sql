@@ -28,6 +28,44 @@ SET time_zone = "+00:00";
 -- Table structure for table `addition`
 --
 
+CREATE TABLE `appraisal_category`
+(
+    `id`            int(14) primary key auto_increment not null,
+    `category_name` varchar(128) DEFAULT NULL,
+    `rating_text`   varchar(128) DEFAULT NULL,
+    `rating_value`  varchar(128) DEFAULT NULL,
+    `created_at`    varchar(64)  DEFAULT NULL,
+    `updated_at`    varchar(64)  DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+CREATE TABLE `appraisal_employee`
+(
+    `id`              int(14) primary key auto_increment not null,
+    `financial_year`  varchar(27) DEFAULT NULL,
+    `em_id`           varchar(27) DEFAULT NULL,
+    `category_id`     varchar(27) DEFAULT NULL,
+    `category_rating` varchar(27) DEFAULT NULL,
+    `category_value`  varchar(27) DEFAULT NULL,
+    `created_at`      varchar(64) DEFAULT NULL,
+    `updated_at`      varchar(64) DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+CREATE TABLE `planned_leave`
+(
+    `id`            int(14) primary key auto_increment not null,
+    `leave_type_id` varchar(11)   DEFAULT NULL,
+    `leave_from`    varchar(128)  DEFAULT NULL,
+    `leave_to`      varchar(128)  DEFAULT NULL,
+    `remarks`       varchar(1000) DEFAULT NULL,
+    `em_id`         varchar(27)   DEFAULT NULL,
+    `added_by`      varchar(128)  DEFAULT NULL,
+    `created_at`    varchar(64)   DEFAULT NULL,
+    `updated_at`    varchar(64)   DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
 CREATE TABLE `delay_notice`
 (
     `id`          int(14) primary key auto_increment not null,

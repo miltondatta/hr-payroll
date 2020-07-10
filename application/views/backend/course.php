@@ -74,6 +74,14 @@
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary rounded-btn mb-2"><i
+                                                                class="fa fa-check"></i> Update
+                                                    </button>
+                                                    <a href="<?php echo base_url(); ?>budget/index"
+                                                       class="btn btn-info rounded-btn mb-2 text-light"><i
+                                                                class="fa fa-backward"></i> Go Back</a>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>

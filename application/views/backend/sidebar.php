@@ -1,8 +1,8 @@
-        <?php 
+        <?php
             $id = $this->session->userdata('user_login_id');
-            $basicinfo = $this->employee_model->GetBasic($id); 
+            $basicinfo = $this->employee_model->GetBasic($id);
             $settingsvalue = $this->settings_model->GetSettingsValue();
-            $basicinfo = $this->employee_model->GetBasic($id); 
+            $basicinfo = $this->employee_model->GetBasic($id);
         ?>
         <!-- START: Main Menu-->
         <div class="sidebar">
@@ -12,7 +12,7 @@
             <!-- START: Logo-->
             <a href="<?php echo base_url(); ?>dashboard/Dashboard" class="sidebar-logo d-flex">
                 <img src="<?php echo base_url(); ?>assets/images/<?php echo $settingsvalue->sitelogo; ?>" alt="logo" width="25" class="img-fluid mr-2"/>
-                <span class="h5 align-self-center mb-0">HRM</span>        
+                <span class="h5 align-self-center mb-0">HRM</span>
             </a>
             <!-- END: Logo-->
             <?php
@@ -35,6 +35,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="icon-support"></i>Projects</a>
                         <div>
                             <ul>
@@ -52,6 +53,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-users"></i>Employees</a>
                         <div>
                             <ul>
@@ -61,6 +63,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-user-clock"></i>Attendance</a>
                         <div>
                             <ul>
@@ -70,6 +73,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-user-tag"></i>Leave</a>
                         <div>
                             <ul>
@@ -83,6 +87,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-ethernet"></i>Project</a>
                         <div>
                             <ul>
@@ -92,6 +97,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-money-bill"></i>Loan</a>
                         <div>
                             <ul>
@@ -100,6 +106,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-gifts"></i>Assets</a>
                         <div>
                             <ul>
@@ -109,6 +116,7 @@
                             </ul>
                         </div>
                     </li>
+                    
                     <li class="dropdown"><a href="#"><i class="fas fa-money-check"></i>Payroll</a>
                         <div>
                             <ul>
@@ -127,11 +135,19 @@
                             </ul>
                         </div>
                     </li>
+
+                    <li class="dropdown"><a href="#"><i class="fas fa-sign-language"></i>Appraisal</a>
+                        <div>
+                            <ul>
+                                <li class="<?php echo $url == (base_url() . 'Appraisal/appraisalCategory') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Appraisal/appraisalCategory"><i class="fas fa-sliders-h"></i>Appraisal Category</a></li>
+                                <li class="<?php echo $url == (base_url() . 'Appraisal/appraisalEmployee') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Appraisal/appraisalEmployee"><i class="fas fa-first-aid"></i>Appraisal Employee</a></li>
+                            </ul>
+                        </div>
+                    </li>
                     
-                    <li class="<?php echo $url == (base_url() . 'notice/All_notice') ? 'active' : '' ?>"><a href="<?php echo base_url()?>notice/All_notice"><i class="fas fa-pager"></i>Notice</a>
-                    </li>
-                    <li class="<?php echo $url == (base_url() . 'settings/Settings') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>settings/Settings"><i class="fas fa-cogs"></i>Settings</a>
-                    </li>
+                    <li class="<?php echo $url == (base_url() . 'notice/All_notice') ? 'active' : '' ?>"><a href="<?php echo base_url()?>notice/All_notice"><i class="fas fa-pager"></i>Notice</a></li>
+                    
+                    <li class="<?php echo $url == (base_url() . 'settings/Settings') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>settings/Settings"><i class="fas fa-cogs"></i>Settings</a></li>
                 <?php } ?>
             </ul>
             <!-- END: Menu-->
