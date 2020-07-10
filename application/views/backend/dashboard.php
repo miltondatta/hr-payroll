@@ -65,6 +65,30 @@
                     </div>
                     <form role="form" method="post" action="addPlannedLeave" id="btnSubmit">
                         <div class="modal-body">
+                            <?php
+                            if ($user_type != 'EMPLOYEE') {
+                                ?>
+                                <div class="row">
+                                    <div class="form-group col-md-3">
+                                        <select class="form-control" name="em_id" id="em_id" required>
+                                            <option value="">Select Employee</option>
+                                            <option value="all">Select All</option>
+                                            <?php foreach ($employee as $value): ?>
+                                                <option value="<?php echo $value->em_id; ?>">
+                                                    <?php echo $value->first_name; echo ' '; echo $value->last_name; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-primary rounded-btn"
+                                                onclick="alert('Need to work')">Search
+                                        </button>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
                             <div id='calendar' class="h-100"></div>
                         </div>
                         <div class="modal-footer">

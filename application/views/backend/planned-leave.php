@@ -65,7 +65,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <button type="button" class="btn btn-primary rounded-btn"
-                                                    onclick="getPlannedLeaveData()">Submit
+                                                    onclick="getPlannedLeaveData()">Search
                                             </button>
                                         </div>
                                     </div>
