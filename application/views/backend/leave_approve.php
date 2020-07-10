@@ -292,6 +292,16 @@
                                                               id="message-text1"></textarea>
                                                 </div>
 
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <input type="checkbox" name="" id="leave_email">
+                                                        <label for="leave_email">Send Email</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="checkbox" name="" id="leave_sms">
+                                                        <label for="leave_sms">Send Sms</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <input type="hidden" name="id" class="form-control"

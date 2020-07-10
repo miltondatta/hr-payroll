@@ -21,8 +21,6 @@
 
             <!-- START: Menu-->
             <ul id="side-menu" class="sidebar-menu">
-                <li class="<?php echo $url == (base_url() . 'dashboard/Dashboard') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>dashboard/Dashboard"><i class="icon-speedometer"></i>Dashboard</a>
-                </li>
                 <?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
                     <li class="dropdown"><a href="#" class="text-danger"><i class="icon-cursor-move"></i>Leave</a>
                         <div>
@@ -147,8 +145,15 @@
                     </li>
                     
                     <li class="<?php echo $url == (base_url() . 'notice/All_notice') ? 'active' : '' ?>"><a href="<?php echo base_url()?>notice/All_notice"><i class="fas fa-pager"></i>Notice</a></li>
-                    
-                    <li class="<?php echo $url == (base_url() . 'settings/Settings') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>settings/Settings"><i class="fas fa-cogs"></i>Settings</a></li>
+
+                    <li class="dropdown"><a href="#"><i class="fas fa-cogs"></i>Setting</a>
+                        <div>
+                            <ul>
+                                <li class="<?php echo $url == (base_url() . 'settings/Settings') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>settings/Settings"><i class="fas fa-dice-d20"></i>Website Content</a></li>
+                                <li class="<?php echo $url == (base_url() . 'UserManagement/AssignMenu') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>UserManagement/AssignMenu"><i class="fas fa-first-aid"></i>Role Management</a></li>
+                            </ul>
+                        </div>
+                    </li>
                 <?php } ?>
             </ul>
             <!-- END: Menu-->

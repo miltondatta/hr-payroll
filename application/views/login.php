@@ -26,6 +26,17 @@
     </head>
     <!-- END Head-->
 
+    <style>
+        body {
+            /*background: -webkit-linear-gradient(bottom, #0250c5, #d43f8d);*/
+            background-image: url("<?php echo base_url(); ?>assets/images/bg-01.jpg");
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: 30% 30%;
+        }
+    </style>
+
     <!-- START: Body-->
     <body id="main-container" class="default">
         <!-- START: Main Content-->
