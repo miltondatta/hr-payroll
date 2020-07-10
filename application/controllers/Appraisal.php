@@ -129,10 +129,14 @@ class Appraisal extends CI_Controller
             $data['appraisal_exists'] = $appraisal_exists = $this->Appraisal_model->getAppraisalByEmployeeAndFinancialYear($em_id, $financial_year);
             if (count($appraisal_exists) == 0) {
                 $data['appraisal_category'] = $this->Appraisal_model->GetAppraisalCategoryData();
+                $data['status'] = 'add';
                 $response = $this->load->view('backend/appraisal-category-partial', $data, TRUE);
                 echo $response;
             } else {
-
+                $data['appraisal_category'] = $this->Appraisal_model->GetAppraisalCategoryData();
+                $data['status'] = 'update';
+                $response = $this->load->view('backend/appraisal-category-partial', $data, TRUE);
+                echo $response;
             }
         } else {
             redirect(base_url(), 'refresh');
@@ -142,7 +146,6 @@ class Appraisal extends CI_Controller
     public function addAppraisalEmployee()
     {
         if ($this->session->userdata('user_login_access') != false) {
-            $id = $this->input->post('id');
             $financial_year = $this->input->post('financial_year');
             $em_id = $this->input->post('em_id');
             $category_id = $this->input->post('category_id');
@@ -163,6 +166,7 @@ class Appraisal extends CI_Controller
                     $data['created_at'] = $now->format('Y-m-d H:i:s');
                     $data['updated_at'] = '';
 
+                    $this->Appraisal_model->deleteAppraisalEmployee($em_id, $value);
                     $this->Appraisal_model->addAppraisalEmployee($data);
                 } else {
                     continue;

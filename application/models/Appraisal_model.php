@@ -70,6 +70,12 @@ class Appraisal_model extends CI_Model{
     {
         $this->db->insert('appraisal_employee', $data);
     }
+
+    public function deleteAppraisalEmployee($em_id, $category_id)
+    {
+        $sql = "delete from appraisal_employee where category_id = '$category_id' and em_id = '$em_id'";
+        return $this->db->query($sql);
+    }
 }
 
 

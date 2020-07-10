@@ -125,7 +125,6 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="id" value="">
                         <button type="button" class="btn btn-danger rounded-btn" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary rounded-btn">Submit</button>
                     </div>
@@ -142,6 +141,7 @@
 
         if (!financial_year) {
             alert('Please select Financial Year!');
+            $("#em_id").val('');
             return;
         }
 
@@ -159,4 +159,9 @@
     function emptyInputValue() {
         $('#btnSubmit').trigger("reset");
     }
+
+    $("#financial_year").change(function () {
+        $("#appraisal-category-input-area").empty();
+        $("#em_id").val('');
+    });
 </script>
