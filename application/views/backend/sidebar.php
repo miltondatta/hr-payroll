@@ -122,7 +122,8 @@
                     <li class="dropdown"><a href="#"><i class="fas fa-certificate"></i>Training</a>
                         <div>
                             <ul>
-                                <li class="<?php echo $url == (base_url() . 'organization/department') ? 'active' : '' ?>"><a href="<?php echo base_url();?>budget/index"><i class="fas fa-money-bill-alt"></i> Budget </a></li>
+                                <li class="<?php echo $url == (base_url() . 'budget/index') ? 'active' : '' ?>"><a href="<?php echo base_url();?>budget/index"><i class="fas fa-money-bill-alt"></i> Budget </a></li>
+                                <li class="<?php echo $url == (base_url() . 'course/index') ? 'active' : '' ?>"><a href="<?php echo base_url();?>course/index"><i class="fas fa-dice-d20"></i> Budget </a></li>
                             </ul>
                         </div>
                     </li>
