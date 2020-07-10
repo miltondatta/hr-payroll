@@ -28,7 +28,10 @@ class Dashboard extends CI_Controller{
     
     function Dashboard(){
         if($this->session->userdata('user_login_access') != false){
-            $this->load->view('backend/dashboard');
+            $data['user_type'] = $user_type = $this->session->userdata('user_type');
+            $data['employee'] = $this->employee_model->emselect();
+
+            $this->load->view('backend/dashboard', $data);
         } else{
             redirect(base_url(), 'refresh');
         }

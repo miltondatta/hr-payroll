@@ -129,7 +129,8 @@
                         <div>
                             <ul>
                                 <li class="<?php echo $url == (base_url() . 'budget/index') ? 'active' : '' ?>"><a href="<?php echo base_url();?>budget/index"><i class="fas fa-money-bill-alt"></i> Budget </a></li>
-                                <li class="<?php echo $url == (base_url() . 'course/index') ? 'active' : '' ?>"><a href="<?php echo base_url();?>course/index"><i class="fas fa-dice-d20"></i> Budget </a></li>
+                                <li class="<?php echo $url == (base_url() . 'course/index') ? 'active' : '' ?>"><a href="<?php echo base_url();?>course/index"><i class="fas fa-dice-d20"></i> Course </a></li>
+                                <li class="<?php echo $url == (base_url() . 'training_agency/index') ? 'active' : '' ?>"><a href="<?php echo base_url();?>training_agency/index"><i class="fas fa-landmark"></i> Training Agency </a></li>
                             </ul>
                         </div>
                     </li>
