@@ -7,22 +7,13 @@ class Training_agency_model extends CI_Model{
         
     }
     
-    private $table_name = 'training_budget';
+    private $table_name = 'training_agency';
     
-    public function getTrainingBudget(){
-        $sql    = "select id, financial_year, amount,
-                        CASE
-                            WHEN budget_period = 1
-                                THEN 'Monthly'
-                            WHEN budget_period = 2
-                                THEN 'Quarterly'
-                            WHEN budget_period = 3
-                                THEN 'Half Yearly'
-                            WHEN budget_period = 4
-                                THEN 'Yearly'
-                            END as budget_period_name
-                    from training_budget
-                    order by id desc;";
+    public function getAll(){
+        $sql    = "select ta.*, tc.course_name as course_name
+                    from training_agency as ta
+                             left join training_courses as tc on ta.course_id = tc.id
+                    order by ta.id desc ;";
         $query  = $this->db->query($sql);
         $result = $query->result();
         

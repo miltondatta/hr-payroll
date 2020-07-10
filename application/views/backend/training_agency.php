@@ -5,11 +5,11 @@
             <div class="row ">
                 <div class="col-12  align-self-center">
                     <div class="sub-header mt-3 py-3 px-3 align-self-center d-sm-flex w-100 rounded">
-                        <div class="w-sm-100 mr-auto"><h4 class="mb-0">Training Budget</h4></div>
+                        <div class="w-sm-100 mr-auto"><h4 class="mb-0">Training Agency</h4></div>
 
                         <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
                             <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>">Home</a></li>
-                            <li class="breadcrumb-item active">Training Budget</a></li>
+                            <li class="breadcrumb-item active">Training Agency</a></li>
                         </ol>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     <?php if(isset($item)){ ?>
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Edit Training Budget</h4>
+                                <h4 class="card-title">Edit Training Agency</h4>
                             </div>
                             <?php echo validation_errors(); ?>
                             <?php echo $this->upload->display_errors(); ?>
@@ -40,45 +40,73 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <form method="post"
-                                                  action="<?php echo base_url(); ?>budget/update/<?php echo $item->id; ?>">
+                                                  action="<?php echo base_url(); ?>training_agency/update/<?php echo $item->id; ?>">
+
                                                 <div class="form-group">
-                                                    <label for="Financial Year">Financial Year</label>
-                                                    <input type="text" class="form-control" name="financial_year"
-                                                           id="financial_year"
-                                                           placeholder="Financial Year"
-                                                           value="<?php echo $item->financial_year; ?>">
+                                                    <label for="agency_name">Agency Name</label>
+                                                    <input type="text" class="form-control" name="agency_name"
+                                                           id="agency_name" placeholder="Agency Name"
+                                                           value="<?php echo $item->agency_name ?>"
+                                                           required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="Budget Period">Budget Period</label>
-                                                    <select class="form-control" tabindex="1" name="budget_period"
-                                                            id="budget_period">
-                                                        <option value="">Select Budget Period</option>
-                                                        <option value="1" <?php echo ($item->budget_period == 1) ?
-                                                            "selected" : ''; ?>>Monthly
-                                                        </option>
-                                                        <option value="2" <?php echo ($item->budget_period == 2) ?
-                                                            "selected" : ''; ?>>Quarterly
-                                                        </option>
-                                                        <option value="3" <?php echo ($item->budget_period == 3) ?
-                                                            "selected" : ''; ?>>Half Yearly
-                                                        </option>
-                                                        <option value="4" <?php echo ($item->budget_period == 4) ?
-                                                            "selected" : ''; ?>>Yearly
-                                                        </option>
-                                                    </select>
+                                                    <div class="form-group">
+                                                        <label>Course Name </label>
+                                                        <select name="course_id" id="course_id"
+                                                                class="form-control" required>
+                                                            <option value="">Select Designation</option>
+                                                            <?Php foreach($courses as $value): ?>
+                                                                <option value="<?php echo $value->id ?>"
+                                                                    <?php echo ($item->course_id == $value->id) ?
+                                                                        "selected" : ''; ?>>
+                                                                    <?php echo $value->course_name ?>
+                                                                </option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="agency_name">Address</label>
+                                                    <textarea name="address" id="address"
+                                                              placeholder="Address"
+                                                              cols="76" rows="4"><?php echo $item->address ?></textarea>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="amount">Amount</label>
-                                                    <input type="text" class="form-control" name="amount"
-                                                           id="amount" placeholder="Amount"
-                                                           value="<?php echo $item->amount; ?>"
-                                                    >
+                                                    <label for="agency_name">Country</label>
+                                                    <input type="text" class="form-control" name="country"
+                                                           id="country"
+                                                           placeholder="Country"
+                                                           value="<?php echo $item->country ?>">
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="agency_name">State</label>
+                                                    <input type="text" class="form-control" name="state"
+                                                           id="state"
+                                                           placeholder="State"
+                                                           value="<?php echo $item->state ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="agency_name">City</label>
+                                                    <input type="text" class="form-control" name="city"
+                                                           id="city"
+                                                           placeholder="City"
+                                                           value="<?php echo $item->city ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="agency_name">Mobile</label>
+                                                    <input type="text" class="form-control" name="mobile"
+                                                           id="mobile"
+                                                           placeholder="Mobile"
+                                                           value="<?php echo $item->mobile ?>" required>
+                                                </div>
+
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary rounded-btn mb-2"><i
                                                                 class="fa fa-check"></i> Update
                                                     </button>
-                                                    <a href="<?php echo base_url(); ?>budget/index"
+                                                    <a href="<?php echo base_url(); ?>training_agency/index"
                                                        class="btn btn-info rounded-btn mb-2 text-light"><i
                                                                 class="fa fa-backward"></i> Go Back</a>
                                                 </div>
@@ -91,7 +119,7 @@
                     <?php } else{ ?>
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Add Training Budget</h4>
+                                <h4 class="card-title">Add Training Agency</h4>
                             </div>
                             <?php echo validation_errors(); ?>
                             <?php echo $this->upload->display_errors(); ?>
@@ -102,27 +130,55 @@
                                         <div class="col-12">
                                             <form method="post" action="save">
                                                 <div class="form-group">
-                                                    <label for="financial_year">Financial Year</label>
-                                                    <input type="text" class="form-control" name="financial_year"
-                                                           id="financial_year"
-                                                           placeholder="Financial Year" required>
+                                                    <label for="agency_name">Agency Name</label>
+                                                    <input type="text" class="form-control" name="agency_name"
+                                                           id="agency_name"
+                                                           placeholder="Agency Name" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="budget_period">Budget Period</label>
-                                                    <select class="form-control" tabindex="1" name="budget_period"
-                                                            id="budget_period" required>
-                                                        <option value="">Select Budget Period</option>
-                                                        <option value="1">Monthly</option>
-                                                        <option value="2">Quarterly</option>
-                                                        <option value="3">Half Yearly</option>
-                                                        <option value="4">Yearly</option>
+                                                    <label>Course Name </label>
+                                                    <select name="course_id" id="course_id"
+                                                            class="form-control" required>
+                                                        <option value="">Select Designation</option>
+                                                        <?Php foreach($courses as $value): ?>
+                                                            <option value="<?php echo $value->id ?>">
+                                                                <?php echo $value->course_name ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
+
                                                 <div class="form-group">
-                                                    <label for="amount">Amount</label>
-                                                    <input type="number" class="form-control" name="amount"
-                                                           id="amount" placeholder="Amount" required>
+                                                    <label for="agency_name">Address</label>
+                                                    <textarea name="address" id="address"
+                                                              placeholder="Address"
+                                                              cols="76" rows="4"></textarea>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="agency_name">Country</label>
+                                                    <input type="text" class="form-control" name="country"
+                                                           id="country"
+                                                           placeholder="Country">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="agency_name">State</label>
+                                                    <input type="text" class="form-control" name="state"
+                                                           id="state"
+                                                           placeholder="State">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="agency_name">City</label>
+                                                    <input type="text" class="form-control" name="city"
+                                                           id="city"
+                                                           placeholder="City">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="agency_name">Mobile</label>
+                                                    <input type="text" class="form-control" name="mobile"
+                                                           id="mobile"
+                                                           placeholder="Mobile" required>
+                                                </div>
+
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary rounded-btn mb-2"><i
                                                                 class="fa fa-check"></i> Save
@@ -154,7 +210,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header  justify-content-between align-items-center">
-                                    <h4 class="card-title">Training Budget</h4>
+                                    <h4 class="card-title">Training Agency</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -162,24 +218,32 @@
                                                class="display table dataTable table-striped table-bordered text-center">
                                             <thead>
                                             <tr>
-                                                <th>Financial Year</th>
-                                                <th>Budget Period</th>
-                                                <th>Amount</th>
+                                                <th>Agency</th>
+                                                <th>Course</th>
+                                                <th>Address</th>
+                                                <th>Country</th>
+                                                <th>State</th>
+                                                <th>City</th>
+                                                <th>Mobile</th>
                                                 <th>Action</th>
                                             </tr>
                                             </thead>
                                             <tbody class="text-center">
                                             <?php foreach($lists as $value){ ?>
                                                 <tr>
-                                                    <td><?php echo $value->financial_year; ?></td>
-                                                    <td><?php echo $value->budget_period_name; ?></td>
-                                                    <td><?php echo $value->amount; ?></td>
+                                                    <td><?php echo $value->agency_name; ?></td>
+                                                    <td><?php echo $value->course_name; ?></td>
+                                                    <td><?php echo $value->address; ?></td>
+                                                    <td><?php echo $value->country; ?></td>
+                                                    <td><?php echo $value->state; ?></td>
+                                                    <td><?php echo $value->city; ?></td>
+                                                    <td><?php echo $value->mobile; ?></td>
                                                     <td>
-                                                        <a href="<?php echo base_url(); ?>budget/edit/<?php echo $value->id; ?>"
+                                                        <a href="<?php echo base_url(); ?>training_agency/edit/<?php echo $value->id; ?>"
                                                            class="btn btn-primary rounded-btn"><i
                                                                     class="fa fa-edit"></i></a>
                                                         <a onclick="return confirm('Are you sure to delete this data?')"
-                                                           href="<?php echo base_url(); ?>budget/delete/<?php echo $value->id; ?>"
+                                                           href="<?php echo base_url(); ?>training_agency/delete/<?php echo $value->id; ?>"
                                                            class="btn btn-danger rounded-btn">
                                                             <i class="fa fa-trash"></i></a>
                                                     </td>
