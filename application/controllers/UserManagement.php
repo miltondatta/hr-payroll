@@ -41,4 +41,33 @@ class UserManagement extends CI_Controller{
     }
 
 
+    public function AssignMenuSave(){
+        if($this->session->userdata('user_login_access') != false){
+            $id         = $this->input->post('menu_assign_id');
+            $role_id    = $this->input->post('role_id');
+            $menu_ids   = $this->input->post('menu_ids');
+            if($menu_ids) {
+                $menu_ids_str = implode(',', $menu_ids);
+            }
+
+            $dataarr = array(
+                'role_id' => $role_id,
+                'menu_id' => $menu_ids_str
+            );
+
+            if($id) {
+                $this->db->where('id', $id);
+                $this->db->update('menu_assigns', $dataarr);
+            } else {
+                $this->db->insert('menu_assigns', $dataarr);
+            }
+
+            $this->session->set_flashdata('feedback', 'Successfully Updated');
+            redirect("UserManagement/AssignMenu");
+        } else {
+            redirect(base_url(), 'refresh');
+        }    
+    }
+
+
 }
