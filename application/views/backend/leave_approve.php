@@ -446,6 +446,7 @@
     <script>
         function emptyInputValue() {
             $('#leaveapply').trigger("reset");
+            $('#leaveapply').find('[name="id"]').val('').end();
         }
 
         function getLeaveByID(id) {

@@ -146,5 +146,6 @@
 
     function emptyInputValue() {
         $('#btnSubmit').trigger("reset");
+        $('#btnSubmit').find('[name="id"]').val('').end();
     }
 </script>

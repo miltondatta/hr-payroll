@@ -200,6 +200,7 @@ $allemployees = $this->employee_model->GetAllEmployee();
 
         function emptyInputValue() {
             $('#btnSubmit').trigger("reset");
+            $('#btnSubmit').find('[name="id"]').val('').end();
         }
     </script>
 <?php $this->load->view('backend/footer'); ?>
