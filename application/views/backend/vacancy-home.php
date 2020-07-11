@@ -83,7 +83,7 @@
                                                 <td><?php echo substr($value->description, 0, 50);
                                                     echo strlen($value->description) > 50 ? '...' : ''; ?></td>
                                                 <td><span class="badge badge-pill badge-<?php echo $badge_color; ?> p-2 mb-1"><?php echo $status_text; ?></span></td>
-                                                <td><?php echo date('jS \of F Y', strtotime($value->created_at)) ?></td>
+                                                <td><?php echo date_format(date_create($value->created_at), 'Y-m-d H:i:s'); ?></td>
                                                 <td>
                                                     <a href="javascript:void(0);" class="btn btn-primary rounded-btn"
                                                        onclick="getVacancyInfoById(<?php echo $value->id; ?>)">
@@ -197,31 +197,5 @@
     function emptyInputValue() {
         $('#btnSubmit').trigger("reset");
         $('#btnSubmit').find('[name="id"]').val('').end();
-    }
-
-    function getPlannedLeaveData() {
-        let em_id = $("#em_id").val();
-        if (!em_id) {
-            alert('Please select employee!');
-            return;
-        }
-
-        $.ajax({
-            url: 'getPlannedLeaveByEmployee',
-            method: 'POST',
-            data: {
-                em_id: em_id,
-            }
-        }).done(function (data) {
-            $("#planned-leave-table-area").empty();
-            $("#planned-leave-table-area").append(data);
-            $('#data-table').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ],
-                responsive: true
-            });
-        });
     }
 </script>

@@ -23,6 +23,15 @@ class Vacancy_model extends CI_Model{
         return $result;
     }
 
+    public function getAllVacancy()
+    {
+        $sql    = "select * from recruitment_vacancies ORDER BY `recruitment_vacancies`.`created_at` DESC";
+        $query  = $this->db->query($sql);
+        $result = $query->result();
+
+        return $result;
+    }
+
     public function updateVacancy($id, $data)
     {
         $this->db->where('id', $id);

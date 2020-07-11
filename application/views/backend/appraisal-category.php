@@ -66,7 +66,7 @@
                                                 <td><?php echo $value->category_name ?></td>
                                                 <td><?php echo $value->rating_text ?></td>
                                                 <td><?php echo $value->rating_value ?></td>
-                                                <td><?php echo date('jS \of F Y', strtotime($value->created_at)) ?></td>
+                                                <td><?php echo date_format(date_create($value->created_at), 'Y-m-d H:i:s'); ?></td>
                                                 <td>
                                                     <a href="javascript:void(0);" class="btn btn-primary rounded-btn"
                                                        onclick="getAppraisalCategoryInfoById(<?php echo $value->id; ?>)">
