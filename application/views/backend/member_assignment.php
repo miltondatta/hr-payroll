@@ -40,73 +40,50 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <form method="post"
-                                                  action="<?php echo base_url(); ?>training_agency/update/<?php echo $item->id; ?>">
+                                                  action="<?php echo base_url(); ?>member_assignment/update/<?php echo $item->id; ?>">
 
                                                 <div class="form-group">
-                                                    <label for="agency_name">Agency Name</label>
-                                                    <input type="text" class="form-control" name="agency_name"
-                                                           id="agency_name" placeholder="Agency Name"
-                                                           value="<?php echo $item->agency_name ?>"
-                                                           required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="form-group">
-                                                        <label>Course Name </label>
-                                                        <select name="course_id" id="course_id"
-                                                                class="form-control" required>
-                                                            <option value="">Select Course</option>
-                                                            <?Php foreach($courses as $value): ?>
-                                                                <option value="<?php echo $value->id ?>"
-                                                                    <?php echo ($item->course_id == $value->id) ?
-                                                                        "selected" : ''; ?>>
-                                                                    <?php echo $value->course_name ?>
-                                                                </option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </div>
-
+                                                    <label>Course Name </label>
+                                                    <select name="course_id" id="course_id"
+                                                            class="form-control" required>
+                                                        <option value="">Select Course</option>
+                                                        <?Php foreach($courses as $value): ?>
+                                                            <option value="<?php echo $value->id ?>"
+                                                                <?php echo ($item->course_id == $value->id) ?
+                                                                    "selected" : ''; ?>>
+                                                                <?php echo $value->course_name ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="agency_name">Address</label>
-                                                    <textarea name="address" id="address"
-                                                              placeholder="Address"
-                                                              cols="76" rows="4"><?php echo $item->address ?></textarea>
+                                                    <label>Course Name </label>
+                                                    <select name="employees[]" id="employees"
+                                                            class="form-control" required multiple>
+                                                        <?Php foreach($employees as $employee):
+                                                            $selected = ''; ?>
+                                                            <?Php foreach($item_members as $item_member):
+                                                            if($employee->id == $item_member->employee_id){
+                                                                $selected = "selected";
+                                                                break;
+                                                            }
+                                                            ?>
+                                                        
+                                                        <?php endforeach; ?>
+                                                            <option value="<?php echo $employee->id ?>" <?php echo $selected ?>>
+                                                                <?php echo $employee->em_code . ' - ' .
+                                                                           $employee->first_name . ' ' .
+                                                                           $employee->first_name ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="agency_name">Country</label>
-                                                    <input type="text" class="form-control" name="country"
-                                                           id="country"
-                                                           placeholder="Country"
-                                                           value="<?php echo $item->country ?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="agency_name">State</label>
-                                                    <input type="text" class="form-control" name="state"
-                                                           id="state"
-                                                           placeholder="State"
-                                                           value="<?php echo $item->state ?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="agency_name">City</label>
-                                                    <input type="text" class="form-control" name="city"
-                                                           id="city"
-                                                           placeholder="City"
-                                                           value="<?php echo $item->city ?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="agency_name">Mobile</label>
-                                                    <input type="text" class="form-control" name="mobile"
-                                                           id="mobile"
-                                                           placeholder="Mobile"
-                                                           value="<?php echo $item->mobile ?>" required>
-                                                </div>
-
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary rounded-btn mb-2"><i
                                                                 class="fa fa-check"></i> Update
                                                     </button>
-                                                    <a href="<?php echo base_url(); ?>training_agency/index"
+                                                    <a href="<?php echo base_url(); ?>member_assignment/index"
                                                        class="btn btn-info rounded-btn mb-2 text-light"><i
                                                                 class="fa fa-backward"></i> Go Back</a>
                                                 </div>
@@ -128,13 +105,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <form method="post" action="save">
-                                                <div class="form-group">
-                                                    <label for="agency_name">Agency Name</label>
-                                                    <input type="text" class="form-control" name="agency_name"
-                                                           id="agency_name"
-                                                           placeholder="Agency Name" required>
-                                                </div>
+                                            <form method="post" action="<?php echo base_url(); ?>member_assignment/save">
                                                 <div class="form-group">
                                                     <label>Course Name </label>
                                                     <select name="course_id" id="course_id"
@@ -149,34 +120,17 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="agency_name">Address</label>
-                                                    <textarea name="address" id="address"
-                                                              placeholder="Address"
-                                                              cols="76" rows="4"></textarea>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="agency_name">Country</label>
-                                                    <input type="text" class="form-control" name="country"
-                                                           id="country"
-                                                           placeholder="Country">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="agency_name">State</label>
-                                                    <input type="text" class="form-control" name="state"
-                                                           id="state"
-                                                           placeholder="State">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="agency_name">City</label>
-                                                    <input type="text" class="form-control" name="city"
-                                                           id="city"
-                                                           placeholder="City">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="agency_name">Mobile</label>
-                                                    <input type="text" class="form-control" name="mobile"
-                                                           id="mobile"
-                                                           placeholder="Mobile" required>
+                                                    <label>Course Name </label>
+                                                    <select name="employees[]" id="employees"
+                                                            class="form-control" required multiple>
+                                                        <?Php foreach($employees as $employee): ?>
+                                                            <option value="<?php echo $employee->id ?>">
+                                                                <?php echo $employee->em_code . ' - ' .
+                                                                           $employee->first_name . ' ' .
+                                                                           $employee->first_name ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
                                                 </div>
 
                                                 <div class="form-group">
@@ -218,32 +172,22 @@
                                                class="display table dataTable table-striped table-bordered text-center">
                                             <thead>
                                             <tr>
-                                                <th>Agency</th>
                                                 <th>Course</th>
-                                                <th>Address</th>
-                                                <th>Country</th>
-                                                <th>State</th>
-                                                <th>City</th>
-                                                <th>Mobile</th>
+                                                <th>Employees</th>
                                                 <th>Action</th>
                                             </tr>
                                             </thead>
                                             <tbody class="text-center">
                                             <?php foreach($lists as $value){ ?>
                                                 <tr>
-                                                    <td><?php echo $value->agency_name; ?></td>
                                                     <td><?php echo $value->course_name; ?></td>
-                                                    <td><?php echo $value->address; ?></td>
-                                                    <td><?php echo $value->country; ?></td>
-                                                    <td><?php echo $value->state; ?></td>
-                                                    <td><?php echo $value->city; ?></td>
-                                                    <td><?php echo $value->mobile; ?></td>
+                                                    <td><?php echo $value->employee_name; ?></td>
                                                     <td>
-                                                        <a href="<?php echo base_url(); ?>training_agency/edit/<?php echo $value->id; ?>"
+                                                        <a href="<?php echo base_url(); ?>member_assignment/edit/<?php echo $value->id; ?>"
                                                            class="btn btn-primary rounded-btn"><i
                                                                     class="fa fa-edit"></i></a>
                                                         <a onclick="return confirm('Are you sure to delete this data?')"
-                                                           href="<?php echo base_url(); ?>training_agency/delete/<?php echo $value->id; ?>"
+                                                           href="<?php echo base_url(); ?>member_assignment/delete/<?php echo $value->id; ?>"
                                                            class="btn btn-danger rounded-btn">
                                                             <i class="fa fa-trash"></i></a>
                                                     </td>
