@@ -17,6 +17,7 @@
             <!-- END: Logo-->
             <?php
             $url = current_url(true);
+            
             ?>
 
             <!-- START: Menu-->
