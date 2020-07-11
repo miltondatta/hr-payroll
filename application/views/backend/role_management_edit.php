@@ -22,7 +22,7 @@
             <div class="col-12 mt-3">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="card-title"><i class="fa fa-user" aria-hidden="true"></i> User Role</h4>
+                        <h4 class="card-title"><i class="fa fa-user" aria-hidden="true"></i> User Role Access Edit: <?php echo $role_name; ?> </h4>
                     </div>
 
                     <div class="card-content">

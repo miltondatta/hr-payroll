@@ -384,6 +384,13 @@ class Employee_model extends CI_Model{
 
         return $result;
     }
+
+    public function getRoles(){
+        $sql 	= "SELECT * FROM `user_roles`";
+		$query	=  $this->db->query($sql);
+		$result =  $query->result();
+		return $result;	 
+    }
 }
 
 ?>
