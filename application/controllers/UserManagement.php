@@ -52,7 +52,8 @@ class UserManagement extends CI_Controller{
 
             $dataarr = array(
                 'role_id' => $role_id,
-                'menu_id' => $menu_ids_str
+                'menu_id' => $menu_ids_str,
+                'updated_at' => date('Y-m-d H:i:s')
             );
 
             if($id) {
@@ -68,6 +69,23 @@ class UserManagement extends CI_Controller{
             redirect(base_url(), 'refresh');
         }    
     }
+
+   
+    public function addNewRoleSave(){
+        if($this->session->userdata('user_login_access') != false){
+            $dataarr = array(
+                'role_name' => $this->input->post('role_name'),
+                'role_desc' => $this->input->post('role_desc')
+            );
+            $this->db->insert('user_roles', $dataarr);
+            $this->session->set_flashdata('feedback', 'Successfully Added');
+            redirect("UserManagement/AssignMenu");
+        } else {
+            redirect(base_url(), 'refresh');
+        }      
+    }
+    
+
 
 
 }
