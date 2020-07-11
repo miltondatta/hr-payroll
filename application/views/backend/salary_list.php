@@ -18,7 +18,7 @@
 
             <div class="row">
                 <div class="col-12 mt-3">
-                    <?php if ($this->session->flashdata('error')) { ?>
+                    <?php if($this->session->flashdata('error')){ ?>
                         <div class="alert alert-danger alert-dismissible show" role="alert">
                             <strong><?php echo $this->session->flashdata('error'); ?></strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -26,8 +26,8 @@
                             </button>
                         </div>
                     <?php } ?>
-    
-                    <?php if ($this->session->flashdata('success')) { ?>
+                    
+                    <?php if($this->session->flashdata('success')){ ?>
                         <div class="alert alert-error alert-dismissible show" role="alert">
                             <strong><?php echo $this->session->flashdata('success'); ?></strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -35,7 +35,7 @@
                             </button>
                         </div>
                     <?php } ?>
-                    
+
                     <div class="pb-2">
                         <a class="btn btn-primary text-white"
                            href="<?php echo base_url(); ?>Payroll/Generate_salary">
@@ -47,8 +47,44 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title"><i class="fa fa-compass" aria-hidden="true"></i>Payroll List</h4>
                         </div>
+                        <div class="form-material ml-2 mt-3 row ">
+                            <div class="form-group col-md-3">
+                                <select class="form-control custom-select" tabindex="1" name="emid"
+                                        id="emid" required>
+                                    <option value="">Employee</option>
+                                    <?php foreach($employee as $value): ?>
+                                        <option value="<?php echo $value->em_id; ?>">
+                                            <?php echo $value->first_name ?>
+                                            <?php echo $value->last_name ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <div class="col-md-12">
+                                    <div class="input-group mb-3">
+                                        <input name="date_time"
+                                               class="form-control mydatetimepickerFull"
+                                               id="calendar-month_moth_view" value=""
+                                               placeholder="Month" />
+                                        <div class="input-group-append">
+                                                        <span class="input-group-text bg-transparent border-left-0"
+                                                              id="basic-email"><i class="fa fa-calendar"></i>
+                                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <button type="button" class="btn btn-primary find_load" id="find_loan"
+                                        onclick="getFilterData()">Find
+                                </button>
+                            </div>
+
+                        </div>
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="table_data">
                                 <table id="data_table_example"
                                        class="display table dataTable table-striped table-bordered">
                                     <thead>
@@ -80,7 +116,8 @@
                                                            $individual_info->year; ?></td>
                                             <td><?php echo $individual_info->total_salary; ?></td>
                                             <td><?php echo $individual_info->loan; ?></td>
-                                            <td><?php echo $individual_info->hourly_rate * $individual_info->hours_worked; ?></td>
+                                            <td><?php echo $individual_info->hourly_rate *
+                                                           $individual_info->hours_worked; ?></td>
                                             <!--<td><?php echo $individual_info->addition; ?></td>-->
                                             <td><?php echo $individual_info->diduction; ?></td>
                                             <td><?php echo $individual_info->total_pay; ?></td>
@@ -381,6 +418,40 @@
              } );*/
             
         });
+        
+        function getFilterData(){
+            var employee_id = $('#emid').val();
+            
+            let month_date        = String($('#calendar-month_moth_view').val());
+            let year_month_splite = month_date.split("-");
+            let year              = year_month_splite[1];
+            let month             = year_month_splite[0];
+            
+            $("#table_data").empty();
+            $.ajax({
+                url     : 'FilteredSalaryList',
+                method  : 'POST',
+                dataType: 'html',
+                data    : {
+                    employee_id: employee_id,
+                    year       : year,
+                    month      : month
+                }
+            }).done(function (response){
+                console.log(response, " :441");
+                $("#data-table tbody").empty();
+                
+                $("#table_data").append(response);
+                
+                $("#data_table_example").DataTable({
+                    dom       : 'Bfrtip',
+                    buttons   : [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    responsive: true
+                });
+            });
+        }
     </script>
 
 <?php $this->load->view('backend/footer'); ?>

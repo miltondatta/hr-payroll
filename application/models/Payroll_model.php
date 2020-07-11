@@ -16,7 +16,7 @@ class Payroll_model extends CI_Model{
     }
     
     public function GetsalaryType(){
-        $sql    = "SELECT * FROM `salary_type` ORDER BY `salary_type` ASC";
+        $sql    = "SELECT * FROM salary_type ORDER BY salary_type ASC";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -32,11 +32,16 @@ class Payroll_model extends CI_Model{
     }
     
     public function GetDepEmployee($depid){
+        $dept_id = '';
+        if($depid != 0){
+            $dept_id = " and `employee`.`dep_id`='$depid'";
+        }
+        
         $sql    = "SELECT `employee`.*,
       `emp_salary`.`total`
       FROM `employee`
       LEFT JOIN `emp_salary` ON `employee`.`em_id`=`emp_salary`.`emp_id`
-      WHERE `employee`.`dep_id`='$depid'";
+      WHERE 1 $dept_id";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -136,17 +141,17 @@ class Payroll_model extends CI_Model{
     }
     
     public function GetsalaryValueEm(){
-        $sql    = "SELECT `emp_salary`.*,
-      `addition`.*,
-      `deduction`.*,
-      `salary_type`.`salary_type`,
-      `employee`.`first_name`,`last_name`,`em_id`
-      FROM `emp_salary`
-      LEFT JOIN `salary_type` ON `emp_salary`.`type_id`=`salary_type`.`id`
-      LEFT JOIN `addition` ON `emp_salary`.`id`=`addition`.`salary_id`
-      LEFT JOIN `deduction` ON `emp_salary`.`id`=`deduction`.`salary_id`
-      LEFT JOIN `employee` ON `emp_salary`.`emp_id`=`employee`.`em_id`
-      ORDER BY `emp_salary`.`id` DESC";
+        $sql    = "SELECT emp_salary.*,
+      addition.*,
+      deduction.*,
+      salary_type.salary_type,
+      employee.first_name,last_name,em_id
+      FROM emp_salary
+      LEFT JOIN salary_type ON emp_salary.type_id=salary_type.id
+      LEFT JOIN addition ON emp_salary.id=addition.salary_id
+      LEFT JOIN deduction ON emp_salary.id=deduction.salary_id
+      LEFT JOIN employee ON emp_salary.emp_id=employee.em_id
+      ORDER BY emp_salary.id DESC";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -154,13 +159,13 @@ class Payroll_model extends CI_Model{
     }
     
     public function GetAllSalary(){
-        $sql    = "SELECT `pay_salary`.*,
-      `employee`.`first_name`,`last_name`,`em_code`,
-      `salary_type`.`salary_type`
-      FROM `pay_salary`
-      LEFT JOIN `employee` ON `pay_salary`.`emp_id`=`employee`.`em_id`
-      LEFT JOIN `salary_type` ON `pay_salary`.`type_id`=`salary_type`.`id`
-      ORDER BY `pay_salary`.`pay_id` DESC";
+        $sql    = "SELECT pay_salary.*,
+      employee.first_name,last_name,em_code,
+      salary_type.salary_type
+      FROM pay_salary
+      LEFT JOIN employee ON pay_salary.emp_id=employee.em_id
+      LEFT JOIN salary_type ON pay_salary.type_id=salary_type.id
+      ORDER BY pay_salary.pay_id DESC";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -208,11 +213,37 @@ class Payroll_model extends CI_Model{
     /*Invoice End*/
     
     public function getAllSalaryData(){
+        $sql    = "SELECT pay_salary.*,
+              employee.first_name,last_name,em_code
+              FROM pay_salary
+              LEFT JOIN employee ON pay_salary.emp_id=employee.em_id
+              ORDER BY pay_salary.month DESC";
+        $query  = $this->db->query($sql);
+        $result = $query->result();
+        
+        return $result;
+    }
+    
+    public function getFilterSalaryData($employee_id = '', $month = '', $year = ''){
+        $employee_id_filter = '';
+        $month_filter       = '';
+        $year_filter        = '';
+        
+        if($employee_id != ''){
+            $employee_id_filter = " and pay_salary.emp_id = '$employee_id' ";
+        }
+        if($month != ''){
+            $month_filter = " and pay_salary.month = '$month' ";
+        }
+        if($year != ''){
+            $year_filter = " and pay_salary.year = $year ";
+        }
+        
         $sql    = "SELECT `pay_salary`.*,
               `employee`.`first_name`,`last_name`,`em_code`
               FROM `pay_salary`
               LEFT JOIN `employee` ON `pay_salary`.`emp_id`=`employee`.`em_id`
-              ORDER BY `pay_salary`.`month` DESC";
+              WHERE 1 $employee_id_filter $month_filter $year_filter ";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -220,11 +251,11 @@ class Payroll_model extends CI_Model{
     }
     
     public function getAllSalaryDataById($id){
-        $sql    = "SELECT `pay_salary`.*,
-              `employee`.`first_name`,`last_name`,`em_code`
+        $sql    = "SELECT `pay_salary` .*,
+              `employee` . `first_name`,`last_name`,`em_code`
               FROM `pay_salary`
-              LEFT JOIN `employee` ON `pay_salary`.`emp_id`=`employee`.`em_id`
-              WHERE `pay_salary`.pay_id = '$id'";
+              LEFT JOIN `employee` ON `pay_salary` . `emp_id` = `employee` . `em_id`
+              WHERE `pay_salary` . pay_id = '$id'";
         $query  = $this->db->query($sql);
         $result = $query->row();
         
@@ -232,9 +263,9 @@ class Payroll_model extends CI_Model{
     }
     
     public function getAdditionDataBySalaryID($salaryID){
-        $sql    = "SELECT `addition`.*
+        $sql    = "SELECT `addition` .*
               FROM `addition`
-              WHERE `addition`.salary_id = '$salaryID'";
+              WHERE `addition` . salary_id = '$salaryID'";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -242,9 +273,9 @@ class Payroll_model extends CI_Model{
     }
     
     public function getDiductionDataBySalaryID($salaryID){
-        $sql    = "SELECT `deduction`.*
+        $sql    = "SELECT `deduction` .*
               FROM `deduction`
-              WHERE `deduction`.salary_id = '$salaryID'";
+              WHERE `deduction` . salary_id = '$salaryID'";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -252,9 +283,9 @@ class Payroll_model extends CI_Model{
     }
     
     public function GetsalaryValueByID($id){
-        $sql    = "SELECT `emp_salary`.*
+        $sql    = "SELECT `emp_salary` .*
       FROM `emp_salary`
-      WHERE `emp_salary`.`emp_id`='$id'";
+      WHERE `emp_salary` . `emp_id` = '$id'";
         $query  = $this->db->query($sql);
         $result = $query->row();
         
@@ -262,9 +293,9 @@ class Payroll_model extends CI_Model{
     }
     
     public function getNumberOfHolidays($month, $year){
-        $sql    = "SELECT SUM(`number_of_days`) AS total_days
+        $sql    = "SELECT SUM(`number_of_days`) as total_days
       FROM `holiday`
-      WHERE MONTH(`from_date`)='$month' AND YEAR(`from_date`)='$year'";
+      WHERE MONTH(`from_date`) = '$month' and YEAR(`from_date`) = '$year'";
         $query  = $this->db->query($sql);
         $result = $query->row();
         
@@ -283,7 +314,9 @@ class Payroll_model extends CI_Model{
     
     public function totalHoursWorkedByEmployeeInAMonth($employeePIN, $start_date, $end_date){
         $sql    =
-            "SELECT TRUNCATE((SUM(ABS(( TIME_TO_SEC( TIMEDIFF( `signin_time`, `signout_time` ) ) )))/3600), 1) AS Hours FROM `attendance` WHERE (`attendance`.`emp_id`='$employeePIN') AND (`atten_date` BETWEEN '$start_date' AND '$end_date')";
+            "SELECT TRUNCATE((SUM(ABS((TIME_TO_SEC(TIMEDIFF(`signin_time`, `signout_time`))))) / 3600),
+            1) as Hours FROM `attendance` WHERE(`attendance` . `emp_id` = '$employeePIN') and
+                                          (`atten_date` BETWEEN '$start_date' and '$end_date')";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -304,9 +337,9 @@ class Payroll_model extends CI_Model{
     }
     
     public function getSalaryRecord($emid, $month, $year){
-        $sql    = "SELECT `pay_salary`.*
+        $sql    = "SELECT `pay_salary` .*
               FROM `pay_salary`
-              WHERE `emp_id`='$emid' AND `month`='$month' AND `year`='$year'";
+              WHERE `emp_id` = '$emid' and `month` = '$month' and `year` = '$year'";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -314,15 +347,20 @@ class Payroll_model extends CI_Model{
     }
     
     public function getOtherInfo($emid){
-        $sql    = "SELECT `employee`.*,
-              (SELECT `des_name` FROM `designation` WHERE `employee`.`des_id` = `designation`.`id`) AS name, 
-              (SELECT `dep_name` FROM `department` WHERE `employee`.`dep_id` = `department`.`id`) AS dep_name, `emp_salary`.`total`, `bank_info`.*, `addition`.*, `deduction`.*, 
-              (SELECT TRUNCATE((SUM(ABS(( TIME_TO_SEC( TIMEDIFF( `signin_time`, `signout_time` ) ) )))/3600), 1) AS Hours FROM `attendance` WHERE (`attendance`.`emp_id`='$emid') AND (DATE_FORMAT(`attendance`.`atten_date`, '%m'))=MONTH(CURRENT_DATE())) AS hours_worked,COUNT(*) AS days FROM `employee`
-              LEFT JOIN `department` ON `employee`.`dep_id`=`department`.`id` 
-              LEFT JOIN `addition` ON `employee`.`em_id`=`addition`.`salary_id` 
-              LEFT JOIN `deduction` ON `employee`.`em_id`=`deduction`.`salary_id` 
-              LEFT JOIN `bank_info` ON `employee`.`em_id`=`bank_info`.`em_id` 
-              LEFT JOIN `emp_salary` ON `employee`.`em_id`=`emp_salary`.`emp_id` WHERE `employee`.`em_id`='$emid'";
+        $sql    = "SELECT `employee` .*,
+              (SELECT `des_name` FROM `designation` WHERE `employee` . `des_id` = `designation` . `id`) as name,
+              (SELECT `dep_name` FROM `department` WHERE `employee` . `dep_id` =
+            `department` . `id`) as dep_name, `emp_salary` . `total`, `bank_info` .*, `addition` .*, `deduction` .*,
+              (SELECT TRUNCATE((SUM(ABS((TIME_TO_SEC(TIMEDIFF(`signin_time`, `signout_time`))))) / 3600),
+            1) as Hours FROM `attendance` WHERE(`attendance` . `emp_id` = '$emid') and
+                                          (DATE_FORMAT(`attendance` . `atten_date`, '%m')) =
+                                              MONTH(CURRENT_DATE())) as hours_worked,COUNT(*) as days FROM `employee`
+              LEFT JOIN `department` ON `employee` . `dep_id` = `department` . `id`
+              LEFT JOIN `addition` ON `employee` . `em_id` = `addition` . `salary_id`
+              LEFT JOIN `deduction` ON `employee` . `em_id` = `deduction` . `salary_id`
+              LEFT JOIN `bank_info` ON `employee` . `em_id` = `bank_info` . `em_id`
+              LEFT JOIN `emp_salary` ON `employee` . `em_id` = `emp_salary` . `emp_id` WHERE `employee` . `em_id` =
+            '$emid'";
         $query  = $this->db->query($sql);
         $result = $query->result();
         

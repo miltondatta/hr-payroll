@@ -368,8 +368,13 @@ class Payroll extends CI_Controller{
     public function Salary_List(){
         
         if($this->session->userdata('user_login_access') != false){
+            $data['employee'] = $this->employee_model->emselect();
             
-            $data['salary_info'] = $this->payroll_model->getAllSalaryData();
+            $prev_month          = date("Y-m-d H:i:s", strtotime("-1 month"));
+            $year                = date('Y', strtotime($prev_month));
+            $month               = date('m', strtotime($prev_month));
+            $month_name          = $this->month_number_to_name($month);
+            $data['salary_info'] = $this->payroll_model->getFilterSalaryData('', $month_name, $year);
             
             $this->load->view('backend/salary_list', $data);
             
@@ -1020,6 +1025,10 @@ class Payroll extends CI_Controller{
                     $has_loan = $this->payroll_model->hasLoanOrNot($employee->em_id);
                     
                     echo "<tr>
+                    <td class=\"center\">
+                                                <input id=\"checkbyid_$employee->em_id\" type=\"checkbox\" class=\"childCheckBox\"
+                                                       name=\"checkbyid[]\" value=\"$employee->em_id\">
+                                            </td>
                     <td>$employee->em_code</td>
                     <td>$full_name</td>
                     <td>$employee->total</td>
@@ -1106,4 +1115,197 @@ class Payroll extends CI_Controller{
         }
     }
     
+    public function generateBulkSalary(){
+        $selected_persons = $this->input->post('selected');
+        $month_input      = $this->input->post('month');
+        $year             = $this->input->post('year');
+        
+        foreach($selected_persons as $person){
+            $employee_salary_details = $this->employee_model->GetsalaryValue($person);
+            // Loan
+            $db_loan_amount = 0;
+            $db_loan_id     = 0;
+            $loan_info      = $this->payroll_model->GetLoanValueByID($person);
+            if($loan_info){
+                $db_loan_amount = $loan_info->installment;
+                $db_loan_id     = $loan_info->id;
+            }
+            
+            $emid           = $person;
+            $month          = $this->month_number_to_name($month_input);
+            $year           = $year;
+            $total_salary   = floatval($employee_salary_details->total ?? 0);
+            $house_rent     = floatval($employee_salary_details->house_rent ?? 0);
+            $medical        = floatval($employee_salary_details->medical ?? 0);
+            $basic          = floatval($employee_salary_details->basic ?? 0);
+            $conveyance     = floatval($employee_salary_details->conveyance ?? 0);
+            $bima           = floatval($employee_salary_details->bima ?? 0);
+            $tax            = floatval($employee_salary_details->tax ?? 0);
+            $provident_fund = floatval($employee_salary_details->provident_fund ?? 0);
+            $others         = floatval($employee_salary_details->others ?? 0);
+            $hourly_rate    = 0;
+            $hours_worked   = 0;
+            $loan           = floatval($db_loan_amount);
+            $loan_id        = $db_loan_id;
+            $total_paid     = floatval($total_salary - ($tax + $bima + $provident_fund + $others) - $loan);
+            $paydate        = date('Y-m-d');
+            $paid_type      = "Bank";
+            $status         = "Paid";
+            $diduction      = 0;
+            $comments       = "Automatic Calculated";
+            $action         = "";
+            
+            $data = array(
+                'emp_id'         => $emid,
+                'month'          => $month,
+                'year'           => $year,
+                'paid_date'      => $paydate,
+                'total_days'     => 0,
+                'basic'          => $basic,
+                'loan'           => $loan,
+                'total_pay'      => $total_paid,
+                'addition'       => 0,
+                'diduction'      => $diduction,
+                'status'         => $status,
+                'paid_type'      => $paid_type,
+                'medical'        => $medical,
+                'house_rent'     => $house_rent,
+                'bonus'          => 0,
+                'bima'           => $bima,
+                'tax'            => $tax,
+                'provident_fund' => $provident_fund,
+                'total_salary'   => $total_salary,
+                'hourly_rate'    => $hourly_rate,
+                'hours_worked'   => $hours_worked,
+                'conveyance'     => $conveyance,
+                'comments'       => $comments,
+                'loan_id'        => $loan_id,
+            
+            );
+            
+            // See if record exists
+            $get_salary_record = $this->payroll_model->getSalaryRecord($emid, $month, $year);
+            
+            if($get_salary_record){
+                $payID          = $get_salary_record[0]->pay_id;
+                $payment_status = $get_salary_record[0]->status;
+            }
+            
+            if(isset($payID) && $payID > 0){
+                
+                if($payment_status == "Paid"){
+                
+                } else{
+                    
+                    $success = $this->payroll_model->updatePaidSalaryData($payID, $data);
+                    
+                    // Do the loan update
+                    if($success && $status == "Paid"){
+                        $loan_info = $this->loan_model->GetLoanValuebyLId($loan_id);
+                        
+                        // loan_id and loan fields already grabbed
+                        if( !empty($loan_info)){
+                            
+                            $period = $loan_info->install_period - 1;
+                            $number = $loan_info->loan_number;
+                            $data   = array();
+                            $data   = array(
+                                'emp_id'         => $emid,
+                                'loan_id'        => $loan_id,
+                                'loan_number'    => $number,
+                                'install_amount' => $loan,
+                                /*'pay_amount' => $payment,*/
+                                'app_date'       => $paydate,
+                                /*'receiver' => $receiver,*/
+                                'install_no'     => $period
+                                /*'notes' => $notes*/
+                            );
+                            
+                            $success_installment = $this->loan_model->Add_installData($data);
+                            
+                            $totalpay    = $loan_info->total_pay + $loan;
+                            $totaldue    = $loan_info->amount - $totalpay;
+                            $period      = $loan_info->install_period - 1;
+                            $loan_status = $loan_info->status;
+                            
+                            if($period == '1'){
+                                $loan_status = 'Done';
+                            }
+                            $data = array(
+                                'total_pay'      => $totalpay,
+                                'total_due'      => $totaldue,
+                                'install_period' => $period,
+                                'status'         => $loan_status
+                            );
+                            
+                            $success_loan = $this->loan_model->update_LoanData($loan_id, $data);
+                        }
+                    }
+                }
+            } else{
+                $success = $this->payroll_model->insertPaidSalaryData($data);
+                
+                // Do the loan update
+                if($success && $status == "Paid"){
+                    
+                    // Input Status
+                    $loan_info = $this->loan_model->GetLoanValuebyLId($loan_id);
+                    
+                    // loan_id and loan fields already grabbed
+                    if( !empty($loan_info)){
+                        
+                        $period = $loan_info->install_period - 1;
+                        $number = $loan_info->loan_number;
+                        $data   = array();
+                        $data   = array(
+                            'emp_id'         => $emid,
+                            'loan_id'        => $loan_id,
+                            'loan_number'    => $number,
+                            'install_amount' => $loan,
+                            /*'pay_amount' => $payment,*/
+                            'app_date'       => $paydate,
+                            /*'receiver' => $receiver,*/
+                            'install_no'     => $period
+                            /*'notes' => $notes*/
+                        );
+                        
+                        $success_installment = $this->loan_model->Add_installData($data);
+                        
+                        $totalpay    = $loan_info->total_pay + $loan;
+                        $totaldue    = $loan_info->amount - $totalpay;
+                        $period      = $loan_info->install_period - 1;
+                        $loan_status = $loan_info->status;
+                        
+                        if($period == '0'){
+                            $loan_status = 'Done';
+                        }
+                        $data = array(
+                            'total_pay'      => $totalpay,
+                            'total_due'      => $totaldue,
+                            'install_period' => $period,
+                            'status'         => $loan_status
+                        );
+                        
+                        $success_loan = $this->loan_model->update_LoanData($loan_id, $data);
+                    }
+                }
+            }
+        }
+        
+        echo json_encode(array(
+                             "message" => "Success"
+                         ));
+    }
+    
+    public function FilteredSalaryList(){
+        $employee_id = $this->input->post('employee_id');
+        $year        = $this->input->post('year');
+        $month       = $this->input->post('month');
+        
+        $month_name = $this->month_number_to_name($month);
+        
+        $data['salary_info'] = $this->payroll_model->getFilterSalaryData($employee_id, $month_name, $year);
+        
+        $this->load->view('backend/salary_list_partial', $data);
+    }
 }

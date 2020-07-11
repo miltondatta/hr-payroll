@@ -40,8 +40,8 @@
                                                     <select class="form-control custom-select"
                                                             data-placeholder="Choose a Category" tabindex="1" id="depid"
                                                             name="depid" style="margin-top: 21px;" required>
-                                                        <option value="">Department
-                                                        </option>
+                                                        <option value="">Department</option>
+                                                        <option value="0">All Department</option>
                                                         <?php foreach($department as $value): ?>
                                                             <option value="<?php echo $value->id; ?>">
                                                                 <?php echo $value->dep_name; ?>
@@ -78,12 +78,21 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="mt-3">
+                                <button class="btn btn-info text-white" onclick="generate_salary()">
+                                    <i class="fa fa-money-bill-alt"></i>
+                                    Generate Salary Checked items
+                                </button>
+                            </div>
                             <div class="table-responsive mt-3">
-                                <table id="data_table_example"
+                                <table id="sample_table_not_datatable"
                                        class="display table dataTable table-striped table-bordered">
                                     <thead>
                                     <tr>
+                                        <th class="center" style="min-width: 50px">
+                                            <input type="checkbox" class="parentCheckBox" id="check_all"
+                                                   onclick='check_box("check_all", "childCheckBox")'>
+                                        </th>
                                         <th>PIN</th>
                                         <th>Full name</th>
                                         <th>Total salary</th>
@@ -428,7 +437,6 @@
             $(document).on('change', '.hourly_rate', function (){
                 calculateTotalSalary();
             });
-            
             $(document).on('change', '.diduction', function (){
                 calculateTotalSalary();
             });
@@ -452,6 +460,52 @@
         });
     </script>
     <script type="text/javascript">
+        
+        function check_box(parent_id, class_name){
+            if ($("#" + parent_id).is(':checked')){
+                $('.' + class_name).parent('span').addClass('checked');
+                $('.' + class_name).attr('checked', true);
+            } else{
+                $('.' + class_name).parent('span').removeClass('checked');
+                $('.' + class_name).attr('checked', false);
+            }
+        }
+        
+        function generate_salary(){
+            var selected = [];
+            $("input[name='checkbyid[]']:checked").each(function (){
+                selected.push($(this).val());
+            });
+            if (selected.length > 0){
+                let month_date        = String($('#calendar-month_moth_view').val());
+                let year_month_splite = month_date.split("-");
+                let year              = year_month_splite[1];
+                let month             = year_month_splite[0];
+                
+                var confirmation = confirm("Are you sure?");
+                if (confirmation === true){
+                    $.ajax({
+                        url     : "generateBulkSalary",
+                        type    : "POST",
+                        dataType: 'json',
+                        data    : {
+                            "selected": selected,
+                            "month"   : month,
+                            "year"    : year,
+                        },
+                        success : function (response){
+                            alert("Calculation Done");
+                        },
+                        error   : function (response){
+                        
+                        }
+                    });
+                }
+            } else{
+                alert("Please check at least one. ")
+            }
+        }
+        
         // Populate salary data on generate salary click
         $(document).ready(function (){
             
@@ -475,12 +529,14 @@
                     dataType: 'json',
                 }).done(function (response){
                     
-                    let loan_in           = parseFloat(isNaN(response.loan_amount) || response.loan_amount == '' ? 0 : response.loan_amount);
+                    let loan_in           = parseFloat(isNaN(response.loan_amount) || response.loan_amount == '' ? 0 :
+                                                       response.loan_amount);
                     let bima_in           = parseFloat(isNaN(response.bima) || response.bima == '' ? 0 : response.bima);
                     let tax_in            = parseFloat(isNaN(response.tax) || response.tax == '' ? 0 : response.tax);
                     let provident_fund_in = parseFloat(isNaN(response.provident_fund) || response.provident_fund == '' ?
                                                        0 : response.provident_fund);
-                    let others_in         = parseFloat(isNaN(response.others) || response.others == '' ? 0 : response.others);
+                    let others_in         = parseFloat(isNaN(response.others) || response.others == '' ? 0 :
+                                                       response.others);
                     let total_in          = parseFloat(isNaN(response.total) ? 0 : response.total);
                     
                     $('#generatePayrollForm').find('[name="basic"]').val(response.basic).attr('readonly', true).end();
