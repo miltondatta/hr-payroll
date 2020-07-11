@@ -32,7 +32,8 @@ class UserManagement extends CI_Controller{
                 $data['menu_id']        = [];
             }
             $menus    = [];
-            $data['mainMenu'] = $this->settings_model->getMenu(0);
+            $data['mainMenu']  = $this->settings_model->getMenu(0);
+            $data['role_name'] = $this->settings_model->getRoleInfo($role_id)->role_name;
             //$subMenu  = $this->settings_model->getMenu($record->id); 
             $this->load->view('backend/role_management_edit', $data);
         } else {

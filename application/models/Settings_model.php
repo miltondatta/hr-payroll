@@ -40,5 +40,12 @@
 		return $result;	 
 	}
 
+	public function getRoleInfo($role_id) {
+		$sql 	= "SELECT * FROM `user_roles` WHERE id = '$role_id'";
+		$query	=  $this->db->query($sql);
+		$result =  $query->row();
+		return $result;	 
+	}
+
 
     }
