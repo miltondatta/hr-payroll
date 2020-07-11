@@ -60,7 +60,7 @@ class PlannedLeave extends CI_Controller
             $leave_to = $this->input->post('leave_to');
             $remarks = $this->input->post('remarks');
             $now = new DateTime();
-            $planned_leave = $this->PlannedLeave_model->plannedLeaveById($id);
+            $line_manager = $this->PlannedLeave_model->plannedLeaveById($id);
 
             $data = array(
                 'leave_type_id' => $leave_type_id,
@@ -69,7 +69,7 @@ class PlannedLeave extends CI_Controller
                 'remarks' => $remarks,
                 'em_id' => $this->session->userdata('user_login_id'),
                 'added_by' => $this->session->userdata('name'),
-                'created_at' => $id == '' ? $now->format('Y-m-d H:i:s') : $planned_leave->created_at,
+                'created_at' => $id == '' ? $now->format('Y-m-d H:i:s') : $line_manager->created_at,
                 'updated_at' => $id != '' ? $now->format('Y-m-d H:i:s') : ''
             );
 

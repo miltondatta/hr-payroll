@@ -209,6 +209,11 @@ class Employee_model extends CI_Model{
         $this->db->where('id', $id);
         $this->db->update('address', $data);
     }
+
+    public function UpdateLineManager($id, $data){
+        $this->db->where('id', $id);
+        $this->db->update('line_manager', $data);
+    }
     
     public function Reset_Password($id, $data){
         $this->db->where('em_id', $id);
@@ -247,6 +252,11 @@ class Employee_model extends CI_Model{
     
     public function AddParmanent_Address($data){
         $this->db->insert('address', $data);
+    }
+
+    public function AddLineManager($data)
+    {
+        $this->db->insert('line_manager', $data);
     }
     
     public function Add_education($data){
@@ -302,6 +312,24 @@ class Employee_model extends CI_Model{
         $query  = $this->db->query($sql);
         $result = $query->row();
         
+        return $result;
+    }
+
+    public function lineManagerById($id)
+    {
+        $sql    = "SELECT * FROM `line_manager` WHERE `id`='$id'";
+        $query  = $this->db->query($sql);
+        $result = $query->row();
+
+        return $result;
+    }
+
+    public function lineManagerByEmployeeId($em_id)
+    {
+        $sql    = "SELECT * FROM `line_manager` WHERE `em_id`='$em_id'";
+        $query  = $this->db->query($sql);
+        $result = $query->row();
+
         return $result;
     }
     

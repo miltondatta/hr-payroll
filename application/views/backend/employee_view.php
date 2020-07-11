@@ -61,6 +61,9 @@
                                     <li class="nav-item px-3"><a class="nav-link" data-toggle="tab" href="#password1"
                                                                  role="tab"
                                                                  style="font-size: 14px;"> Change Password</a></li>
+                                    <li class="nav-item px-3">
+                                        <a class="nav-link" data-toggle="tab" href="#line-manager" role="tab" style="font-size: 14px;">Line Manager</a>
+                                    </li>
                                 <?php } ?>
                             </ul>
                             <!-- Tab panes -->
@@ -153,7 +156,7 @@
                                                             <select name="blood" <?php if($this->session->userdata('user_type') ==
                                                                                           'EMPLOYEE'){ ?> readonly <?php } ?>
                                                                     value="<?php echo $basic->em_blood_group; ?>"
-                                                                    class="form-control custom-select">
+                                                                    class="form-control">
                                                                 <option value="<?php echo $basic->em_blood_group; ?>"><?php echo $basic->em_blood_group; ?></option>
                                                                 <option value="O+">O+</option>
                                                                 <option value="O-">O-</option>
@@ -168,7 +171,7 @@
                                                             <label>Gender </label>
                                                             <select name="gender" <?php if($this->session->userdata('user_type') ==
                                                                                            'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                    class="form-control custom-select">
+                                                                    class="form-control">
 
                                                                 <option value="<?php echo $basic->em_gender; ?>"><?php echo $basic->em_gender; ?></option>
                                                                 <option value="Male">Male</option>
@@ -180,7 +183,7 @@
                                                             <div class="form-group col-md-4 m-t-10">
                                                                 <label>User Type </label>
                                                                 <select name="role"
-                                                                        class="form-control custom-select"
+                                                                        class="form-control"
                                                                         required>
                                                                     <option value="<?php echo $basic->em_role; ?>"><?php echo $basic->em_role; ?></option>
                                                                     <option value="HR">HR</option>
@@ -195,7 +198,7 @@
                                                                 <label>Status </label>
                                                                 <select name="status" <?php if($this->session->userdata('user_type') ==
                                                                                                'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                        class="form-control custom-select"
+                                                                        class="form-control"
                                                                         required>
                                                                     <option value="<?php echo $basic->status; ?>"><?php echo $basic->status; ?></option>
                                                                     <option value="ACTIVE">ACTIVE</option>
@@ -236,7 +239,7 @@
                                                                 <label>Department</label>
                                                                 <select name="dept" <?php if($this->session->userdata('user_type') ==
                                                                                              'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                        class="form-control custom-select">
+                                                                        class="form-control">
                                                                     <option value="<?php echo $basic->id; ?>"><?php echo $basic->dep_name; ?></option>
                                                                     <?Php foreach($depvalue as $value): ?>
                                                                         <option value="<?php echo $value->id ?>"><?php echo $value->dep_name ?></option>
@@ -250,7 +253,7 @@
                                                                 <label>Designation </label>
                                                                 <select name="deg" <?php if($this->session->userdata('user_type') ==
                                                                                             'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                        class="form-control custom-select">
+                                                                        class="form-control">
                                                                     <option value="<?php echo $basic->id; ?>"><?php echo $basic->des_name; ?></option>
                                                                     <?Php foreach($degvalue as $value): ?>
                                                                         <option value="<?php echo $value->id ?>"><?php echo $value->des_name ?></option>
@@ -736,7 +739,7 @@
                                                             <label class="">Leave Type</label>
                                                             <select name="typeid" <?php if($this->session->userdata('user_type') ==
                                                                                            'EMPLOYEE'){ ?> readonly <?php } ?>
-                                                                    class="select2 form-control custom-select"
+                                                                    class="select2 form-control"
                                                                     style="width: 100%"
                                                                     id="" required>
                                                                 <option value="">Select Here...</option>
@@ -756,7 +759,7 @@
 
                                                         <div class="form-group">
                                                             <label class="">Year</label> <select name="year"
-                                                                                                 class="select2 form-control custom-select"
+                                                                                                 class="select2 form-control"
                                                                                                  style="width: 100%"
                                                                                                  id="" required>
                                                                 <option value="">Select Here...</option>
@@ -932,7 +935,7 @@
                                                     <div class="form-group col-md-6 m-t-5">
                                                         <label class="control-label">Salary Type</label>
                                                         <select class="form-control <?php if($this->session->userdata('user_type') ==
-                                                                                             'EMPLOYEE'){ ?> readonly <?php } ?> custom-select"
+                                                                                             'EMPLOYEE'){ ?> readonly <?php } ?>"
                                                                 data-placeholder="Choose a Category"
                                                                 tabindex="1" name="typeid"
                                                                 required>
@@ -1061,6 +1064,64 @@
                                                         </button>
                                                     </div>
                                                     <?php } ?>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="line-manager" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <form class="row" action="addLineManager" method="post">
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="project_mananger">Project Manager</label>
+                                                    <select class="form-control" name="project_mananger" id="project_mananger" required>
+                                                        <option value="">Select Project Manager</option>
+                                                        <?php foreach($employee as $value): ?>
+                                                            <option value="<?php echo $value->em_id; ?>" <?php echo $line_manager->project_manager == $value->em_id ? 'selected' : ''; ?>><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="subordinate">Subordinate</label>
+                                                    <select class="form-control multiselect" name="subordinate[]" id="subordinate" required multiple>
+                                                        <option value="">Select Subordinate</option>
+                                                        <?php foreach($employee as $value): ?>
+                                                            <option value="<?php echo $value->em_id; ?>"
+                                                                <?php
+                                                                    if ($line_manager->subordinate) {
+                                                                        foreach (explode(',', $line_manager->subordinate) as $record) {
+                                                                            echo $record == $value->em_id ? 'selected' : '';
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                >
+                                                                <?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="colleague">Colleague</label>
+                                                    <select class="form-control multiselect" name="colleague[]" id="colleague" required multiple>
+                                                        <option value="">Select Colleague</option>
+                                                        <?php foreach($employee as $value): ?>
+                                                            <option value="<?php echo $value->em_id; ?>"
+                                                                <?php
+                                                                if ($line_manager->colleague) {
+                                                                    foreach (explode(',', $line_manager->colleague) as $record) {
+                                                                        echo $record == $value->em_id ? 'selected' : '';
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            ><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-actions col-md-12">
+                                                    <input type="hidden" name="id" value="<?php echo $line_manager->id; ?>">
+                                                    <input type="hidden" name="emid" value="<?php echo $basic->em_id; ?>">
+                                                    <button type="submit" class="btn btn-primary rounded-btn">Save</button>
                                                 </div>
                                             </form>
                                         </div>
