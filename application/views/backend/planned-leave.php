@@ -95,7 +95,7 @@
                                                 <td><?php echo substr($value->remarks, 0, 50);
                                                     echo strlen($value->remarks) > 50 ? '...' : ''; ?></td>
                                                 <td><?php echo $value->added_by ?></td>
-                                                <td><?php echo date('jS \of F Y', strtotime($value->created_at)) ?></td>
+                                                <td><?php echo date_format(date_create($value->created_at), 'Y-m-d H:i:s'); ?></td>
                                                 <td>
                                                     <a href="javascript:void(0);" class="btn btn-info rounded-btn"
                                                        onclick="getPlannedLeaveInfoById(<?php echo $value->id; ?>)">
@@ -187,6 +187,7 @@
 
     function emptyInputValue() {
         $('#btnSubmit').trigger("reset");
+        $('#btnSubmit').find('[name="id"]').val('').end();
     }
 
     function getPlannedLeaveData() {

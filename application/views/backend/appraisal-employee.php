@@ -71,7 +71,7 @@
                                                 <td><?php echo $value->category_name; ?></td>
                                                 <td><?php echo $value->category_rating; ?></td>
                                                 <td><?php echo $value->category_value; ?></td>
-                                                <td><?php echo date('jS \of F Y', strtotime($value->created_at)); ?></td>
+                                                <td><?php echo date_format(date_create($value->created_at), 'Y-m-d H:i:s'); ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -158,6 +158,7 @@
 
     function emptyInputValue() {
         $('#btnSubmit').trigger("reset");
+        $('#btnSubmit').find('[name="id"]').val('').end();
     }
 
     $("#financial_year").change(function () {
