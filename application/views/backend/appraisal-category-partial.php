@@ -42,9 +42,9 @@ if ($status == 'add') {
             <?php $rating_value = explode(',', $record->rating_value); ?>
             <?php
                 $checked = '';
-                if (isset($appraisal_exists[$key])) {
-                    if ($appraisal_exists[$key]['category_id'] == $record->id) {
-                        $checked = $appraisal_exists[$key]['category_rating'];
+                foreach ($appraisal_exists as $value) {
+                    if ($value['category_id'] == $record->id) {
+                        $checked = $value['category_rating'];
                     }
                 }
             ?>
