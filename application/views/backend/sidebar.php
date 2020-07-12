@@ -120,7 +120,7 @@
                         <div>
                             <ul>
                                 <li class="<?php echo $url == (base_url() . 'Payroll/Salary_List') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Payroll/Salary_List"><i class="fas fa-list-alt"></i> Payroll List</a></li>
-                                <li class="<?php echo $url == (base_url() . 'Payroll/Generate_salary') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Payroll/Generate_salary"><i class="fas fa-file-export"></i> Generate Payslip</a></li>
+                                <li class="<?php echo $url == (base_url() . 'Payroll/Generate_salary') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Payroll/Generate_salary"><i class="fas fa-file-export"></i> Process Salary</a></li>
                                 <li class="<?php echo $url == (base_url() . 'Payroll/Payslip_Report') ? 'active' : '' ?>"><a href="<?php echo base_url(); ?>Payroll/Payslip_Report"><i class="fas fa-file-medical-alt"></i> Payslip Report</a></li>
                             </ul>
                         </div>

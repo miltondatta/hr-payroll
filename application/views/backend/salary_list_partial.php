@@ -3,10 +3,15 @@
     <thead>
     <tr>
         <th class="hide">SL</th>
-        <th>PIN</th>
+        <th>Emp ID</th>
         <th>Employee</th>
         <th>Month</th>
-        <th>Salary</th>
+        <th>Total Salary</th>
+        <th>Basic Salary</th>
+        <th>House Rent</th>
+        <th>Medical</th>
+        <th>Conveyance</th>
+        <th>Tax</th>
         <th>Loan</th>
         <th>Over Time</th>
         <th>Deduction</th>
@@ -28,6 +33,11 @@
             <td><?php echo $individual_info->month . ' ' .
                            $individual_info->year; ?></td>
             <td><?php echo $individual_info->total_salary; ?></td>
+            <td><?php echo $individual_info->basic; ?></td>
+            <td><?php echo $individual_info->house_rent; ?></td>
+            <td><?php echo $individual_info->medical; ?></td>
+            <td><?php echo $individual_info->conveyance; ?></td>
+            <td><?php echo $individual_info->tax; ?></td>
             <td><?php echo $individual_info->loan; ?></td>
             <td><?php echo $individual_info->hourly_rate *
                            $individual_info->hours_worked; ?></td>

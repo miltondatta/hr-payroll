@@ -6,12 +6,12 @@
             <div class="row ">
                 <div class="col-12  align-self-center">
                     <div class="sub-header mt-3 py-3 px-3 align-self-center d-sm-flex w-100 rounded">
-                        <div class="w-sm-100 mr-auto"><h4 class="mb-0">Payroll View</h4></div>
+                        <div class="w-sm-100 mr-auto"><h4 class="mb-0">Proces Salary View</h4></div>
 
                         <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Home</a></li>
                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>Payroll/Salary_List">Payroll</a></li>
-                            <li class="breadcrumb-item active">Payroll View</li>
+                            <li class="breadcrumb-item active">Proces Salary</li>
                         </ol>
                     </div>
                 </div>
@@ -22,12 +22,12 @@
                         <a class="btn btn-primary text-white"
                            href="<?php echo base_url(); ?>Payroll/Salary_Type">
                             <i class="fa fa-bars"></i>
-                            Payroll List
+                            Salary List
                         </a>
                     </div>
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title"><i class="fa fa-compass" aria-hidden="true"></i>Monthly Payroll List
+                            <h4 class="card-title"><i class="fa fa-compass" aria-hidden="true"></i>Monthly Salary List
                             </h4>
                         </div>
                         <div class="card-body">
@@ -494,7 +494,8 @@
                             "year"    : year,
                         },
                         success : function (response){
-                            alert("Calculation Done");
+                            alert("Salary Generated.");
+                            window.location.href = "<?php echo base_url()?>Payroll/Salary_List";
                         },
                         error   : function (response){
                         

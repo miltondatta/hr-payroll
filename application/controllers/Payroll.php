@@ -1148,9 +1148,9 @@ class Payroll extends CI_Controller{
             $loan           = floatval($db_loan_amount);
             $loan_id        = $db_loan_id;
             $total_paid     = floatval($total_salary - ($tax + $bima + $provident_fund + $others) - $loan);
-            $paydate        = date('Y-m-d');
+            $paydate        = /*date('Y-m-d')*/ null;
             $paid_type      = "Bank";
-            $status         = "Paid";
+            $status         = "Process";
             $diduction      = 0;
             $comments       = "Automatic Calculated";
             $action         = "";
