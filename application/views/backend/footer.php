@@ -8,6 +8,12 @@
 </a>
 <!-- END: Back to top-->
 
+<!-- START: Chat Button-->
+<a href="<?php echo base_url(); ?>ChatWindow/index" target="_blank" class="chatbutton text-center"> 
+            <i class="icon-speech"></i>
+</a>
+
+
 <!-- START: Template JS-->
 <script src="<?= base_url(); ?>assets/dist/vendors/jquery/jquery-3.3.1.min.js"></script>
 <script src="<?= base_url(); ?>assets/dist/vendors/jquery-ui/jquery-ui.min.js"></script>
