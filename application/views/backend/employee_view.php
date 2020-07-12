@@ -1075,9 +1075,9 @@
                                         <div class="card-body">
                                             <form class="row" action="addLineManager" method="post">
                                                 <div class="form-group col-md-6">
-                                                    <label class="control-label" for="project_mananger">Project Manager</label>
+                                                    <label class="control-label" for="project_mananger">Line Manager</label>
                                                     <select class="form-control" name="project_mananger" id="project_mananger" required>
-                                                        <option value="">Select Project Manager</option>
+                                                        <option value="">Select Line Manager</option>
                                                         <?php foreach($employee as $value): ?>
                                                             <option value="<?php echo $value->em_id; ?>" <?php if (isset($line_manager)) {echo $line_manager->project_manager == $value->em_id ? 'selected' : '';} ?>><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
                                                         <?php endforeach; ?>
