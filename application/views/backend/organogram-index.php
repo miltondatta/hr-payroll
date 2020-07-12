@@ -1,4 +1,5 @@
 <?php $this->load->view('backend/header'); ?>
+<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/organogram.css">
 <?php $this->load->view('backend/sidebar'); ?>
 <main>
     <div class="container-fluid">
@@ -26,7 +27,7 @@
                                 <h4 class="card-title">Organogram View</h4>
                             </div>
                             <div class="card-body">
-                                <div id="myDiagramDiv" style="width: 100%; height: 350px; background-color: #DAE4E4;"></div>
+                                <div style="width:100%; height:1600px !important;" id="orgchart"/>
                             </div>
                         </div>
                     </div>
@@ -37,52 +38,50 @@
     </div>
 </main>
 <?php $this->load->view('backend/footer'); ?>
-<script src="https://unpkg.com/gojs/release/go-debug.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/orgchart.js"></script>
 <script>
-    var $ = go.GraphObject.make;
-
-    var myDiagram =
-        $(go.Diagram, "myDiagramDiv",
-            {
-                "undoManager.isEnabled": true,
-                layout: $(go.TreeLayout,
-                    { angle: 90, layerSpacing: 35 })
-            });
-
-    // the template we defined earlier
-    myDiagram.nodeTemplate =
-        $(go.Node, "Horizontal",
-            { background: "#44CCFF" },
-            $(go.TextBlock, "Default Text",
-                { margin: 12, stroke: "white", font: "bold 16px sans-serif" },
-                new go.Binding("text", "name"))
-        );
-
-    // define a Link template that routes orthogonally, with no arrowhead
-    myDiagram.linkTemplate =
-        $(go.Link,
-            { routing: go.Link.Orthogonal, corner: 5 },
-            $(go.Shape, // the link's path shape
-                { strokeWidth: 3, stroke: "#555" }));
-
-    var model = $(go.TreeModel);
-    model.nodeDataArray =
-        [
-            { key: "1",              name: "Ceo"},
-            { key: "2", parent: "1", name: "Vice President Finance"},
-            { key: "3", parent: "2", name: "Chief Accountant"},
-            { key: "4", parent: "2", name: "Chief Accountant"},
-            { key: "5", parent: "4", name: "Junior Accountant"},
-            { key: "6", parent: "1", name: "Vice President Marketing"},
-            { key: "7", parent: "6", name: "Sales Manager"},
-            { key: "8", parent: "6", name: "Advertising Manager"},
-            { key: "9", parent: "8", name: "Account Executive"},
-            { key: "10", parent: "1", name: "Vice President HR"},
-            { key: "11", parent: "10", name: "Hr Manager"},
-            { key: "12", parent: "10", name: "Recruit Executive"},
-            { key: "13", parent: "1", name: "Chief Technical Officer"},
-            { key: "14", parent: "13", name: "Project Manager"},
-            { key: "15", parent: "14", name: "Software Developer"}
-        ];
-    myDiagram.model = model;
+    var chart = new OrgChart(document.getElementById("orgchart"), {
+        template: "luba",
+        enableSearch: true,
+        expand: {
+        nodes: [],
+            allChildren: true
+        },
+        // mouseScrool: OrgChart.action.none,
+        nodeBinding: {
+            field_0: "name",
+            field_1: "title",
+            img_0: "img"
+        },
+        nodes: [
+            { id: 1, name: "", title: "Chairman", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 2, pid: 1, name: "", title: "Vice Chairman", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 3, pid: 2, name: "", title: "Managing Director", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 4, pid: 3, name: "", title: "Director", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 5, pid: 3, name: "", title: "Director Accounts and Finance", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 6, pid: 3, name: "", title: "Director Foreign Affairs", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 7, pid: 3, name: "", title: "Technical Director", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 8, pid: 3, name: "", title: "Director - HR", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 9, pid: 4, name: "", title: "GM - Commercial", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 10, pid: 5, name: "", title: "GM - Accounts and Finance", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 11, pid: 10, name: "", title: "Manager Accounts", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 12, pid: 10, name: "", title: "Manager Finance", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 13, pid: 11, name: "", title: "Executive", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 14, pid: 12, name: "", title: "Executive", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 15, pid: 7, name: "", title: "CTO", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 16, pid: 15, name: "", title: "GM - Technical", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 17, pid: 16, name: "", title: "Manager Software Development", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 18, pid: 16, name: "", title: "Manager Network", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 19, pid: 16, name: "", title: "Manager Cyber Security", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 20, pid: 17, name: "", title: "Software Engineer", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 21, pid: 17, name: "", title: "Software Engineer", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 22, pid: 18, name: "", title: "Network Engineer", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 23, pid: 19, name: "", title: "Cyber Security Engineer", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 24, pid: 19, name: "", title: "Cyber Security Engineer", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 25, pid: 8, name: "", title: "GM - HR", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 26, pid: 25, name: "", title: "Manager Hr", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+            { id: 27, pid: 25, name: "", title: "Manager Logistics", img: "https://cdn.balkan.app/shared/empty-img-none.svg" },
+        ]
+    });
 </script>
+
