@@ -887,7 +887,8 @@ Website: http://emilcarlsson.se/
 		<div class="message-input">
 			<div class="wrap">
 			<input type="text" placeholder="Write your message..." />
-			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+            <input type="file" id="attachment" style="display: none;" onchange="fileSelected(this)"/>
+			<i class="fa fa-paperclip attachment" aria-hidden="true" onclick="openAttachment()" ></i>
 			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
 			</div>
 		</div>
@@ -895,6 +896,14 @@ Website: http://emilcarlsson.se/
 </div>
 <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
 <script >$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+
+function openAttachment() {
+  document.getElementById('attachment').click();
+}
+
+function fileSelected(input){
+  document.getElementById('btnAttachment').value = "File: " + input.files[0].name
+}
 
 $("#profile-img").click(function() {
 	$("#status-options").toggleClass("active");
