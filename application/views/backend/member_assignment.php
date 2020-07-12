@@ -9,7 +9,7 @@
 
                         <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
                             <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>">Home</a></li>
-                            <li class="breadcrumb-item active">Training Agency</a></li>
+                            <li class="breadcrumb-item active">Member Assignment</a></li>
                         </ol>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     <?php if(isset($item)){ ?>
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Edit Training Agency</h4>
+                                <h4 class="card-title">Edit Member Assignment</h4>
                             </div>
                             <?php echo validation_errors(); ?>
                             <?php echo $this->upload->display_errors(); ?>
@@ -79,6 +79,27 @@
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <label>From Date </label>
+                                                    <input type="text" name="from_date" id="calendar-month"
+                                                           data-format="yyyy-mm-dd"
+                                                           class="form-control mydatetimepickerFull"
+                                                           placeholder="From" autocomplete="off"
+                                                           value="<?php echo $item->from_date ?>"
+                                                    >
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>To Date </label>
+                                                    <input type="text" name="to_date" id="calendar-month-two"
+                                                           data-format="yyyy-mm-dd"
+                                                           class="form-control mydatetimepickerFull"
+                                                           placeholder="To" autocomplete="off"
+                                                           value="<?php echo $item->to_date ?>"
+                                                    >
+                                                </div>
+
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary rounded-btn mb-2"><i
                                                                 class="fa fa-check"></i> Update
@@ -96,7 +117,7 @@
                     <?php } else{ ?>
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Add Training Agency</h4>
+                                <h4 class="card-title">Add Member Assignment</h4>
                             </div>
                             <?php echo validation_errors(); ?>
                             <?php echo $this->upload->display_errors(); ?>
@@ -105,7 +126,8 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <form method="post" action="<?php echo base_url(); ?>member_assignment/save">
+                                            <form method="post"
+                                                  action="<?php echo base_url(); ?>member_assignment/save">
                                                 <div class="form-group">
                                                     <label>Course Name </label>
                                                     <select name="course_id" id="course_id"
@@ -131,6 +153,22 @@
                                                             </option>
                                                         <?php endforeach; ?>
                                                     </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>From Date </label>
+                                                    <input type="text" name="from_date" id="calendar-month"
+                                                           data-format="yyyy-mm-dd"
+                                                           class="form-control mydatetimepickerFull"
+                                                           placeholder="From" autocomplete="off">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>To Date </label>
+                                                    <input type="text" name="to_date" id="calendar-month-two"
+                                                           data-format="yyyy-mm-dd"
+                                                           class="form-control mydatetimepickerFull"
+                                                           placeholder="To" autocomplete="off">
                                                 </div>
 
                                                 <div class="form-group">
@@ -164,7 +202,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header  justify-content-between align-items-center">
-                                    <h4 class="card-title">Training Agency</h4>
+                                    <h4 class="card-title">Member Assignment</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -173,6 +211,8 @@
                                             <thead>
                                             <tr>
                                                 <th>Course</th>
+                                                <th>From Date</th>
+                                                <th>To Date</th>
                                                 <th>Employees</th>
                                                 <th>Action</th>
                                             </tr>
@@ -181,6 +221,8 @@
                                             <?php foreach($lists as $value){ ?>
                                                 <tr>
                                                     <td><?php echo $value->course_name; ?></td>
+                                                    <td><?php echo $value->from_date; ?></td>
+                                                    <td><?php echo $value->to_date; ?></td>
                                                     <td><?php echo $value->employee_name; ?></td>
                                                     <td>
                                                         <a href="<?php echo base_url(); ?>member_assignment/edit/<?php echo $value->id; ?>"

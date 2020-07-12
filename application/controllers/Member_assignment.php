@@ -28,9 +28,13 @@ class Member_assignment extends CI_Controller{
     
     public function save(){
         $course_id = $this->input->post('course_id');
+        $from_date = $this->input->post('from_date');
+        $to_date   = $this->input->post('to_date');
         
         $course_insert_array = array(
-            'course_id' => $course_id
+            'course_id' => $course_id,
+            'from_date' => $from_date,
+            'to_date'   => $to_date,
         );
         
         $insert_id = $this->member_assignment_model->save($course_insert_array);
@@ -70,9 +74,13 @@ class Member_assignment extends CI_Controller{
         if($this->session->userdata('user_login_access') != false){
             
             $course_id = $this->input->post('course_id');
+            $from_date = $this->input->post('from_date');
+            $to_date   = $this->input->post('to_date');
             
             $course_insert_array = array(
-                'course_id' => $course_id
+                'course_id' => $course_id,
+                'from_date' => $from_date,
+                'to_date'   => $to_date,
             );
             
             $this->member_assignment_model->update($id, $course_insert_array);

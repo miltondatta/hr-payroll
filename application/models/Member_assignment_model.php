@@ -11,7 +11,7 @@ class Member_assignment_model extends CI_Model{
     private $table_mem_name = 'training_members';
     
     public function getAll(){
-        $sql    = "select tr_as.id,tr_as.course_name, tr_mem.employee_name
+        $sql    = "select tr_as.id,tr_as.from_date,tr_as.to_date,tr_as.course_name, tr_mem.employee_name
                     from (select ta.*, tc.course_name
                           from training_assignment as ta
                                    left join training_courses as tc on ta.course_id = tc.id) as tr_as
