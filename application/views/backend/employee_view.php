@@ -1079,7 +1079,7 @@
                                                     <select class="form-control" name="project_mananger" id="project_mananger" required>
                                                         <option value="">Select Project Manager</option>
                                                         <?php foreach($employee as $value): ?>
-                                                            <option value="<?php echo $value->em_id; ?>" <?php echo $line_manager->project_manager == $value->em_id ? 'selected' : ''; ?>><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                                            <option value="<?php echo $value->em_id; ?>" <?php if (isset($line_manager)) {echo $line_manager->project_manager == $value->em_id ? 'selected' : '';} ?>><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
@@ -1090,9 +1090,11 @@
                                                         <?php foreach($employee as $value): ?>
                                                             <option value="<?php echo $value->em_id; ?>"
                                                                 <?php
-                                                                    if ($line_manager->subordinate) {
-                                                                        foreach (explode(',', $line_manager->subordinate) as $record) {
-                                                                            echo $record == $value->em_id ? 'selected' : '';
+                                                                    if (isset($line_manager)) {
+                                                                        if ($line_manager->subordinate) {
+                                                                            foreach (explode(',', $line_manager->subordinate) as $record) {
+                                                                                echo $record == $value->em_id ? 'selected' : '';
+                                                                            }
                                                                         }
                                                                     }
                                                                 ?>
@@ -1108,9 +1110,11 @@
                                                         <?php foreach($employee as $value): ?>
                                                             <option value="<?php echo $value->em_id; ?>"
                                                                 <?php
-                                                                if ($line_manager->colleague) {
-                                                                    foreach (explode(',', $line_manager->colleague) as $record) {
-                                                                        echo $record == $value->em_id ? 'selected' : '';
+                                                                if (isset($line_manager)) {
+                                                                    if ($line_manager->colleague) {
+                                                                        foreach (explode(',', $line_manager->colleague) as $record) {
+                                                                            echo $record == $value->em_id ? 'selected' : '';
+                                                                        }
                                                                     }
                                                                 }
                                                                 ?>
@@ -1119,7 +1123,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-actions col-md-12">
-                                                    <input type="hidden" name="id" value="<?php echo $line_manager->id; ?>">
+                                                    <input type="hidden" name="id" value="<?php echo isset($line_manager) ? $line_manager->id : ''; ?>">
                                                     <input type="hidden" name="emid" value="<?php echo $basic->em_id; ?>">
                                                     <button type="submit" class="btn btn-primary rounded-btn">Save</button>
                                                 </div>
