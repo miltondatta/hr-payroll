@@ -41,7 +41,7 @@
 <script src="<?php echo base_url(); ?>assets/js/orgchart.js"></script>
 <script>
     var chart = new OrgChart(document.getElementById("orgchart"), {
-        template: "luba",
+        template: "diva",
         enableSearch: true,
         expand: {
         nodes: [],
