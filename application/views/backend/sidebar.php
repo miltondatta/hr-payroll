@@ -155,6 +155,7 @@
                         </div>
                     </li>
                     
+<!--                    <li class="--><?php //echo $url == (base_url() . 'Organogram/index') ? 'active' : '' ?><!--"><a href="--><?php //echo base_url()?><!--Organogram/index"><i class="fa fa-street-view"></i>Organogram</a></li>-->
                     <li class="<?php echo $url == (base_url() . 'notice/All_notice') ? 'active' : '' ?>"><a href="<?php echo base_url()?>notice/All_notice"><i class="fas fa-pager"></i>Notice</a></li>
 
                     <li class="dropdown"><a href="#"><i class="fas fa-cogs"></i>Setting</a>
