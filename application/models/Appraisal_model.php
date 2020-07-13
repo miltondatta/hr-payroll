@@ -56,6 +56,34 @@ class Appraisal_model extends CI_Model{
 
         return $result;
     }
+    
+    public function filterAppraisalEmployeeData($emp_id = '', $fin_year = ''){
+    
+        $employee_id_filter = '';
+        $fin_year_filter       = '';
+    
+        if($emp_id != ''){
+            $employee_id_filter = " and appraisal_employee.em_id = '$emp_id' ";
+        }
+        if($fin_year != ''){
+            $fin_year_filter = " and appraisal_employee.financial_year = '$fin_year' ";
+        }
+        
+        $sql    = "select appraisal_employee.*,
+                           employee.first_name,
+                           employee.last_name,
+                           designation.des_name,
+                           appraisal_category.category_name
+                    from appraisal_employee
+                             left join employee on appraisal_employee.em_id = employee.em_id
+                             left join designation on employee.des_id = designation.id
+                             left join appraisal_category on appraisal_employee.category_id = appraisal_category.id
+                    where 1  $employee_id_filter $fin_year_filter";
+        $query  = $this->db->query($sql);
+        $result = $query->result();
+
+        return $result;
+    }
 
     public function getAppraisalByEmployeeAndFinancialYear($em_id, $financial_year)
     {

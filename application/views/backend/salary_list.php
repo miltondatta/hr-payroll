@@ -447,7 +447,6 @@
                     month      : month
                 }
             }).done(function (response){
-                console.log(response, " :441");
                 $("#data-table tbody").empty();
                 
                 $("#table_data").append(response);
