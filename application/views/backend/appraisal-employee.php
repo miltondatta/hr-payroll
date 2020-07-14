@@ -16,7 +16,7 @@
 
         <div class="row">
             <div class="col-12 mt-3">
-                <?php if ($this->session->flashdata('feedback')) { ?>
+                <?php if($this->session->flashdata('feedback')){ ?>
                     <div class="alert alert-success alert-dismissible show" role="alert">
                         <strong><?php echo $this->session->flashdata('feedback'); ?></strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -24,7 +24,7 @@
                         </button>
                     </div>
                 <?php } ?>
-                <?php if ($this->session->flashdata('error')) { ?>
+                <?php if($this->session->flashdata('error')){ ?>
                     <div class="alert alert-danger alert-dismissible show" role="alert">
                         <strong><?php echo $this->session->flashdata('error'); ?></strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -46,8 +46,43 @@
                                     <span class="d-inline-block pl-1">Add Appraisal Employee</span>
                                 </button>
                             </div>
+
+                            <div class="form-material ml-2 mt-3 row ">
+                                <div class="form-group col-md-3">
+                                    <select class="form-control custom-select" tabindex="1" name="filter_emid"
+                                            id="filter_emid">
+                                        <option value="">Employee</option>
+                                        <?php foreach($employee as $value): ?>
+                                            <option value="<?php echo $value->em_id; ?>">
+                                                <?php echo $value->first_name ?>
+                                                <?php echo $value->last_name ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <select class="form-control custom-select" tabindex="1" name="filter_fin_year"
+                                            id="filter_fin_year">
+                                        <option value="">Select Financial Year</option>
+                                        <?php foreach($financial_years as $value): ?>
+                                            <option value="<?php echo $value->year; ?>">
+                                                <?php echo $value->name; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <button type="button" class="btn btn-primary find_load" id="find_loan"
+                                            onclick="getFilterData()">Find
+                                    </button>
+                                </div>
+
+                            </div>
+
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div class="table-responsive" id="data-table_div">
                                     <table id="data-table" data-page-length='10'
                                            class="display table dataTable table-striped table-bordered text-center">
                                         <thead>
@@ -62,7 +97,7 @@
                                         </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                        <?php foreach ($appraisal_employee_data as $value): ?>
+                                        <?php foreach($appraisal_employee_data as $value): ?>
                                             <tr>
                                                 <td><?php echo $value->first_name . ' ' . $value->last_name; ?></td>
                                                 <td><?php echo $value->des_name; ?></td>
@@ -70,7 +105,8 @@
                                                 <td><?php echo $value->category_name; ?></td>
                                                 <td><?php echo $value->category_rating; ?></td>
                                                 <td><?php echo $value->category_value; ?></td>
-                                                <td><?php echo date_format(date_create($value->created_at), 'Y-m-d H:i:s'); ?></td>
+                                                <td><?php echo date_format(date_create($value->created_at),
+                                                                           'Y-m-d H:i:s'); ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -101,7 +137,7 @@
                             <label for="financial_year" class="control-label col-md-3">Financial Year</label>
                             <select class="form-control col-md-8" name="financial_year" id="financial_year" required>
                                 <option value="">Select Financial Year</option>
-                                <?php foreach ($financial_years as $value): ?>
+                                <?php foreach($financial_years as $value): ?>
                                     <option value="<?php echo $value->year; ?>">
                                         <?php echo $value->name; ?>
                                     </option>
@@ -110,11 +146,14 @@
                         </div>
                         <div class="form-group row">
                             <label for="em_id" class="control-label col-md-3">Employee</label>
-                            <select class="form-control col-md-8" name="em_id" id="em_id" onchange="getAppraisalCategory()" required>
+                            <select class="form-control col-md-8" name="em_id" id="em_id"
+                                    onchange="getAppraisalCategory()" required>
                                 <option value="">Select Employee</option>
-                                <?php foreach ($employee as $value): ?>
+                                <?php foreach($employee as $value): ?>
                                     <option value="<?php echo $value->em_id; ?>">
-                                        <?php echo $value->first_name; echo ' '; echo $value->last_name; ?>
+                                        <?php echo $value->first_name;
+                                        echo ' ';
+                                        echo $value->last_name; ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -134,34 +173,62 @@
 </main>
 <?php $this->load->view('backend/footer'); ?>
 <script>
-    function getAppraisalCategory() {
-        let em_id = $("#em_id").val();
+    function getAppraisalCategory(){
+        let em_id          = $("#em_id").val();
         let financial_year = $("#financial_year").val();
-
-        if (!financial_year) {
+        
+        if (!financial_year){
             alert('Please select Financial Year!');
             $("#em_id").val('');
             return;
         }
-
+        
         $.ajax({
-            url: 'getAppraisalCategory?em_id=' + em_id + '&financial_year=' + financial_year,
-            method: 'GET',
-            data: '',
+            url     : 'getAppraisalCategory?em_id=' + em_id + '&financial_year=' + financial_year,
+            method  : 'GET',
+            data    : '',
             dataType: 'html',
-        }).done(function (response) {
+        }).done(function (response){
             $("#appraisal-category-input-area").empty();
             $("#appraisal-category-input-area").append(response);
         });
     }
-
-    function emptyInputValue() {
+    
+    function emptyInputValue(){
         $('#btnSubmit').trigger("reset");
         $('#btnSubmit').find('[name="id"]').val('').end();
     }
-
-    $("#financial_year").change(function () {
+    
+    $("#financial_year").change(function (){
         $("#appraisal-category-input-area").empty();
         $("#em_id").val('');
     });
+    
+    function getFilterData(){
+        var employee_id = $('#filter_emid').val();
+        var fin_year    = $('#filter_fin_year').val();
+        
+        $("#data-table_div").empty();
+        $.ajax({
+            url     : 'FilteredEmployeeAppraisal',
+            method  : 'POST',
+            dataType: 'html',
+            data    : {
+                employee_id: employee_id,
+                fin_year   : fin_year
+            }
+        }).done(function (response){
+            $("#data-table tbody").empty();
+            
+            $("#data-table_div").append(response);
+            
+            $("#data-table").DataTable({
+                dom       : 'Bfrtip',
+                buttons   : [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                responsive: true
+            });
+        });
+    }
 </script>
