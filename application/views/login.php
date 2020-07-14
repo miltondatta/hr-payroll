@@ -32,18 +32,24 @@
                         <?php echo $this->session->flashdata('feedback') ?>
                     </div>
                     <?php
-                }?>
+                } ?>
                 <form method="POST" action="login/Login_Auth" id="loginform">
                     <h3>Log In</h3>
                     <div class="form-group">
-                        <input type="email" onfocus="getFocus('email-inside')" onblur="getBlur('email-inside')" name="email" class="form-control form-control-lg float-input inside-label" id="email" value="<?php if (isset($_COOKIE['email'])) { echo $_COOKIE['email'];} ?>" required>
-                        <label class="form-control-placeholder inside email-inside" for="email">Email</label>
+                        <input type="email" onfocus="getFocus('email-inside')" onblur="getBlur('email-inside')"
+                               name="email" id="email" value="<?php if (isset($_COOKIE['email'])) {
+                            echo $_COOKIE['email'];
+                        } ?>" required/>
+                        <label for="email" class="email-inside">Email</label>
                     </div>
-                    <div class="form-group">
-                        <input type="password" onfocus="getFocus('password-inside')" onblur="getBlur('password-inside')" name="password" class="form-control form-control-lg float-input inside-label" id="password" value="<?php if (isset($_COOKIE['password'])) {echo $_COOKIE['password'];} ?>" required>
-                        <label class="form-control-placeholder inside password-inside" for="password">Password</label>
+                    <div class="form-group" style="margin-top: 40px;">
+                        <input type="password" onfocus="getFocus('password-inside')" onblur="getBlur('password-inside')"
+                               name="password" id="password" value="<?php if (isset($_COOKIE['password'])) {
+                            echo $_COOKIE['password'];
+                        } ?>" required/>
+                        <label for="password" class="password-inside">Password</label>
                     </div>
-                    <div class="d-flex justify-content-between login-button-area">
+                    <div class="d-flex justify-content-between mt-5">
                         <button type="submit" class="login-button">Log In</button>
                         <a href="javascript:void(0);" class="login-forget-password">Forgot Password?</a>
                     </div>
@@ -74,12 +80,22 @@
 
 <script>
     function getFocus(class_name) {
-        $("."+class_name).css("color", "#0093c4");
+        $("." + class_name).css("color", "#0093c4");
     }
 
     function getBlur(class_name) {
-        $("."+class_name).css("color", "#212529");
+        $("." + class_name).css("color", "#9B9B9B");
     }
+
+    $(document).ready(function () {
+        $(".form-group input").change(function () {
+            if ($(this).val() != "") {
+                $(this).addClass('filled');
+            } else {
+                $(this).removeClass('filled');
+            }
+        })
+    });
 </script>
 </body>
 </html>
