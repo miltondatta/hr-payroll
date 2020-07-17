@@ -919,6 +919,16 @@ class Employee extends CI_Controller{
         }
     }
     
+    public function fileDelete(){
+        if($this->session->userdata('user_login_access') != false){
+            $id = $this->input->get('id');
+            $this->employee_model->DeleteFile($id);
+            echo "Successfully Deletd";
+        } else{
+            redirect(base_url(), 'refresh');
+        }
+    }
+    
     public function DeletDisiplinary(){
         if($this->session->userdata('user_login_access') != false){
             $id = $this->input->get('D');

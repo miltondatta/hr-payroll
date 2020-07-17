@@ -47,11 +47,6 @@ $allemployees = $this->employee_model->GetAllEmployee();
                                 <i class="fa fa-plus"></i>
                                 Add Disciplinary
                             </a>
-                            <a class="btn btn-primary text-white"
-                               href="<?php echo base_url(); ?>employee/Employees">
-                                <i class="fa fa-bars"></i>
-                                Employee List
-                            </a>
                         </div>
                     </div>
 
@@ -67,7 +62,7 @@ $allemployees = $this->employee_model->GetAllEmployee();
                                     <thead>
                                     <tr>
                                         <th>Employee Name</th>
-                                        <th>PIN</th>
+                                        <th>Employee ID</th>
                                         <th>Title</th>
                                         <th>Description</th>
                                         <th>Status</th>

@@ -62,7 +62,8 @@
                                                                  role="tab"
                                                                  style="font-size: 14px;"> Change Password</a></li>
                                     <li class="nav-item px-3">
-                                        <a class="nav-link" data-toggle="tab" href="#line-manager" role="tab" style="font-size: 14px;">Line Manager</a>
+                                        <a class="nav-link" data-toggle="tab" href="#line-manager" role="tab"
+                                           style="font-size: 14px;">Line Manager</a>
                                     </li>
                                 <?php } ?>
                             </ul>
@@ -124,7 +125,7 @@
                                                           enctype="multipart/form-data">
 
                                                         <div class="form-group col-md-4 m-t-10">
-                                                            <label>Employee PIN </label>
+                                                            <label>Employee ID </label>
                                                             <input type="text" <?php if($this->session->userdata('user_type') ==
                                                                                         'EMPLOYEE'){ ?> readonly <?php } ?>
                                                                    class="form-control form-control-line"
@@ -262,11 +263,11 @@
                                                             </div>
                                                         <?php } ?>
                                                         <div class="form-group col-md-4 m-t-10">
-                                                            <label>Date Of Joining </label>
+                                                            <label>Contract Start Date</label>
                                                             <input type="date" <?php if($this->session->userdata('user_type') ==
                                                                                         'EMPLOYEE'){ ?> readonly <?php } ?>
                                                                    id="example-email2" name="joindate"
-                                                                   class="form-control"
+                                                                   class="form-control" required
                                                                    value="<?php echo $basic->em_joining_date; ?>"
                                                                    placeholder="">
                                                         </div>
@@ -274,8 +275,9 @@
                                                             <label>Contract End Date</label>
                                                             <input type="date" id="example-email2"
                                                                    name="leavedate"
-                                                                   class="form-control" <?php if($this->session->userdata('user_type') ==
-                                                                                                 'EMPLOYEE'){ ?> readonly <?php } ?>
+                                                                   class="form-control"
+                                                                   <?php if($this->session->userdata('user_type') ==
+                                                                            'EMPLOYEE'){ ?>readonly<?php } ?>
                                                                    value="<?php echo $basic->em_contact_end; ?>"
                                                                    placeholder="">
                                                         </div>
@@ -289,15 +291,6 @@
                                                                    required>
                                                         </div>
                                                         <div class="form-group col-md-12 m-t-10">
-                                                            <?php /*if( !empty($basic->em_image)){ */ ?><!--
-                                                                <img src="<?php /*echo base_url(); */ ?>assets/images/users/<?php /*echo $basic->em_image; */ ?>"
-                                                                     class="img-circle" width="150" />
-                                                            <?php /*} else{ */ ?>
-                                                                <img src="<?php /*echo base_url(); */ ?>assets/images/users/user.png"
-                                                                     class="img-circle" width="150"
-                                                                     alt="<?php /*echo $basic->first_name */ ?>"
-                                                                     title="<?php /*echo $basic->first_name */ ?>" />
-                                                            --><?php /*} */ ?>
                                                             <input type="file" <?php if($this->session->userdata('user_type') ==
                                                                                         'EMPLOYEE'){ ?> readonly <?php } ?>
                                                                    name="image_url" class="form-control"
@@ -428,7 +421,6 @@
                                                        cellspacing="0" width="100%">
                                                     <thead>
                                                     <tr>
-                                                        <th>ID</th>
                                                         <th>Certificate name</th>
                                                         <th>Institute</th>
                                                         <th>Result</th>
@@ -439,7 +431,6 @@
                                                     <tbody>
                                                     <?php foreach($education as $value): ?>
                                                         <tr>
-                                                            <td><?php echo $value->id ?></td>
                                                             <td><?php echo $value->edu_type ?></td>
                                                             <td><?php echo $value->institute ?></td>
                                                             <td><?php echo $value->result ?></td>
@@ -512,7 +503,7 @@
                                                         <input type="hidden" name="emid"
                                                                value="<?php echo $basic->em_id; ?>">
                                                         <button type="submit" class="btn btn-info"><i
-                                                                    class="fa fa-check"></i> Save
+                                                                    class="fa fa-check"></i> Add More
                                                         </button>
                                                     </div>
                                                 <?php } ?>
@@ -529,7 +520,6 @@
                                                        cellspacing="0" width="100%">
                                                     <thead>
                                                     <tr>
-                                                        <th>ID</th>
                                                         <th>Company name</th>
                                                         <th>Position</th>
                                                         <th>Work Duration</th>
@@ -539,7 +529,6 @@
                                                     <tbody>
                                                     <?php foreach($experience as $value): ?>
                                                         <tr>
-                                                            <td><?php echo $value->id ?></td>
                                                             <td><?php echo $value->exp_company ?></td>
                                                             <td><?php echo $value->exp_com_position ?></td>
                                                             <td><?php echo $value->exp_workduration ?></td>
@@ -584,8 +573,8 @@
                                                     <label>Address</label>
                                                     <input type="text" name="address"
                                                            class="form-control form-control-line duty"
-                                                           placeholder=" Duty" <?php if($this->session->userdata('user_type') ==
-                                                                                        'EMPLOYEE'){ ?> readonly <?php } ?>
+                                                           placeholder=" Address" <?php if($this->session->userdata('user_type') ==
+                                                                                           'EMPLOYEE'){ ?> readonly <?php } ?>
                                                            minlength="7" required>
                                                 </div>
                                                 <div class="form-group col-md-6 m-t-5">
@@ -602,7 +591,7 @@
                                                         <input type="hidden" name="emid"
                                                                value="<?php echo $basic->em_id; ?>">
                                                         <button type="submit" class="btn btn-info"><i
-                                                                    class="fa fa-check"></i> Save
+                                                                    class="fa fa-check"></i> Add More
                                                         </button>
                                                     </div>
                                                 <?php } ?>
@@ -673,20 +662,29 @@
                                                    cellspacing="0" width="100%">
                                                 <thead>
                                                 <tr>
-                                                    <th>ID</th>
                                                     <th>File Title</th>
                                                     <th>File</th>
+                                                    <th>Action</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <?php foreach($fileinfo as $value): ?>
                                                     <tr>
-                                                        <td><?php echo $value->id ?></td>
                                                         <td><?php echo $value->file_title ?></td>
                                                         <td>
                                                             <a href="<?php echo base_url(); ?>assets/images/users/<?php echo $value->file_url ?>"
                                                                target="_blank"
                                                                download=""><?php echo $value->file_url ?></a>
+                                                        </td>
+                                                        <td class="jsgrid-align-center ">
+                                                            <?php if($this->session->userdata('user_type') ==
+                                                                     'EMPLOYEE'){ ?>
+                                                            <?php } else{ ?>
+                                                                <a href="#" title="Delete"
+                                                                   class="btn btn-sm btn-info waves-effect waves-light file_delete"
+                                                                   data-id="<?php echo $value->id ?>"><i
+                                                                            class="fa fa-trash"></i></a>
+                                                            <?php } ?>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -1075,57 +1073,75 @@
                                         <div class="card-body">
                                             <form class="row" action="addLineManager" method="post">
                                                 <div class="form-group col-md-6">
-                                                    <label class="control-label" for="project_mananger">Line Manager</label>
-                                                    <select class="form-control" name="project_mananger" id="project_mananger" required>
+                                                    <label class="control-label" for="project_mananger">Line
+                                                                                                        Manager</label>
+                                                    <select class="form-control" name="project_mananger"
+                                                            id="project_mananger" required>
                                                         <option value="">Select Line Manager</option>
                                                         <?php foreach($employee as $value): ?>
-                                                            <option value="<?php echo $value->em_id; ?>" <?php if (isset($line_manager)) {echo $line_manager->project_manager == $value->em_id ? 'selected' : '';} ?>><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                                            <option value="<?php echo $value->em_id; ?>" <?php if(isset($line_manager)){
+                                                                echo $line_manager->project_manager == $value->em_id ?
+                                                                    'selected' : '';
+                                                            } ?>><?php echo $value->first_name . ' ' .
+                                                                            $value->last_name; ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="control-label" for="subordinate">Subordinate</label>
-                                                    <select class="form-control multiselect" name="subordinate[]" id="subordinate" required multiple>
+                                                    <select class="form-control multiselect" name="subordinate[]"
+                                                            id="subordinate" required multiple>
                                                         <option value="">Select Subordinate</option>
                                                         <?php foreach($employee as $value): ?>
                                                             <option value="<?php echo $value->em_id; ?>"
                                                                 <?php
-                                                                    if (isset($line_manager)) {
-                                                                        if ($line_manager->subordinate) {
-                                                                            foreach (explode(',', $line_manager->subordinate) as $record) {
-                                                                                echo $record == $value->em_id ? 'selected' : '';
-                                                                            }
+                                                                if(isset($line_manager)){
+                                                                    if($line_manager->subordinate){
+                                                                        foreach(explode(',',
+                                                                                        $line_manager->subordinate) as $record){
+                                                                            echo $record == $value->em_id ? 'selected' :
+                                                                                '';
                                                                         }
                                                                     }
+                                                                }
                                                                 ?>
-                                                                >
-                                                                <?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                                            >
+                                                                <?php echo $value->first_name . ' ' .
+                                                                           $value->last_name; ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="control-label" for="colleague">Colleague</label>
-                                                    <select class="form-control multiselect" name="colleague[]" id="colleague" required multiple>
+                                                    <select class="form-control multiselect" name="colleague[]"
+                                                            id="colleague" required multiple>
                                                         <option value="">Select Colleague</option>
                                                         <?php foreach($employee as $value): ?>
                                                             <option value="<?php echo $value->em_id; ?>"
                                                                 <?php
-                                                                if (isset($line_manager)) {
-                                                                    if ($line_manager->colleague) {
-                                                                        foreach (explode(',', $line_manager->colleague) as $record) {
-                                                                            echo $record == $value->em_id ? 'selected' : '';
+                                                                if(isset($line_manager)){
+                                                                    if($line_manager->colleague){
+                                                                        foreach(explode(',',
+                                                                                        $line_manager->colleague) as $record){
+                                                                            echo $record == $value->em_id ? 'selected' :
+                                                                                '';
                                                                         }
                                                                     }
                                                                 }
                                                                 ?>
-                                                            ><?php echo $value->first_name . ' ' . $value->last_name; ?></option>
+                                                            ><?php echo $value->first_name . ' ' .
+                                                                        $value->last_name; ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                                 <div class="form-actions col-md-12">
-                                                    <input type="hidden" name="id" value="<?php echo isset($line_manager) ? $line_manager->id : ''; ?>">
-                                                    <input type="hidden" name="emid" value="<?php echo $basic->em_id; ?>">
-                                                    <button type="submit" class="btn btn-primary rounded-btn">Save</button>
+                                                    <input type="hidden" name="id"
+                                                           value="<?php echo isset($line_manager) ? $line_manager->id :
+                                                               ''; ?>">
+                                                    <input type="hidden" name="emid"
+                                                           value="<?php echo $basic->em_id; ?>">
+                                                    <button type="submit" class="btn btn-primary rounded-btn">Save
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -1214,6 +1230,23 @@
                 
                 $.ajax({
                     url   : 'EXPvalueDelet?id=' + iid,
+                    method: 'GET',
+                    data  : 'data',
+                }).done(function (){
+                    window.location.reload();
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function (){
+            $(".file_delete").click(function (e){
+                e.preventDefault(e);
+                if (!confirm('Are you sure want to delete this Value?')) return false;
+                var iid = $(this).attr('data-id');
+                
+                $.ajax({
+                    url   : 'fileDelete?id=' + iid,
                     method: 'GET',
                     data  : 'data',
                 }).done(function (){

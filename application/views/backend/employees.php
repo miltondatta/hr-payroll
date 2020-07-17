@@ -44,11 +44,11 @@
                                 <i class="fa fa-plus"></i>
                                 Add Employee
                             </a>
-                            <a class="btn btn-primary text-white"
-                               href="<?php echo base_url(); ?>employee/Disciplinary">
+                            <!--<a class="btn btn-primary text-white"
+                               href="<?php /*echo base_url(); */?>employee/Disciplinary">
                                 <i class="fa fa-bars"></i>
                                 Disciplinary List
-                            </a>
+                            </a>-->
                         </div>
                     </div>
 
@@ -62,25 +62,29 @@
                                        class="display table dataTable table-striped table-bordered text-center">
                                     <thead>
                                     <tr>
+                                        <th>Employee ID</th>
                                         <th>Employee Name</th>
-                                        <th>PIN</th>
+                                        <th>Department Name</th>
                                         <th>Email</th>
                                         <th>Contact</th>
                                         <th>User Type</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php foreach ($employee as $value): ?>
-                                        <tr>
+                                        <tr <?php if($value->status == "INACTIVE"){echo 'style="color: red"';}?>>
+                                            <td><?php echo $value->em_code; ?></td>
                                             <td title="<?php echo $value->first_name . ' ' .
                                                 $value->last_name; ?>"><?php echo $value->first_name .
                                                     ' ' .
                                                     $value->last_name; ?></td>
-                                            <td><?php echo $value->em_code; ?></td>
+                                            <td><?php echo $value->dep_name; ?></td>
                                             <td><?php echo $value->em_email; ?></td>
                                             <td><?php echo $value->em_phone; ?></td>
                                             <td><?php echo $value->em_role; ?></td>
+                                            <td><?php echo $value->status; ?></td>
                                             <td class="align-content-center ">
                                                 <a href="<?php echo base_url(); ?>employee/view?I=<?php echo base64_encode($value->em_id); ?>"
                                                    title="Edit" class="btn btn-sm btn-info"><i

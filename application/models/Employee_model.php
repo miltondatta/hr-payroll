@@ -22,7 +22,10 @@ class Employee_model extends CI_Model{
     }
     
     public function emselect(){
-        $sql    = "SELECT * FROM `employee` WHERE `status`='ACTIVE'";
+        $sql    = "SELECT employee.*,department.dep_name
+                    FROM employee
+                    left join department on employee.dep_id = department.id
+                    WHERE status = 'ACTIVE'";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -393,6 +396,10 @@ class Employee_model extends CI_Model{
     
     public function DeletEXP($id){
         $this->db->delete('emp_experience', array( 'id' => $id ));
+    }
+    
+    public function DeleteFile($id){
+        $this->db->delete('employee_file', array( 'id' => $id ));
     }
     
     public function DeletDisiplinary($id){
