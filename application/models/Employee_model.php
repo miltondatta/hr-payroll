@@ -51,8 +51,8 @@ class Employee_model extends CI_Model{
     }
     
     public function getInvalidUser(){
-        $sql    = "SELECT * FROM `employee`
-      WHERE `status`='INACTIVE'";
+        $sql    = "SELECT * FROM employee
+      WHERE status='INACTIVE'";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -147,7 +147,7 @@ class Employee_model extends CI_Model{
     }
     
     public function GetAllEmployee(){
-        $sql    = "SELECT * FROM `employee`";
+        $sql    = "SELECT * FROM employee";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -155,10 +155,36 @@ class Employee_model extends CI_Model{
     }
     
     public function desciplinaryfetch(){
-        $sql    = "SELECT `desciplinary`.*,
-      `employee`.`em_id`,`first_name`,`last_name`,`em_code`
-      FROM `desciplinary`
-      LEFT JOIN `employee` ON `desciplinary`.`em_id`=`employee`.`em_id`";
+        $sql    = "SELECT desciplinary.*,
+                        employee.em_id, first_name, last_name, em_code,department.dep_name
+                    FROM desciplinary
+                             LEFT JOIN employee ON desciplinary.em_id = employee.em_id
+                    left join department on employee.dep_id = department.id order by id desc limit 50;";
+        $query  = $this->db->query($sql);
+        $result = $query->result();
+        
+        return $result;
+    }
+    
+    public function filteredDesciplinaryFetch($employee_id = '', $from_date = '', $to_date = ''){
+        
+        $employee_id_filter = '';
+        $month_filter       = '';
+        $year_filter        = '';
+        
+        if($employee_id != ''){
+            $employee_id_filter = " and employee.em_id = '$employee_id' ";
+        }
+        if($from_date != '' && $to_date != ''){
+            $month_filter = " and desciplinary.notice_date between '$from_date' and '$to_date' ";
+        }
+        
+        $sql    = "SELECT desciplinary.*,
+                        employee.em_id, first_name, last_name, em_code,department.dep_name
+                    FROM desciplinary
+                             LEFT JOIN employee ON desciplinary.em_id = employee.em_id
+                    left join department on employee.dep_id = department.id
+                    where 1 $employee_id_filter $month_filter";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -212,7 +238,7 @@ class Employee_model extends CI_Model{
         $this->db->where('id', $id);
         $this->db->update('address', $data);
     }
-
+    
     public function UpdateLineManager($id, $data){
         $this->db->where('id', $id);
         $this->db->update('line_manager', $data);
@@ -256,9 +282,8 @@ class Employee_model extends CI_Model{
     public function AddParmanent_Address($data){
         $this->db->insert('address', $data);
     }
-
-    public function AddLineManager($data)
-    {
+    
+    public function AddLineManager($data){
         $this->db->insert('line_manager', $data);
     }
     
@@ -317,22 +342,20 @@ class Employee_model extends CI_Model{
         
         return $result;
     }
-
-    public function lineManagerById($id)
-    {
+    
+    public function lineManagerById($id){
         $sql    = "SELECT * FROM `line_manager` WHERE `id`='$id'";
         $query  = $this->db->query($sql);
         $result = $query->row();
-
+        
         return $result;
     }
-
-    public function lineManagerByEmployeeId($em_id)
-    {
+    
+    public function lineManagerByEmployeeId($em_id){
         $sql    = "SELECT * FROM `line_manager` WHERE `em_id`='$em_id'";
         $query  = $this->db->query($sql);
         $result = $query->row();
-
+        
         return $result;
     }
     
@@ -405,26 +428,26 @@ class Employee_model extends CI_Model{
     public function DeletDisiplinary($id){
         $this->db->delete('desciplinary', array( 'id' => $id ));
     }
-
-    public function getAttendanceReport($from, $to)
-    {
+    
+    public function getAttendanceReport($from, $to){
         $sql = "select atten_date, count(distinct emp_id) as employee
                 from attendance
                 where atten_date >= '$from'
                   and atten_date <= '$to'
                 group by atten_date";
-
-        $query = $this->db->query($sql);
+        
+        $query  = $this->db->query($sql);
         $result = $query->result();
-
+        
         return $result;
     }
-
+    
     public function getRoles(){
-        $sql 	= "SELECT * FROM `user_roles`";
-		$query	=  $this->db->query($sql);
-		$result =  $query->result();
-		return $result;	 
+        $sql    = "SELECT * FROM user_roles";
+        $query  = $this->db->query($sql);
+        $result = $query->result();
+        
+        return $result;
     }
 }
 

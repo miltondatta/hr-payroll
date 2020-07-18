@@ -308,59 +308,58 @@ class Employee extends CI_Controller{
     
     public function view(){
         if($this->session->userdata('user_login_access') != false){
-            $id                     = base64_decode($this->input->get('I'));
-            $data['basic']          = $this->employee_model->GetBasic($id);
-            $data['permanent']      = $this->employee_model->GetperAddress($id);
-            $data['present']        = $this->employee_model->GetpreAddress($id);
-            $data['education']      = $this->employee_model->GetEducation($id);
-            $data['experience']     = $this->employee_model->GetExperience($id);
-            $data['bankinfo']       = $this->employee_model->GetBankInfo($id);
-            $data['fileinfo']       = $this->employee_model->GetFileInfo($id);
-            $data['typevalue']      = $this->payroll_model->GetsalaryType();
-            $data['leavetypes']     = $this->leave_model->GetleavetypeInfo();
-            $data['salaryvalue']    = $this->employee_model->GetsalaryValue($id);
-            $data['socialmedia']    = $this->employee_model->GetSocialValue($id);
-            $year                   = date('Y');
-            $data['Leaveinfo']      = $this->employee_model->GetLeaveiNfo($id, $year);
-            $data['employee']       = $this->employee_model->emselect();
-            $data['line_manager']   = $this->employee_model->lineManagerByEmployeeId($id);
-
+            $id                   = base64_decode($this->input->get('I'));
+            $data['basic']        = $this->employee_model->GetBasic($id);
+            $data['permanent']    = $this->employee_model->GetperAddress($id);
+            $data['present']      = $this->employee_model->GetpreAddress($id);
+            $data['education']    = $this->employee_model->GetEducation($id);
+            $data['experience']   = $this->employee_model->GetExperience($id);
+            $data['bankinfo']     = $this->employee_model->GetBankInfo($id);
+            $data['fileinfo']     = $this->employee_model->GetFileInfo($id);
+            $data['typevalue']    = $this->payroll_model->GetsalaryType();
+            $data['leavetypes']   = $this->leave_model->GetleavetypeInfo();
+            $data['salaryvalue']  = $this->employee_model->GetsalaryValue($id);
+            $data['socialmedia']  = $this->employee_model->GetSocialValue($id);
+            $year                 = date('Y');
+            $data['Leaveinfo']    = $this->employee_model->GetLeaveiNfo($id, $year);
+            $data['employee']     = $this->employee_model->emselect();
+            $data['line_manager'] = $this->employee_model->lineManagerByEmployeeId($id);
+            
             $this->load->view('backend/employee_view', $data);
         } else{
             redirect(base_url(), 'refresh');
         }
     }
-
-    public function addLineManager()
-    {
+    
+    public function addLineManager(){
         if($this->session->userdata('user_login_access') != false){
-            $id         = $this->input->post('id');
-            $em_id      = $this->input->post('emid');
+            $id              = $this->input->post('id');
+            $em_id           = $this->input->post('emid');
             $project_manager = $this->input->post('project_mananger');
-            $subordinate    = implode(',', $this->input->post('subordinate'));
-            $colleague = implode(',', $this->input->post('colleague'));
-            $now = new DateTime();
-            $planned_leave = $this->employee_model->lineManagerById($id);
-
+            $subordinate     = implode(',', $this->input->post('subordinate'));
+            $colleague       = implode(',', $this->input->post('colleague'));
+            $now             = new DateTime();
+            $planned_leave   = $this->employee_model->lineManagerById($id);
+            
             $data = array(
-                'em_id'  => $em_id,
-                'project_manager'    => $project_manager,
-                'subordinate' => $subordinate,
-                'colleague' => $colleague,
-                'created_at' => $id == '' ? $now->format('Y-m-d H:i:s') : $planned_leave->created_at,
-                'updated_at' => $id != '' ? $now->format('Y-m-d H:i:s') : ''
+                'em_id'           => $em_id,
+                'project_manager' => $project_manager,
+                'subordinate'     => $subordinate,
+                'colleague'       => $colleague,
+                'created_at'      => $id == '' ? $now->format('Y-m-d H:i:s') : $planned_leave->created_at,
+                'updated_at'      => $id != '' ? $now->format('Y-m-d H:i:s') : ''
             );
-
+            
             if( !empty($id)){
                 $this->employee_model->UpdateLineManager($id, $data);
                 $this->session->set_flashdata('feedback', 'Successfully Updated');
                 redirect('employee/Employees');
-
+                
             } else{
                 $this->employee_model->AddLineManager($data);
                 $this->session->set_flashdata('feedback', 'Successfully Updated');
                 redirect('employee/Employees');
-
+                
             }
         } else{
             redirect(base_url(), 'refresh');
@@ -586,13 +585,28 @@ class Employee extends CI_Controller{
         }
     }
     
+    public function FilteredDisciplinaryList(){
+        if($this->session->userdata('user_login_access') != false){
+            $employee_id = $this->input->post('employee_id');
+            $from_date   = $this->input->post('from_date');
+            $to_date     = $this->input->post('to_date');
+            
+            $data['desciplinary'] = $this->employee_model->filteredDesciplinaryFetch($employee_id,$from_date,$to_date);
+            $this->load->view('backend/disciplinary-partial', $data);
+        } else{
+            redirect(base_url(), 'refresh');
+        }
+    }
+    
     public function add_Desciplinary(){
         if($this->session->userdata('user_login_access') != false){
-            $id      = $this->input->post('id');
-            $em_id   = $this->input->post('emid');
-            $warning = $this->input->post('warning');
-            $title   = $this->input->post('title');
-            $details = $this->input->post('details');
+            $id          = $this->input->post('id');
+            $em_id       = $this->input->post('emid');
+            $warning     = $this->input->post('warning');
+            $title       = $this->input->post('title');
+            $details     = $this->input->post('details');
+            $notice_date = $this->input->post('notice_date');
+            
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters();
             $this->form_validation->set_rules('title', 'title',
@@ -607,7 +621,8 @@ class Employee extends CI_Controller{
                     'em_id'       => $em_id,
                     'action'      => $warning,
                     'title'       => $title,
-                    'description' => $details
+                    'description' => $details,
+                    'notice_date' => $notice_date
                 );
                 if(empty($id)){
                     $this->employee_model->Add_Desciplinary($data);
@@ -619,6 +634,10 @@ class Employee extends CI_Controller{
                     $this->session->set_flashdata('feedback', 'Successfully Updated');
                     redirect('employee/Disciplinary');
                     
+                }
+                
+                if(array_key_exists("sent_email", $this->input->post())){
+                    echo 'mail sent';
                 }
                 
             }
@@ -1068,16 +1087,15 @@ class Employee extends CI_Controller{
         $data['invalidem'] = $this->employee_model->getInvalidUser();
         $this->load->view('backend/invalid_user', $data);
     }
-
-    public function getAttendance()
-    {
-        if ($this->session->userdata('user_login_access') != false) {
+    
+    public function getAttendance(){
+        if($this->session->userdata('user_login_access') != false){
             $from = $this->input->get('from');
-            $to = $this->input->get('to');
-
+            $to   = $this->input->get('to');
+            
             $data['attendance_report'] = $this->employee_model->getAttendanceReport($from, $to);
             echo json_encode($data);
-        } else {
+        } else{
             redirect(base_url(), 'refresh');
         }
     }
