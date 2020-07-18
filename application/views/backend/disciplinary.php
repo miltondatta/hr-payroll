@@ -138,9 +138,9 @@ $allemployees = $this->employee_model->GetAllEmployee();
                                             <td class="jsgrid-align-center ">
                                                 <a href="#" title="Edit"
                                                    class="btn btn-sm btn-info waves-effect waves-light disiplinary"
-                                                   data-id="<?php echo $value->id; ?>"><i
-                                                            class="fa fa-pen"
-                                                            onclick="editDisiplinary('<?php echo $value->id; ?>')"></i></a>
+                                                   data-id="<?php echo $value->id; ?>" onclick="editDisciplinary('<?php echo $value->id; ?>')"><i
+                                                            class="fa fa-pen"></i></a>
+                                                
                                                 <a href="DeletDisiplinary?D=<?php echo $value->id; ?>"
                                                    onclick="if (!confirm('Are you sure want to delete this value?')) {return false;} "
                                                    title="Delete"
@@ -243,32 +243,7 @@ $allemployees = $this->employee_model->GetAllEmployee();
         </div>
     </main>
     <script type="text/javascript">
-        /*$(document).ready(function (){
-         $(".disiplinary").click(function (e){
-         e.preventDefault(e);
-         // Get the record's ID via attribute
-         var iid = $(this).attr('data-id');
-         $('#btnSubmit').trigger("reset");
-         $('#exampleModal').modal('show');
-         $.ajax({
-         url     : 'DisiplinaryByID?id=' + iid,
-         method  : 'GET',
-         data    : '',
-         dataType: 'json',
-         }).done(function (response){
-         console.log(response);
-         // Populate the form fields with the data returned from server
-         $('#btnSubmit').find('[name="id"]').val(response.desipplinary.id).end();
-         $('#btnSubmit').find('[name="emid"]').val(response.desipplinary.em_id).end();
-         $('#btnSubmit').find('[name="warning"]').val(response.desipplinary.action).end();
-         $('#btnSubmit').find('[name="title"]').val(response.desipplinary.title).end();
-         $('#btnSubmit').find('[name="details"]').val(response.desipplinary.description).end();
-         });
-         });
-         });*/
-        
-        
-        function editDisiplinary(dis_id){
+        function editDisciplinary(dis_id){
             var iid = dis_id;
             $('#btnSubmit').trigger("reset");
             $('#exampleModal').modal('show');
@@ -278,6 +253,7 @@ $allemployees = $this->employee_model->GetAllEmployee();
                 data    : '',
                 dataType: 'json',
             }).done(function (response){
+                console.log(response, " :280");
                 // Populate the form fields with the data returned from server
                 $('#btnSubmit').find('[name="id"]').val(response.desipplinary.id).end();
                 $('#btnSubmit').find('[name="emid"]').val(response.desipplinary.em_id).end();

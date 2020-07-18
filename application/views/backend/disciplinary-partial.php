@@ -27,8 +27,8 @@
             <td class="jsgrid-align-center ">
                 <a href="#" title="Edit"
                    class="btn btn-sm btn-info waves-effect waves-light disiplinary"
-                   data-id="<?php echo $value->id; ?>"><i
-                            class="fa fa-pen" onclick="editDisiplinary('<?php echo $value->id; ?>')"></i></a>
+                   data-id="<?php echo $value->id; ?>" onclick="editDisciplinary('<?php echo $value->id; ?>')"><i
+                            class="fa fa-pen"></i></a>
                 <a href="DeletDisiplinary?D=<?php echo $value->id; ?>"
                    onclick="if (!confirm('Are you sure want to delete this value?')) {return false;} "
                    title="Delete"
