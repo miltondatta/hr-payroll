@@ -151,90 +151,88 @@ $allemployees = $this->employee_model->GetAllEmployee();
                                     <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <!-- sample modal content -->
-                                <div class="modal" id="exampleModal" tabindex="-1" role="dialog"
-                                     aria-labelledby="exampleModalLabel1">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content ">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="exampleModalLabel1">Disciplinary Notice</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <form method="post" action="add_Desciplinary" id="btnSubmit"
-                                                  enctype="multipart/form-data">
-                                                <div class="modal-body">
-
-                                                    <div class="form-group">
-                                                        <label class="control-label">Employee Name</label>
-                                                        <select class="form-control" name="emid"
-                                                                data-placeholder="Choose a Category" tabindex="1"
-                                                                value=""
-                                                                required>
-                                                            <option value="">Select Employee</option>
-                                                            <?php foreach($allemployees as $value): ?>
-                                                                <option value="<?php echo $value->em_id ?>"><?php echo $value->first_name .
-                                                                                                                       ' ' .
-                                                                                                                       $value->last_name ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label">Disciplinary Action</label>
-                                                        <select class="form-control"
-                                                                data-placeholder="Choose a Category" tabindex="1"
-                                                                name="warning"
-                                                                value="" required>
-                                                            <option value="">Select Action</option>
-                                                            <option value="Verbel Warning">Verbel Warning</option>
-                                                            <option value="Writing Warning">Writing Warning</option>
-                                                            <option value="Demotion">Demotion</option>
-                                                            <option value="Suspension">Suspension</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="recipient-name" class="control-label">Title</label>
-                                                        <input type="text" name="title" value="" class="form-control"
-                                                               id="recipient-name1">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="message-text" class="control-label">Details</label>
-                                                        <textarea class="form-control" value="" name="details"
-                                                                  id="message-text1" rows="4"></textarea>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label>Notice Date </label>
-                                                        <input type="text" name="notice_date" id="calendar-month"
-                                                               data-format="yyyy-mm-dd"
-                                                               class="form-control mydatetimepickerFull"
-                                                               placeholder="From" autocomplete="off"
-                                                               value="<?php echo date("Y-m-d") ?>">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" name="sent_email"
-                                                                   class="custom-control-input" id="checkbox-signin"
-                                                                   checked="">
-                                                            <label class="custom-control-label" for="checkbox-signin">
-                                                                Sent Mail</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input type="hidden" name="id" value="">
-                                                    <button type="button" class="btn btn-warning" data-dismiss="modal">
-                                                        Close
-                                                    </button>
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal" id="exampleModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel1">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content ">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="exampleModalLabel1">Disciplinary Notice</h4>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
                                     </div>
-                                </div>
-                                <!-- /.modal -->
+                                    <form method="post" action="add_Desciplinary" id="btnSubmit"
+                                          enctype="multipart/form-data">
+                                        <div class="modal-body">
 
+                                            <div class="form-group">
+                                                <label class="control-label">Employee Name</label>
+                                                <select class="form-control" name="emid"
+                                                        data-placeholder="Choose a Category" tabindex="1"
+                                                        value=""
+                                                        required>
+                                                    <option value="">Select Employee</option>
+                                                    <?php foreach($allemployees as $value): ?>
+                                                        <option value="<?php echo $value->em_id ?>"><?php echo $value->first_name .
+                                                                                                               ' ' .
+                                                                                                               $value->last_name ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Disciplinary Action</label>
+                                                <select class="form-control"
+                                                        data-placeholder="Choose a Category" tabindex="1"
+                                                        name="warning"
+                                                        value="" required>
+                                                    <option value="">Select Action</option>
+                                                    <option value="Verbel Warning">Verbel Warning</option>
+                                                    <option value="Writing Warning">Writing Warning</option>
+                                                    <option value="Demotion">Demotion</option>
+                                                    <option value="Suspension">Suspension</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">Title</label>
+                                                <input type="text" name="title" value="" class="form-control"
+                                                       id="recipient-name1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">Details</label>
+                                                <textarea class="form-control" value="" name="details"
+                                                          id="message-text1" rows="4"></textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Notice Date </label>
+                                                <input type="text" name="notice_date" id="calendar-month"
+                                                       data-format="yyyy-mm-dd"
+                                                       class="form-control mydatetimepickerFull"
+                                                       placeholder="From" autocomplete="off"
+                                                       value="<?php echo date("Y-m-d") ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" name="sent_email"
+                                                           class="custom-control-input" id="checkbox-signin"
+                                                           checked="">
+                                                    <label class="custom-control-label" for="checkbox-signin">
+                                                        Sent Mail</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="id" value="">
+                                            <button type="button" class="btn btn-warning" data-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
