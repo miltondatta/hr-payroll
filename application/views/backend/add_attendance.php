@@ -12,7 +12,7 @@
                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Home</a></li>
                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>attendance/Attendance">Attendance</a>
                             </li>
-                            <li class="breadcrumb-item active">Add</li>
+                            <li class="breadcrumb-item active"><?php echo $card_head;?></li>
                         </ol>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
 
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title"><i class="fa fa-compass" aria-hidden="true"></i> Attendance Add</h4>
+                            <h4 class="card-title"><i class="fa fa-compass" aria-hidden="true"></i><?php echo $card_head;?></h4>
                         </div>
                         <div class="card-body">
                             <form method="post" action="Add_Attendance" id="holidayform">

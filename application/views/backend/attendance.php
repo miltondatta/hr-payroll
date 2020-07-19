@@ -86,8 +86,9 @@
                                    class="display table dataTable table-striped table-bordered">
                                 <thead>
                                 <tr>
+                                    <th>Employee ID</th>
                                     <th>Employee Name</th>
-                                    <th>PIN</th>
+                                    <th>Department Name</th>
                                     <th>Date</th>
                                     <th>Sign In</th>
                                     <th>Sign Out</th>
@@ -98,8 +99,9 @@
                                 <tbody>
                                 <?php foreach ($attendancelist as $value): ?>
                                     <tr>
-                                        <td><?php echo $value->name; ?></td>
                                         <td><?php echo $value->emp_id; ?></td>
+                                        <td><?php echo $value->name; ?></td>
+                                        <td><?php echo $value->dept_name; ?></td>
                                         <td><?php echo $value->atten_date; ?></td>
                                         <td><?php echo $value->signin_time; ?></td>
                                         <td><?php echo $value->signout_time; ?></td>
@@ -197,8 +199,9 @@
 
                 let table = '<table id="data_table_example" class="display table dataTable table-striped table-bordered">';
                 let thead = "<thead><tr>" +
+                            "<th>Employee ID</th>" +
                             "<th>Employee Name</th>" +
-                            "<th>PIN</th>" +
+                            "<th>Department Name</th>" +
                             "<th>Date</th>" +
                             "<th>Sign In</th>" +
                             "<th>Sign Out</th>" +
@@ -208,8 +211,9 @@
                 var tbody = "<tbody>";
                 $.each(tableData.attendance, function (index, item) {
                     let tr = "<tr>";
-                    tr += "<td>" + item.name + "</td>";
                     tr += "<td>" + item.emp_id + "</td>";
+                    tr += "<td>" + item.name + "</td>";
+                    tr += "<td>" + item.dept_name + "</td>";
                     tr += "<td>" + item.atten_date + "</td>";
                     tr += "<td>" + item.signin_time + "</td>";
                     tr += "<td>" + item.signout_time + "</td>";

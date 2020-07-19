@@ -68,11 +68,15 @@ class Attendance_model extends CI_Model{
     }
     
     public function getAttendanceDataByID($employee_id, $date_from, $date_to){
-        $sql    = "SELECT `attendance`.*,
-      `employee`.`em_id`, CONCAT(`first_name`, ' ', `last_name`) AS name,`em_code`, TRUNCATE((ABS(( TIME_TO_SEC( TIMEDIFF( `signin_time`, `signout_time` ) ) )))/3600, 1) AS Hours
-      FROM `attendance`
-      LEFT JOIN `employee` ON `attendance`.`emp_id` = `employee`.`em_code` 
-      WHERE (`attendance`.`emp_id` = '$employee_id') AND (`atten_date` BETWEEN '$date_from' AND '$date_to') AND (`attendance`.`status` = 'A')";
+        $sql    = "SELECT attendance.*,
+                        employee.em_id, CONCAT(first_name, ' ', last_name) AS name, em_code,
+                        TRUNCATE((ABS((TIME_TO_SEC(TIMEDIFF(signin_time, signout_time))))) / 3600, 1) AS Hours
+                            , department.dep_name as dept_name
+                    FROM attendance
+                             LEFT JOIN employee ON attendance.emp_id = employee.em_code
+                             left join department on employee.dep_id = department.id
+                    WHERE (attendance.emp_id = '$employee_id') AND (atten_date BETWEEN '$date_from' AND '$date_to') AND
+                        (attendance.status = 'A')";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -89,11 +93,13 @@ class Attendance_model extends CI_Model{
     }
     
     public function getAllAttendance(){
-        $sql    = "SELECT `attendance`.`id`, `emp_id`, `atten_date`, `signin_time`, `signout_time`,  TRUNCATE(ABS(( TIME_TO_SEC( TIMEDIFF( `signin_time`, `signout_time` ) ) )/3600), 1) AS Hours,
-        CONCAT(`first_name`, ' ', `last_name`) AS name
-       FROM `attendance`
-        LEFT JOIN `employee` ON `attendance`.`emp_id` = `employee`.`em_code`
-        WHERE `attendance`.`status` = 'A'";
+        $sql    = "SELECT attendance.id, emp_id, atten_date, signin_time, signout_time,
+                        TRUNCATE(ABS((TIME_TO_SEC(TIMEDIFF(signin_time, signout_time))) / 3600), 1) AS Hours,
+                        CONCAT(first_name, ' ', last_name) AS name,department.dep_name as dept_name
+                    FROM attendance
+                             LEFT JOIN employee ON attendance.emp_id = employee.em_code
+                            left join department on employee.dep_id = department.id
+                    WHERE attendance.status = 'A'";
         $query  = $this->db->query($sql);
         $result = $query->result();
         
@@ -101,11 +107,14 @@ class Attendance_model extends CI_Model{
     }
 
     public function getAttendanceByDate($date_from, $date_to){
-        $sql    = "SELECT `attendance`.*,
-      `employee`.`em_id`, CONCAT(`first_name`, ' ', `last_name`) AS name,`em_code`, TRUNCATE((ABS(( TIME_TO_SEC( TIMEDIFF( `signin_time`, `signout_time` ) ) )))/3600, 1) AS Hours
-      FROM `attendance`
-      LEFT JOIN `employee` ON `attendance`.`emp_id` = `employee`.`em_code` 
-      WHERE (`atten_date` BETWEEN '$date_from' AND '$date_to') AND (`attendance`.`status` = 'A')";
+        $sql    = "SELECT attendance.*,
+                        employee.em_id, CONCAT(first_name, ' ', last_name) AS name, em_code,
+                        TRUNCATE((ABS((TIME_TO_SEC(TIMEDIFF(signin_time, signout_time))))) / 3600, 1) AS Hours
+                            , department.dep_name as dept_name
+                    FROM attendance
+                             LEFT JOIN employee ON attendance.emp_id = employee.em_code
+                             left join department on employee.dep_id = department.id
+                    WHERE (atten_date BETWEEN '$date_from' AND '$date_to') AND (attendance.status = 'A')";
         $query  = $this->db->query($sql);
         $result = $query->result();
 

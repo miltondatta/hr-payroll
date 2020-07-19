@@ -34,6 +34,9 @@ class Attendance extends CI_Controller{
             $id               = $this->input->get('A');
             if( !empty($id)){
                 $data['attval'] = $this->attendance_model->em_attendanceFor($id);
+                $data['card_head'] = 'ATTENDANCE UPDATE ';
+            }else{
+                $data['card_head'] = 'ATTENDANCE ADD ';
             }
             #$data['attendancelist'] = $this->attendance_model->em_attendance();
             $this->load->view('backend/add_attendance', $data);
