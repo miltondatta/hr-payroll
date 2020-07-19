@@ -32,6 +32,21 @@ class Employee_model extends CI_Model{
         return $result;
     }
     
+    public function getEmpByDeptId($dept_id){
+        $dept_str = '';
+        if($dept_id != 0){
+            $dept_str = " and dep_id = $dept_id";
+        }
+        
+        $sql    = "SELECT id,em_id,em_code,first_name,last_name
+                    FROM employee
+                    WHERE status = 'ACTIVE' $dept_str";
+        $query  = $this->db->query($sql);
+        $result = $query->result();
+        
+        return $result;
+    }
+    
     public function emselectByID($emid){
         $sql    = "SELECT * FROM `employee`
       WHERE `em_id`='$emid'";

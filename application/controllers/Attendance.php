@@ -14,12 +14,14 @@ class Attendance extends CI_Controller{
         $this->load->model('leave_model');
         $this->load->model('attendance_model');
         $this->load->model('project_model');
+        $this->load->model('organization_model');
         $this->load->library('csvimport');
     }
     
     public function Attendance(){
         if($this->session->userdata('user_login_access') != false){
             $data['employee'] = $this->employee_model->emselect();
+            $data['department']  = $this->organization_model->depselect();
             $data['attendancelist'] = $this->attendance_model->getAllAttendance();
             
             $this->load->view('backend/attendance', $data);

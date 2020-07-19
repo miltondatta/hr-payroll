@@ -65,6 +65,19 @@
                                        placeholder="To" autocomplete="off">
                             </div>
                             <div class="form-group col-md-3">
+                                <select class="form-control custom-select"
+                                        data-placeholder="Choose a Category" tabindex="1" id="depid"
+                                        name="depid" onchange="getEmployeeDeptWise()">
+                                    <option value="">Department</option>
+                                    <option value="0" selected >All Department</option>
+                                    <?php foreach($department as $value): ?>
+                                        <option value="<?php echo $value->id; ?>">
+                                            <?php echo $value->dep_name; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
                                 <select class="form-control" tabindex="1" name="emid" id="employee_id"
                                         required>
                                     <option value="">Select Employee</option>
@@ -248,4 +261,32 @@
             });
         });
     });
+
+    function getEmployeeDeptWise(){
+        let dept_id = $("#depid").val();
+        
+        $.ajax({
+            url     : "<?php echo base_url();?>Employee/getEmployeeByDeptId",
+            type    : "POST",
+            dataType: 'json',
+            data    : {
+                "dept_id": dept_id,
+            },
+            success : function (response){
+                console.log(response, " :276");
+                $("select[name='emid'] option")
+                    .not(":eq(0)")
+                    .remove();
+                $.each(response.employee, function (key, value){
+                    $('select[name="emid"]')
+                        .append($("<option></option>")
+                            .attr("value", value.em_id)
+                            .text(value.first_name + " " + value.last_name));
+                });
+            },
+            error   : function (response){
+            
+            }
+        });
+    }
 </script>

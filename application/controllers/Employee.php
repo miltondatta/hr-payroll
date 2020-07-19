@@ -591,7 +591,8 @@ class Employee extends CI_Controller{
             $from_date   = $this->input->post('from_date');
             $to_date     = $this->input->post('to_date');
             
-            $data['desciplinary'] = $this->employee_model->filteredDesciplinaryFetch($employee_id,$from_date,$to_date);
+            $data['desciplinary'] =
+                $this->employee_model->filteredDesciplinaryFetch($employee_id, $from_date, $to_date);
             $this->load->view('backend/disciplinary-partial', $data);
         } else{
             redirect(base_url(), 'refresh');
@@ -1098,5 +1099,11 @@ class Employee extends CI_Controller{
         } else{
             redirect(base_url(), 'refresh');
         }
+    }
+    
+    public function getEmployeeByDeptId(){
+        $dept_id = $this->input->post('dept_id');
+        $data['employee'] = $this->employee_model->getEmpByDeptId($dept_id);
+        echo json_encode($data);
     }
 }
