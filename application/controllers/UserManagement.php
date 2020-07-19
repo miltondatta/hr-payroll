@@ -75,6 +75,7 @@ class UserManagement extends CI_Controller{
     public function addNewRoleSave(){
         if($this->session->userdata('user_login_access') != false){
             $dataarr = array(
+                'role_type' => $this->input->post('role_type'),
                 'role_name' => $this->input->post('role_name'),
                 'role_desc' => $this->input->post('role_desc')
             );

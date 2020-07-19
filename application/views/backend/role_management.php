@@ -55,6 +55,7 @@
                                 class="display table dataTable table-striped table-bordered text-center">
                                 <thead>
                                     <tr>
+                                        <th>Role Type</th>
                                         <th>Role Name</th>
                                         <th>Description</th>
                                         <th>Created At</th>
@@ -64,6 +65,7 @@
                                 <tbody>
                                     <?php foreach ($roles as $value): ?>
                                     <tr>
+                                        <td><?php echo $value->role_type; ?></td>
                                         <td><?php echo $value->role_name; ?></td>
                                         <td><?php echo $value->role_desc; ?></td>
                                         <td><?php echo date('jS \of F Y', strtotime($value->created_at)) ?></td>
@@ -94,7 +96,14 @@
                     </button>
                 </div>
                 <form role="form" method="post" action="addNewRoleSave" id="btnSubmit">
-                    <div class="modal-body">                       
+                    <div class="modal-body"> 
+                        <div class="form-group">
+                            <label class="control-label">Role Type</label>
+                            <select name="role_type" class="form-control" required>
+                                <option value="ADMIN">Advance</option>
+                                <option value="EMPLOYEE">Basic</option>
+                            </select>
+                        </div>                          
                         <div class="form-group">
                             <label class="control-label">Role Name</label>
                             <input type="text" name="role_name" class="form-control" id="role_name"

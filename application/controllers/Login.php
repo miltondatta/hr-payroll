@@ -21,7 +21,7 @@ class Login extends CI_Controller{
         $this->load->database();
         $this->load->model('login_model');
         $this->load->model('dashboard_model');
-        
+        $this->load->model('employee_model');
     }
     
     public function index(){
@@ -77,8 +77,7 @@ class Login extends CI_Controller{
     
     //Validating login from request
     function validate_login($email = '', $password = ''){
-        $credential = array( 'em_email' => $email, 'em_password' => $password, 'status' => 'ACTIVE' );
-        
+        $credential = array( 'em_email' => $email, 'em_password' => $password, 'status' => 'ACTIVE' );        
         $query = $this->login_model->getUserForLogin($credential);
         if($query->num_rows() > 0){
             $row = $query->row();
@@ -87,8 +86,15 @@ class Login extends CI_Controller{
             $this->session->set_userdata('name', $row->first_name);
             $this->session->set_userdata('email', $row->em_email);
             $this->session->set_userdata('user_image', $row->em_image);
-            $this->session->set_userdata('user_type', $row->em_role);
-            
+
+            //Get role name by role id 
+            $rolevalue = $this->employee_model->getRoleById($row->em_role);
+            if($rolevalue) {
+                $role_type = $rolevalue->role_type;
+            } else {
+                $role_type = "";
+            }
+            $this->session->set_userdata('user_type', $role_type);
             return 'success';
         }
     }

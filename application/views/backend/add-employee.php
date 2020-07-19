@@ -82,11 +82,11 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3 m-t-20">
-                                    <label>Role </label>
+                                    <label>User Role </label>
                                     <select name="role" class="form-control custom-select" required>
                                         <option>Select Role</option>
                                         <?Php foreach($rolevalue as $value): ?>
-                                            <option value="<?php echo $value->role_name ?>"><?php echo $value->role_name ?></option>
+                                            <option value="<?php echo $value->id ?>"><?php echo $value->role_name ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

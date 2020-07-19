@@ -20,6 +20,7 @@
             
             <?php $degvalue = $this->employee_model->getdesignation(); ?>
             <?php $depvalue = $this->employee_model->getdepartment(); ?>
+            <?php $rolevalue = $this->employee_model->getRoles(); ?>
             <div class="row">
                 <div class="col-12  mt-3">
                     <div class="card">
@@ -186,10 +187,10 @@
                                                                 <select name="role"
                                                                         class="form-control"
                                                                         required>
-                                                                    <option value="<?php echo $basic->em_role; ?>"><?php echo $basic->em_role; ?></option>
-                                                                    <option value="HR">HR</option>
-                                                                    <option value="EMPLOYEE">Employee</option>
-                                                                    <option value="ADMIN">Super Admin</option>
+                                                                        
+                                        <?Php foreach($rolevalue as $value): ?>
+                                            <option value="<?php echo $value->id ?>" <?= ($basic->em_role == $value->id) ? 'selected' : '' ?>><?php echo $value->role_name ?></option>
+                                        <?php endforeach; ?>
                                                                 </select>
                                                             </div>
                                                         <?php } ?>
