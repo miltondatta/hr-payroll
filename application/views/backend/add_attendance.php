@@ -12,14 +12,14 @@
                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>">Home</a></li>
                             <li class="breadcrumb-item"><a href="<?= base_url(); ?>attendance/Attendance">Attendance</a>
                             </li>
-                            <li class="breadcrumb-item active"><?php echo $card_head;?></li>
+                            <li class="breadcrumb-item active"><?php echo $card_head; ?></li>
                         </ol>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12  mt-3">
-                    <?php if ($this->session->flashdata('feedback')) { ?>
+                    <?php if($this->session->flashdata('feedback')){ ?>
                         <div class="alert alert-success alert-dismissible show" role="alert">
                             <strong><?php echo $this->session->flashdata('feedback'); ?></strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -27,7 +27,7 @@
                             </button>
                         </div>
                     <?php } ?>
-                    <?php if ($this->session->flashdata('error')) { ?>
+                    <?php if($this->session->flashdata('error')){ ?>
                         <div class="alert alert-danger alert-dismissible show" role="alert">
                             <strong><?php echo $this->session->flashdata('error'); ?></strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -38,7 +38,8 @@
 
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title"><i class="fa fa-compass" aria-hidden="true"></i><?php echo $card_head;?></h4>
+                            <h4 class="card-title"><i class="fa fa-compass"
+                                                      aria-hidden="true"></i><?php echo $card_head; ?></h4>
                         </div>
                         <div class="card-body">
                             <form method="post" action="Add_Attendance" id="holidayform">
@@ -82,7 +83,7 @@
                                             <input class="form-control" name="signin" id="single-input"
                                                    value="<?php if( !empty($attval->signin_time)){
                                                        echo $attval->signin_time;
-                                                   } ?>" required autocomplete="off" >
+                                                   } ?>" required autocomplete="off">
                                         </div>
 
                                     </div>
@@ -92,7 +93,7 @@
                                             <input type="text" name="signout" class="form-control"
                                                    value="<?php if( !empty($attval->signout_time)){
                                                        echo $attval->signout_time;
-                                                   } ?>" autocomplete="off" >
+                                                   } ?>" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group">
